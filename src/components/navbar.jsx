@@ -111,6 +111,7 @@ export default function Header() {
                 <DropdownItem href="/login" key="logout">
                   <Button
                   onClick={() => {
+                    removeUser();
                     logOut();
                     location.reload();
                   }}

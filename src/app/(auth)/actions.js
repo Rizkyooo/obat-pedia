@@ -29,16 +29,22 @@ export async function signup(formData) {
   const supabase = createClient()
 
   const data = {
-    name: formData.get('name'),
     email: formData.get('email'),
     password: formData.get('password'),
+    options: {
+      data: {
+        name: formData.get('name'),
+        role: 'user',
+      },
+    }
   }
   console.log(data) 
 
   const { error } = await supabase.auth.signUp(data)
 
   if (error) {
-    redirect('/error')
+    console.log(error)
+    redirect('/error?error='+error)
   }
 
   revalidatePath('/', 'layout')
