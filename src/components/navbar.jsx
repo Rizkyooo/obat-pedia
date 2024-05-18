@@ -16,9 +16,35 @@ import {
 import { usePathname } from "next/navigation";
 import { logOut } from "@/app/(auth)/actions";
 import { userStore } from "@/store/user";
-export default function Header() {
-  const {user, removeUser} = userStore()
-  console.log(user)
+import { useState,useEffect } from "react";
+import { createClient } from "@supabase/supabase-js";
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+export default function Header({user}) {
+  const [user1, setUser] = useState([]);
+
+  const fetchObatData = async () => {
+    let supabaseQuery = supabase
+      .from("users")
+      .select("*")
+
+
+    let { data, error } = await supabaseQuery;
+
+    if (error) {
+      console.error("Error fetching data: ", error);
+    } else {
+      setUser(data);
+    }
+  };
+
+  useEffect(() => {
+    fetchObatData();
+  }, []);
+  
+  console.log(user1)
   const pathName = usePathname();
   return (
     <Navbar isBlurred={false} maxWidth="xl" isBordered>
@@ -105,13 +131,12 @@ export default function Header() {
                 </div>
               </DropdownTrigger>
               <DropdownMenu aria-label="a">
-                <DropdownItem className=" pl-3" href="/profil" key="handole">
+                <DropdownItem className=" pl-3" href="/profil" key="profil">
                   Profile
                 </DropdownItem>
                 <DropdownItem href="/login" key="logout">
                   <Button
                   onClick={() => {
-                    removeUser();
                     logOut();
                     location.reload();
                   }}

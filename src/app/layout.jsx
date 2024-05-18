@@ -4,8 +4,9 @@ import { Providers } from "./providers";
 import Header from "@/components/navbar";
 import BottomNav from "@/components/bottomNav";
 import Footer from "@/components/footer";
-import { getUser } from "./(auth)/actions";
 const inter = Inter({ subsets: ["latin"] });
+
+import { getUser } from "./(auth)/actions";
 
 export const metadata = {
   title: "Create Next App",
