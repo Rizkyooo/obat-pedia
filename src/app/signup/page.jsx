@@ -1,6 +1,9 @@
-import { signup } from "../auth/actions";
+
 import Link from "next/link";
 import { Image, Input, Button } from "@nextui-org/react";
+import { handleOauth } from "@/libs/actions";
+import { signup } from "@/libs/actions";
+import GoogleIcon from "@/components/googleIcon";
 export default function SignupPage() {
   return (
     <section className="flex container mx-auto p-16 ">
@@ -54,8 +57,9 @@ export default function SignupPage() {
             variant="ghost"
           >Daftar
           </Button>
-  
         </form>
+        <hr className="bg-slate-600 my-4 mx-auto flex justify-center items-center w-full"/>  
+          <Button className="w-full" formAction={handleOauth} startContent={<GoogleIcon/>}>SignUp with google</Button>
       </div>
     </section>
   );

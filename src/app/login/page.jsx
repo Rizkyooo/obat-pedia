@@ -1,5 +1,5 @@
 'use client'
-import { login } from "../auth/actions";
+import { login } from "@/libs/actions";
 import Link from "next/link";
 import { Image, Input, Button } from "@nextui-org/react";
 import { userStore } from "@/store/user"; 
@@ -49,6 +49,7 @@ export default function LoginPage() {
             type=""
           >Masuk
           </Button>
+          <hr className="bg-slate-600 mb-4 mx-2"/>  
           <Button onClick={()=>handleOauth()}  startContent={<GoogleIcon/>}>Login with  google</Button>
         </form>
       </div>

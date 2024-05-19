@@ -14,8 +14,7 @@ import {
   link,
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
-import { logOut } from "@/app/auth/actions";
-import { userStore } from "@/store/user";
+import { logOut } from "@/libs/actions";
 import { useState,useEffect } from "react";
 import { createClient } from "@supabase/supabase-js"; 
 const supabase = createClient(
@@ -45,7 +44,6 @@ export default function Header({user}) {
   }, []);
   
   console.log(user1)
-  console.log(window.location.origin)
   const pathName = usePathname();
   return (
     <Navbar isBlurred={false} maxWidth="xl" isBordered>
