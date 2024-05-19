@@ -3,6 +3,8 @@ import { login } from "../(auth)/actions";
 import Link from "next/link";
 import { Image, Input, Button } from "@nextui-org/react";
 import { userStore } from "@/store/user"; 
+import GoogleIcon from "@/components/googleIcon";
+import { handleOauth } from "../auth/actions";
 export default function LoginPage() {
   const { getUser} = userStore()
   return (
@@ -41,12 +43,13 @@ export default function LoginPage() {
           <Button
             onClick={getUser}
             formAction={login}
-            className="flex justify-center"
+            className="flex justify-center mb-4"
             color="danger"
             variant="ghost"
             type=""
           >Masuk
           </Button>
+          <Button onClick={()=>handleOauth()}  startContent={<GoogleIcon/>}>Login with  google</Button>
         </form>
       </div>
     </section>

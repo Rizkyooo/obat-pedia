@@ -17,7 +17,7 @@ import { usePathname } from "next/navigation";
 import { logOut } from "@/app/(auth)/actions";
 import { userStore } from "@/store/user";
 import { useState,useEffect } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js"; 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
