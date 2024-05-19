@@ -1,4 +1,4 @@
-import { signup } from "../(auth)/actions";
+import { signup } from "../auth/actions";
 import Link from "next/link";
 import { Image, Input, Button } from "@nextui-org/react";
 export default function SignupPage() {

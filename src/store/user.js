@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { getUser } from '@/app/(auth)/actions'
+import { getUser } from '@/app/auth/actions'
 
 export const userStore = create((set) => ({
     user: null,

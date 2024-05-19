@@ -14,7 +14,7 @@ import {
   link,
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
-import { logOut } from "@/app/(auth)/actions";
+import { logOut } from "@/app/auth/actions";
 import { userStore } from "@/store/user";
 import { useState,useEffect } from "react";
 import { createClient } from "@supabase/supabase-js"; 
@@ -137,8 +137,8 @@ export default function Header({user}) {
                 <DropdownItem href="/login" key="logout">
                   <Button
                   onClick={() => {
-                    logOut();
                     location.reload();
+                    logOut();
                   }}
                     size="sm"
                     className="bg-[#EE0037] text-white"

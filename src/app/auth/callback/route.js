@@ -18,7 +18,7 @@ export async function GET(request) {
           get(name) {
             return cookieStore.get(name)?.value
           },
-          set(name, valuering, options) {
+          set(name, value, options) {
             cookieStore.set({ name, value, ...options })
           },
           remove(name, options) {
