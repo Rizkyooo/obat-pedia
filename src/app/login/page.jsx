@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Image, Input, Button } from "@nextui-org/react";
 import { userStore } from "@/store/user"; 
 import GoogleIcon from "@/components/googleIcon";
-import { handleOauth } from "../auth/actions";
+import { handleOauth } from "../../libs/actions";
 export default function LoginPage() {
   const { getUser} = userStore()
   return (

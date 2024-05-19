@@ -1,12 +1,12 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
+import {createServerClient } from '@supabase/ssr'
 
 export async function GET(request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
   // if "next" is in param, use it as the redirect URL
-  const next = searchParams.get('next') ?? '/profil'
-  console.log("code: ", code, "next: ", next)
+  const next = searchParams.get('next') ?? '/'
 
   if (code) {
     const cookieStore = cookies()
@@ -18,7 +18,7 @@ export async function GET(request) {
           get(name) {
             return cookieStore.get(name)?.value
           },
-          set(name, value, options) {
+          set(name, valuering, options) {
             cookieStore.set({ name, value, ...options })
           },
           remove(name, options) {
@@ -30,11 +30,9 @@ export async function GET(request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`)
-      console.log('success login')
     }
   }
 
   // return the user to an error page with instructions
-  return NextResponse.redirect(`${origin}/login?message="could not login"`)
-  console.log('error login')
+  return NextResponse.redirect(`${origin}/auth/auth-code-error`)
 }
