@@ -45,6 +45,7 @@ export default function Header({user}) {
   }, []);
   
   console.log(user1)
+  console.log(window.location.origin)
   const pathName = usePathname();
   return (
     <Navbar isBlurred={false} maxWidth="xl" isBordered>

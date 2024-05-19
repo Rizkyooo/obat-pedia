@@ -49,7 +49,7 @@ export default function LoginPage() {
             type=""
           >Masuk
           </Button>
-          <Button onClick={()=>handleOauth()}  startContent={<GoogleIcon/>}>Login with  google</Button>
+          <Button onClick={()=>handleOauth(window.location.origin+'/auth/callback')}  startContent={<GoogleIcon/>}>Login with  google</Button>
         </form>
       </div>
     </section>
