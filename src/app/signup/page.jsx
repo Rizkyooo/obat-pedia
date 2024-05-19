@@ -1,4 +1,5 @@
 
+'use client'
 import Link from "next/link";
 import { Image, Input, Button } from "@nextui-org/react";
 import { handleOauth } from "@/libs/actions";
@@ -59,7 +60,7 @@ export default function SignupPage() {
           </Button>
         </form>
         <hr className="bg-slate-600 my-4 mx-auto flex justify-center items-center w-full"/>  
-          <Button className="w-full" formAction={handleOauth} startContent={<GoogleIcon/>}>SignUp with google</Button>
+          <Button className="w-full" onClick={()=>handleOauth()} startContent={<GoogleIcon/>}>SignUp with google</Button>
       </div>
     </section>
   );
