@@ -96,7 +96,7 @@ export const handleOauth = async () => {
    const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'https://obat-pedia.vercel.app/auth/callback',
+      redirectTo: 'https://obat-pedia.vercel.app/auth/callbacks',
     },
   })
   
