@@ -54,7 +54,7 @@ export const loginWithGoogle = async () => {
   const { error, data } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo:'http://localhost:3000/auth/callback',
+      redirectTo:'https://obat-pedia.vercel.app/auth/callback',
     },
   })
   if (error) {
