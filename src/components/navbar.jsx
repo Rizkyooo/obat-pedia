@@ -4,46 +4,22 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Link,
   Button,
   Avatar,
   Dropdown,
   DropdownItem,
   DropdownTrigger,
   DropdownMenu,
-  link,
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { logOut } from "@/libs/actions";
-import { useState,useEffect } from "react";
-import { createClient } from "@supabase/supabase-js"; 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
-export default function Header({user}) {
-  const [user1, setUser] = useState([]);
-
-  const fetchObatData = async () => {
-    let supabaseQuery = supabase
-      .from("users")
-      .select("*")
-
-
-    let { data, error } = await supabaseQuery;
-
-    if (error) {
-      console.error("Error fetching data: ", error);
-    } else {
-      setUser(data);
+  export default function Header(props) {
+    const {user, name, avatar_url } = props
+    const handleLogout = () => {
+      logOut()
     }
-  };
-
-  useEffect(() => {
-    fetchObatData();
-  }, []);
-  
-  console.log(user1)
+   
   const pathName = usePathname();
   return (
     <Navbar isBlurred={false} maxWidth="xl" isBordered>
@@ -62,10 +38,10 @@ export default function Header({user}) {
             Home
           </Link>
         </NavbarItem>
-        <NavbarItem isActive={pathName === "/obat-a-z"}>
+        <NavbarItem isActive={pathName.includes("/obat-a-z")}>
           <Link
             className={`${
-              pathName === "/obat-a-z" ? "text-[#EE0037]" : " "
+              pathName.includes("/obat-a-z") ? "text-[#EE0037]" : " "
             } hover:text-[#EE0037] hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
             color="foreground"
             href="/obat-a-z"
@@ -119,11 +95,11 @@ export default function Header({user}) {
                     size="sm"
                     isBordered
                     color="danger"
-                    src="https://i.pravatar.cc/300"
+                    src={avatar_url}
                   />
                   <div className="sm:flex flex-col hidden">
                     <p className="text-xs font-medium">
-                      {user.name || "handole"}
+                      {name}
                     </p>
                     <p className="text-[0.7rem]">{user.email}</p>
                   </div>
@@ -135,10 +111,7 @@ export default function Header({user}) {
                 </DropdownItem>
                 <DropdownItem href="/login" key="logout">
                   <Button
-                  onClick={() => {
-                    location.reload();
-                    logOut();
-                  }}
+                  onClick={handleLogout}
                     size="sm"
                     className="bg-[#EE0037] text-white"
                     variant="flat"

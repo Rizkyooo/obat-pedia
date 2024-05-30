@@ -1,5 +1,4 @@
 'use server'
-
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
@@ -14,7 +13,6 @@ export async function login(formData) {
     email: formData.get('email'),
     password: formData.get('password'),
   }
-
   const { error } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
@@ -56,13 +54,18 @@ export const loginWithGoogle = async () => {
   const { error, data } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo:'http://localhost:3000/callback',
+      redirectTo:'http://localhost:3000/auth/callback',
+      data: {
+        role: 'user',
+      }
     },
   })
   if (error) {
     console.log(error)
   }
-  console.log(data+"handoleeee")
+  if (data.url) {
+    redirect(data.url)
+  }
 }
 
 export const logOut = async () => {
@@ -74,6 +77,7 @@ export const logOut = async () => {
   if (user) {
     await supabase.auth.signOut()
   }
+  revalidatePath('/', 'layout')  
   redirect('/login')
 }
 

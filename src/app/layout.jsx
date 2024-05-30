@@ -4,6 +4,7 @@ import { Providers } from "./providers";
 import Header from "@/components/navbar";
 import BottomNav from "@/components/bottomNav";
 import Footer from "@/components/footer";
+import { logOut } from "../libs/actions";
 const inter = Inter({ subsets: ["latin"] });
 
 import { getUser } from "../libs/actions";
@@ -20,7 +21,7 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-        <Header user={user}/>
+        <Header user={user} name = {user?.user_metadata?.full_name} avatar_url = {user?.user_metadata?.avatar_url} />
         <BottomNav/>
         {children}
         <Footer/>

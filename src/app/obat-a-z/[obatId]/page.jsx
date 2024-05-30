@@ -2,9 +2,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { useState, useEffect } from "react";
 import { Tabs, Tab, Spinner } from "@nextui-org/react";
-import { CircularProgress } from "@nextui-org/react";
 import { Link } from "@nextui-org/react";
-import { Button } from "@nextui-org/react";
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -127,7 +125,7 @@ export default function ObatId({ searchParams }) {
               className={`${
                 activeLink === "#gunakan"
                   ? "bg-[#EE0037] text-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-xl"
-                  : "text-black bg-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-xl"
+                  : "text-black bg-white font-medium px-9 py-2 w-full flex justify-center items-center rounded-xl"
               } `}
               href="#gunakan"
             >

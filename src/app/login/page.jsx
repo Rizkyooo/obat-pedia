@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Image, Input, Button } from "@nextui-org/react";
 import { userStore } from "@/store/user"; 
 import GoogleIcon from "@/components/googleIcon";
-import { handleOauth } from "@/libs/actions";
+import { loginWithGoogle } from "@/libs/actions";
 export default function LoginPage() {
   const { getUser} = userStore()
   return (
@@ -50,7 +50,7 @@ export default function LoginPage() {
           >Masuk
           </Button>
           <hr className="bg-slate-600 mb-4 mx-2"/>  
-          <Button onClick={()=>handleOauth()}  startContent={<GoogleIcon/>}>Login with  google</Button>
+          <Button onClick={()=>loginWithGoogle()}  startContent={<GoogleIcon/>}>Login with  google</Button>
         </form>
       </div>
     </section>
