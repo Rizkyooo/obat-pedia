@@ -5,7 +5,19 @@ import { Image, Input, Button } from "@nextui-org/react";
 import { handleOauth } from "@/libs/actions";
 import { signup } from "@/libs/actions";
 import GoogleIcon from "@/components/googleIcon";
+import {useSearchParams } from "next/navigation";
+import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure} from "@nextui-org/react";
+import { useEffect } from "react";
+
 export default function SignupPage() {
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const message = useSearchParams().get('message')
+  useEffect(() => {
+    if (message==="error") {
+      onOpen(true);
+    }
+  }, [message, onOpen]);
+  console.log(message)
   return (
     <section className="flex container mx-auto p-16 ">
       <div className="w-1/2 bg-[#EE0037] justify-center items-center rounded-tl-2xl hidden sm:flex">
@@ -56,12 +68,37 @@ export default function SignupPage() {
             className="flex justify-center"
             color="danger"
             variant="ghost"
+            onClick={() => onOpen(true)}
           >Daftar
           </Button>
         </form>
         <hr className="bg-slate-600 my-4 mx-auto flex justify-center items-center w-full"/>  
           <Button className="w-full" onClick={()=>handleOauth()} startContent={<GoogleIcon/>}>SignUp with google</Button>
       </div>
+
+      <Modal placement="center" size="xs" isOpen={isOpen} onOpenChange={onOpenChange}>
+        {message==="error" ?  <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody className="my-9 flex justify-center items-center flex-col">
+                <Image width={100} src="./images/neutral.png" alt="error" />
+                <p>Ooppss Terjadi Kesalahan, Silahkan Coba Kembali</p>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent> :  <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody className="my-9 flex justify-center items-center flex-col">
+                <Image width={100} src="./images/happy-face.png" alt="error" />
+                <p className="text-md">Selamat Anda Berhasil Mendaftar</p>
+                <p className=" items-center text-sm md:md font-semibold">Silahkan Cek Email Anda Untuk Melakukan Verifikasi</p>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>}
+       
+      </Modal>
     </section>
   );
 }

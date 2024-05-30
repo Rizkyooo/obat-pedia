@@ -1,14 +1,11 @@
 'use server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-
 import { createClient } from '@/utils/supabase/server'
 
 export async function login(formData) {
   const supabase = createClient()
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
   const data = {
     email: formData.get('email'),
     password: formData.get('password'),
@@ -16,7 +13,7 @@ export async function login(formData) {
   const { error } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
-    redirect('/error')
+    redirect('/login?message=error')
   }
 
   revalidatePath('/', 'layout')  
@@ -42,11 +39,12 @@ export async function signup(formData) {
 
   if (error) {
     console.log(error)
-    redirect('/error?error='+error)
+    redirect('/signup?message=error')
   }
 
-  revalidatePath('/', 'layout')
-  redirect('/login')
+
+  // revalidatePath('/', 'layout')
+  redirect('/signup?message=success')
 }
 
 export const loginWithGoogle = async () => {
@@ -54,7 +52,7 @@ export const loginWithGoogle = async () => {
   const { error, data } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo:'https://obat-pedia.vercel.app/auth/callback',
+      redirectTo:'http://localhost:3000/auth/callback',
     },
   })
   if (error) {
@@ -96,7 +94,7 @@ export const handleOauth = async () => {
    const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'https://obat-pedia.vercel.app/auth/callbacks',
+      redirectTo: 'https://obat-pedia.vercel.app/auth/callback',
     },
   })
   
