@@ -4,8 +4,6 @@ import { NextResponse } from 'next/server'
 
 export async function POST(req) {
   const supabase = createClient()
-
-  // Check if a user's logged in
   const {
     data: { user },
   } = await supabase.auth.getUser()

@@ -1,9 +1,17 @@
+'use client'
 import { Image } from "@nextui-org/react"
 import Link from "next/link"
 import { EnvelopeIcon, PhoneIcon, MapPinIcon } from '@heroicons/react/24/solid'
+import { usePathname } from "next/navigation";
 export default function Footer() {
+    const header = ["/apoteker", "/admin"];
+   
+  const pathName = usePathname();
+  const showHeader = header.some(path => pathName.includes(path));
     return (
-        <footer className="w-full bottom-0 px-4 py-6 mb-16 sm:mb-0 bg-[#EE0037] mt-16">
+        <>
+        {!showHeader &&
+        <footer className="w-full bottom-0 px-4 py-6 sm:mb-0 bg-[#EE0037] mt-16">
             <div className="gap-4 sm:flex sm:gap-8 sm:px-20 sm:py-10 sm:justify-between">
                 <div className="mb-6">
                     <h2 className="font-bold text-2xl text-white">ObatPedia</h2>
@@ -42,11 +50,13 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-            <div className="mt-6">
+            <div className="mt-6 mb-12 sm:mb-0 justify-center items-center">
                 <hr />
-                <p className="text-center text-white mt-2">Copyright © 2024 ObatPedia. All rights reserved.</p>
+                <p className="text-center text-white mt-4 text-xs sm:text-md">Copyright © 2024 ObatPedia. All rights reserved.</p>
             </div>
 
         </footer>
+        }
+        </>
     )
 }

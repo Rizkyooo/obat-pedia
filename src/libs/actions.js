@@ -2,6 +2,7 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
+import { getUserWithRole } from '@/services/getUserWithRole'
 
 export async function login(formData) {
   const supabase = createClient()
@@ -15,6 +16,8 @@ export async function login(formData) {
   if (error) {
     redirect('/login?message=error')
   }
+
+  console.log(data)
 
   revalidatePath('/', 'layout')  
   redirect('/')
@@ -72,6 +75,7 @@ export const logOut = async () => {
   if (user) {
     await supabase.auth.signOut()
   }
+  console.log('user logOut')
   revalidatePath('/', 'layout')  
   redirect('/login')
 }
@@ -79,7 +83,6 @@ export const logOut = async () => {
 export const getUser = async()=>{
   const supabase = createClient()
   try {
-    
     const {
       data: { user },
     } = await supabase.auth.getUser()

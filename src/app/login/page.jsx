@@ -15,10 +15,10 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
+import checkRole from "@/services/checkRole";
 export default function LoginPage() {
   const message = useSearchParams().get("message");
   const [isLoading, setIsLoading] = useState(false);
-  console.log(isLoading);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
 

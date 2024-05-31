@@ -5,7 +5,11 @@ import { HomeIcon, UserGroupIcon, ChatBubbleLeftEllipsisIcon, BeakerIcon, UserIc
 import { HomeIcon as HomeIconSolid , UserGroupIcon as UserGroupIconSolid, ChatBubbleLeftEllipsisIcon as ChatBubbleLeftEllipsisIconSolid, BeakerIcon as BeakerIconSolid, UserIcon as UserIconSolid} from '@heroicons/react/24/solid'
 export default function BottomNav(){
     const pathName = usePathname()
+    const header = ["/apoteker", "/admin", "/login", "/signup"];
+  const showHeader = header.some(path => pathName.includes(path));
     return(
+        <>
+        {!showHeader && 
          <nav className="fixed bottom-0 left-0 w-full bg-slate-50 z-50 h-16 flex items-center justify-between  px-6 py-4 sm:hidden">
             <Link className="" href={"/"}>
                 <div className="flex flex-col justify-center items-center "> {pathName === '/' ? (<HomeIconSolid className="h-6 text-[#EE0037]" title="Home"/>) : <HomeIcon className="h-6 text-slate-600" title="Home"/>}
@@ -37,5 +41,7 @@ export default function BottomNav(){
                 </div>
             </Link>
          </nav>
+        }
+        </>
     )
 }

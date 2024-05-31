@@ -1,10 +1,22 @@
 import Jumbotron from "@/components/jumbotron";
 import NavHero from "@/components/nav-hero";
 import ListArtikel from "@/components/listArtikel";
-export default function Home() {
+import { getUser } from "@/libs/actions";
+import { getUserWithRole } from "@/services/getUserWithRole";
+import { redirect } from "next/navigation";
+export default async function  Home() {
+  const user = await getUser();
+  console.log(user?.id);
+  const checkRole =  await getUserWithRole(user?.id);
+  const role = checkRole?.role_id;
+  console.log(checkRole?.role_id);
+
+  if (role === 2) {
+    redirect('/apoteker');
+}
   return (
     <>
-    <main className="">
+    <main className="min-h-screen">
       <section className="relative sm:block">
         <Jumbotron />
         <div className=" absolute -bottom-20 rounded-t-3xl bg-white w-full sm:hidden">
