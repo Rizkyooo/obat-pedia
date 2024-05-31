@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getUser } from "@/libs/actions";
 import { getUserWithRole } from "@/services/getUserWithRole";
-export default async function checkRole() {
+export  const checkRole = async () => {
     const user = await getUser();
     console.log(user?.id);
     const checkRole =  await getUserWithRole(user?.id);

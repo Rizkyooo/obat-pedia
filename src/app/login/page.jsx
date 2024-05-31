@@ -5,7 +5,7 @@ import { Image, Input, Button } from "@nextui-org/react";
 import GoogleIcon from "@/components/googleIcon";
 import { loginWithGoogle } from "@/libs/actions";
 import { useEffect, useState } from "react";
-import { redirect, useSearchParams } from "next/navigation";
+import { redirect, useSearchParams, useRouter } from "next/navigation";
 import {
   Modal,
   ModalContent,
@@ -15,12 +15,35 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
-import checkRole from "@/services/checkRole";
+import { getUser } from "@/libs/actions";
+import { getUserWithRole } from "@/services/getUserWithRole";
+// import { checkRole } from "@/services/checkRole";
 export default function LoginPage() {
   const message = useSearchParams().get("message");
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const router = useRouter();
 
+  const checkRole = async () => {
+    const user = await getUser();
+    console.log(user?.id);
+    const checkRole = await getUserWithRole(user?.id);
+    const role = checkRole?.role_id;
+    console.log(checkRole?.role_id);
+    if (role === 1) {
+      router.push("/");
+    } else if (role === 2) {
+      router.push("/apoteker");
+    } else if (role === 3) {
+      router.push("/");
+    }
+  };
+
+  useEffect(() => {
+    if (message === "success") {
+      checkRole();
+    }
+  }, [message]);
 
   return (
     <section className="flex container mx-auto p-16 ">
@@ -70,7 +93,10 @@ export default function LoginPage() {
             color="danger"
             variant="ghost"
             type=""
-            onClick={() =>{onOpen(); setIsLoading(true)}}
+            onClick={() => {
+              onOpen();
+              setIsLoading(true);
+            }}
           >
             {isLoading ? <Spinner color="danger" size="sm" /> : "Masuk"}
           </Button>
@@ -83,23 +109,27 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        {message==='error' &&  <Modal placement="center" isOpen={isOpen} onOpenChange={()=>{onOpenChange(); setIsLoading(false)}}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalBody className="my-9 flex justify-center items-center flex-col">
-              <Image width={100} src="./images/neutral.png" alt="error" />
-                <p className="text-md">email atau password anda salah</p>
-              </ModalBody>
-          
-            </>
-          )}
-        </ModalContent>
-      </Modal>}
-        
-
-        
-
+        {message === "error" && (
+          <Modal
+            placement="center"
+            isOpen={isOpen}
+            onOpenChange={() => {
+              onOpenChange();
+              setIsLoading(false);
+            }}
+          >
+            <ModalContent>
+              {(onClose) => (
+                <>
+                  <ModalBody className="my-9 flex justify-center items-center flex-col">
+                    <Image width={100} src="./images/neutral.png" alt="error" />
+                    <p className="text-md">email atau password anda salah</p>
+                  </ModalBody>
+                </>
+              )}
+            </ModalContent>
+          </Modal>
+        )}
       </div>
     </section>
   );

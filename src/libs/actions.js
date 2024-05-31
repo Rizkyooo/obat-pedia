@@ -2,7 +2,6 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
-import { getUserWithRole } from '@/services/getUserWithRole'
 
 export async function login(formData) {
   const supabase = createClient()
@@ -18,9 +17,10 @@ export async function login(formData) {
   }
 
   console.log(data)
+  redirect('/login?message=success')
 
-  revalidatePath('/', 'layout')  
-  redirect('/')
+  // revalidatePath('/', 'layout')  
+  // redirect('/')
 }
 
 export async function signup(formData) {

@@ -7,9 +7,6 @@ const SidebarContext = createContext()
 
 export default function SideBarApoteker({ children }) {
     const [expanded, setExpanded] = useState(false)
-    const handleLogout = () => {
-        logOut()
-      }
   
   return (
     <aside className="h-screen ">
@@ -54,7 +51,6 @@ export default function SideBarApoteker({ children }) {
           </div>
         </div>
 
-        <Button onClick={handleLogout}>Logout</Button>
       </nav>
     </aside>
   )
