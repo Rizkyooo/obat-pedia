@@ -4,11 +4,11 @@ import { getUser } from "./libs/actions";
 import { getUserWithRole } from "./services/getUserWithRole";
 
 export async function middleware(request) {
-  const user = await getUser();
-  console.log(user?.id);
-  const checkRole =  await getUserWithRole(user?.id);
-  const role = checkRole?.role_id;
-  console.log(checkRole?.role_id);
+  // const user = await getUser();
+  // console.log(user?.id);
+  // const checkRole =  await getUserWithRole(user?.id);
+  // const role = checkRole?.role_id;
+  // console.log(checkRole?.role_id);
 
   // if(user && request.nextUrl.pathname === "/login") {
   //   return NextResponse.redirect(new URL("/", request.url));
@@ -17,9 +17,9 @@ export async function middleware(request) {
 
 
 
-  if (role === 2 && (request.nextUrl.pathname === "/obat-a-z" || request.nextUrl.pathname === "/tanya-apoteker" || request.nextUrl.pathname === "/profil" || request.nextUrl.pathname === "/forum-kesehatan" || request.nextUrl.pathname === "/artikel")) {
-    return NextResponse.redirect(new URL("/apoteker", request.url));
-}
+//   if (role === 2 && (request.nextUrl.pathname === "/obat-a-z" || request.nextUrl.pathname === "/tanya-apoteker" || request.nextUrl.pathname === "/profil" || request.nextUrl.pathname === "/forum-kesehatan" || request.nextUrl.pathname === "/artikel")) {
+//     return NextResponse.redirect(new URL("/apoteker", request.url));
+// }
 
 
 

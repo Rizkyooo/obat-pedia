@@ -2,22 +2,62 @@
 'use client'
 import Link from "next/link";
 import { Image, Input, Button } from "@nextui-org/react";
-import { handleOauth } from "@/libs/actions";
+import { getUser, handleOauth } from "@/libs/actions";
 import { signup } from "@/libs/actions";
 import GoogleIcon from "@/components/googleIcon";
 import {useSearchParams } from "next/navigation";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure} from "@nextui-org/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { EyeOff, Eye } from "lucide-react";
+import { createClient } from "@/utils/supabase/client";
+
 
 export default function SignupPage() {
-  const {isOpen, onOpen, onOpenChange} = useDisclosure();
-  const message = useSearchParams().get('message')
-  useEffect(() => {
-    if (message==="error") {
-      onOpen(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [message, setMessage] = useState("");
+  const router = useRouter();
+
+  const handleNameChange = (e) => setName(e.target.value);
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+
+  const handleSubmit = async (name, email, password, e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const supabase = createClient();
+    const data = {
+      email: email,
+      password: password,
+      options: {
+        data: {
+          name: name,
+          role: 'pengguna', 
+        },
+      }
     }
-  }, [message, onOpen]);
-  console.log(message)
+    const { error, data: user } = await supabase.auth.signUp(data)
+    if (error) {
+      setIsError(true);
+      setMessage(error.message);
+      onOpen();
+      console.log(error);
+    }
+    if(user) {
+      onOpen();
+      console.log(user);
+      // router.push("/login");
+      setIsLoading(false);
+    }
+  };
+
   return (
     <section className="flex container mx-auto p-16 ">
       <div className="w-1/2 bg-[#EE0037] justify-center items-center rounded-tl-2xl hidden sm:flex">
@@ -29,6 +69,7 @@ export default function SignupPage() {
         </h3>
         <form className="flex flex-col mt-6">
         <Input
+        isRequired
             className="mb-4"
             id="name"
             name="name"
@@ -38,8 +79,11 @@ export default function SignupPage() {
             variant="bordered"
             placeholder="masukkan nama anda"
             labelPlacement="outside"
+            value={name}
+            onChange={handleNameChange}
           />
           <Input
+          isRequired
           id="email"
           name="email"
             className="mb-4"
@@ -49,54 +93,74 @@ export default function SignupPage() {
             variant="bordered"
             placeholder="masukkan email anda"
             labelPlacement="outside"
+            value={email}
+            onChange={handleEmailChange}
           />
           <Input
+          isRequired
           name="password"
           id="password"
             className="mb-2"
-            type="password"
+            type={showPassword ? "text" : "password"}
             label="Password"
             size="md"
             variant="bordered"
             placeholder="masukkan password anda"
             labelPlacement="outside"
+            value={password}
+            onChange={handlePasswordChange}
+            endContent={
+              <div
+                className="cursor-pointer"
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowPassword(!showPassword);
+                }}
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </div>
+            }
           />
           <p className="text-sm mb-4">Sudah Punya Akun? <Link href={"/login"} className="text-[#EE0037]">Masuk</Link></p>
           <Button
-          formAction={signup}
-          type=""
+          isDisabled={!name || !email || !password}
+          isLoading={isLoading}
+          formAction=""
+          type="submit"
             className="flex justify-center"
             color="danger"
             variant="ghost"
-            onClick={() => onOpen(true)}
+            onClick={(e) => handleSubmit(name, email, password, e)}
           >Daftar
           </Button>
         </form>
         <hr className="bg-slate-600 my-4 mx-auto flex justify-center items-center w-full"/>  
-          <Button className="w-full" onClick={()=>handleOauth()} startContent={<GoogleIcon/>}>SignUp with google</Button>
+          <Button isLoading={isLoadingGoogle} className="w-full" onClick={()=>{setIsLoadingGoogle(true);handleOauth()}} startContent={<GoogleIcon/>}>SignUp with google</Button>
       </div>
 
-      <Modal placement="center" size="xs" isOpen={isOpen} onOpenChange={onOpenChange}>
-        {message==="error" ?  <ModalContent>
+
+      <Modal placement="center" size="sm" isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
           {(onClose) => (
             <>
-              <ModalBody className="my-9 flex justify-center items-center flex-col">
-                <Image width={100} src="./images/neutral.png" alt="error" />
-                <p>Ooppss Terjadi Kesalahan, Silahkan Coba Kembali</p>
+              <ModalBody  className="my-9 flex justify-center items-center flex-col">
+                {isError ? (
+                  <div className="flex flex-col justify-center items-center gap-2">
+                    <Image width={100} src="./images/neutral.png" alt="error" />
+                    <p className="text-sm">{message}</p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col justify-center items-center gap-2">
+                  <Image width={100} src="./images/happy-face.png" alt="error" />
+                  <p>Selamat Akun Anda Telah Terdaftar</p>
+                  <Button size="xs" color="danger" className="mt-4" onClick={() => router.push("/login")}>Login</Button>
+                </div>
+                )}
               </ModalBody>
             </>
           )}
-        </ModalContent> :  <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalBody className="my-9 flex justify-center items-center flex-col">
-                <Image width={100} src="./images/happy-face.png" alt="error" />
-                <p className="text-md">Selamat Anda Berhasil Mendaftar</p>
-                <p className=" items-center text-sm md:md font-semibold">Silahkan Cek Email Anda Untuk Melakukan Verifikasi</p>
-              </ModalBody>
-            </>
-          )}
-        </ModalContent>}
+        </ModalContent>
        
       </Modal>
     </section>

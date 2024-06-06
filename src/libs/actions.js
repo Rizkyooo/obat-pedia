@@ -32,7 +32,7 @@ export async function signup(formData) {
     options: {
       data: {
         name: formData.get('name'),
-        role: 'user',
+        role: 'apoteker', 
       },
     }
   }
