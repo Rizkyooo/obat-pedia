@@ -5,8 +5,6 @@ import Header from "@/components/navbar";
 import BottomNav from "@/components/bottomNav";
 import Footer from "@/components/footer";
 const inter = Inter({ subsets: ["latin"] });
-
-import { getUser } from "../libs/actions";
 import { getUserFromDatabase } from "@/services/getUserFromDatabase";
 export const metadata = {
   title: "Create Next App",

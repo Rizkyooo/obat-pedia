@@ -47,6 +47,11 @@ export default function ObatAZ() {
 
   return (
     <main className="min-h-screen mt-6">
+      {loading && (
+          <div className="min-h-screen flex justify-center items-center">
+            <Spinner color="danger" size="lg" label="Loading" />
+          </div>
+        )}
       <div className="container mx-auto p-4 sm:px-24">
         <h2 className="text-xl font-bold mb-4">Temukan Obat</h2>
         <Input
@@ -57,11 +62,6 @@ export default function ObatAZ() {
           type="search"
           variant="bordered"
         />
-        {loading && (
-          <div className="flex justify-center mt-4 items-center h-96">
-            <Spinner color="danger" size="lg" label="Loading" />
-          </div>
-        )}
         <div className="mt-10 flex flex-col sm:grid sm:grid-cols-2 sm:gap-3">
           {obatList.map((obat) => (
             <Link

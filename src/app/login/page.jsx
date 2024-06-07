@@ -15,7 +15,6 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/react";
-import { Spinner } from "@nextui-org/react";
 import { getUser } from "@/libs/actions";
 // import { checkRole } from "@/services/checkRole";
 export default function LoginPage() {

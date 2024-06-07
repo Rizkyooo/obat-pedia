@@ -13,7 +13,6 @@ import {
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { UserIcon } from "lucide-react";
 import { logOut } from "@/libs/actions";
   export default function Header(props) {
     const {user, name, avatar_url } = props
@@ -99,8 +98,7 @@ import { logOut } from "@/libs/actions";
                   as="button"
                   size="sm"
                   isBordered
-                  icon={<UserIcon />}
-                  src={avatar_url===null? avatar_url : null}
+                  src={user.avatar_url? avatar_url : "https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg"}
                 />
                 <div className="sm:flex flex-col hidden">
                   <p className="text-xs font-medium">

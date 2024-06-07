@@ -9,11 +9,9 @@ const supabase = createClient(
 );
 export default function ObatId({ searchParams }) {
   const [obat, setObat] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [activeLink, setActiveLink] = useState("");
 
   const fetchObatData = async (id) => {
-    setLoading(true);
     let supabaseQuery = supabase.from("Obats").select("*").eq("id", id);
 
     let { data, error } = await supabaseQuery;
@@ -21,15 +19,11 @@ export default function ObatId({ searchParams }) {
     if (error) {
       console.error("Error fetching data: ", error);
     } else {
-      setInterval(() => {
-        setLoading(false);
-        setObat(data[0]);
-      }, 500);
+      setObat(data[0]);
     }
   };
 
   useEffect(() => {
-    setLoading(true);
     fetchObatData(searchParams.id);
   }, []);
 
@@ -40,14 +34,6 @@ export default function ObatId({ searchParams }) {
   return (
     <main>
       <div className="detail-obat my-4 container mx-auto px-6 sm:flex min-h-screen">
-        {loading && (
-          <Spinner
-            className="flex h-[30rem] justify-center items-center min-w-full"
-            color="danger"
-            label="Loading"
-            size="lg"
-          />
-        )}
         <div className="hidden sm:flex sm:flex-col gap-2 h-fit items-start w-1/4  bg-slate-100 p-4 px-6 rounded-xl sticky top-[4.5rem]">
           {obat?.ringkasan && obat?.ringkasan !== "null" && (
             <Link
