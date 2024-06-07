@@ -1,21 +1,34 @@
 
 'use client'
-import { CirclePlus, PlusIcon } from "lucide-react";
-import {Modal, Tooltip, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Link} from "@nextui-org/react";
+import {Modal, Select, SelectItem, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Link} from "@nextui-org/react";
+import ForumItem from "@/components/forumItem";
 
 
 export default function Forum(){
     return (
       <main className="min-h-screen bg-gray-100">
         <div className="px-4 py-4">
-          <h3 className="text-lg font-semibold">Forum Kesehatan</h3>
-          <div>
-            <Tooltip content="Buat Forum" placement="left-start" color="danger">
-              <PlusIcon
-                className="fixed bottom-24 right-8  bg-slate-50 justify-center items-center flex rounded-full hover:animate-spin  border-2 border-[#EE0037] hover:transition-all transition-all cursor-pointer"
-                color="#EE0037" size={35}
-              ></PlusIcon>
-            </Tooltip>
+          <h3 className="text-lg font-semibold pl-1">Forum Kesehatan</h3>
+          <div className="flex justify-center items-center gap-2 mt-4">
+            <Select
+             size="sm" radius="md" color={"#EE0037"} variant="bordered" label="Topik">
+                <SelectItem>
+                    Obat
+                </SelectItem>
+                <SelectItem>
+                    Kesehatan
+                </SelectItem>
+            </Select>
+            <Button color='danger'>Buat</Button>
+          </div>
+
+          <div className="pl-1 flex flex-col justify-center items-start mt-6 gap-2">
+            <ForumItem/>
+            <ForumItem/>
+            <ForumItem/>
+            <ForumItem/>
+            <ForumItem/>
+
           </div>
         </div>
       </main>
