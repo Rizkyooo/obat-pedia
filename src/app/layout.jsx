@@ -21,7 +21,7 @@ export default async function RootLayout({ children }) {
             <Header
               user={user}
               name={user?.nama}
-              avatar_url={user?.email}
+              avatar_url={user?.picture}
             />
           <BottomNav />
           {children}

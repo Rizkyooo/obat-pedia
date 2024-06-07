@@ -101,8 +101,7 @@ export default function Header(props) {
                         isBordered
                         icon={<UserIcon />}
                         src={
-                          user.avatar_url ||
-                          "https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg"
+                          avatar_url
                         }
                       />
                       <div className="sm:flex flex-col hidden">
