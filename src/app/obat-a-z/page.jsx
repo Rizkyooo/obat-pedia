@@ -21,6 +21,7 @@ export default function ObatAZ() {
     let supabaseQuery = supabase
       .from("Obats")
       .select("title, id")
+      .order('id', { ascending: true })
       .limit(limit);
 
     if (query) {
