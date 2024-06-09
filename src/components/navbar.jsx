@@ -54,10 +54,10 @@ export default function Header(props) {
                 Obat A-Z
               </Link>
             </NavbarItem>
-            <NavbarItem isActive={pathName === "/tanya-apoteker"}>
+            <NavbarItem isActive={pathName.includes("/tanya-apoteker")}>
               <Link
                 className={`${
-                  pathName === "/tanya-apoteker" ? "text-[#EE0037]" : " "
+                  pathName.includes("/tanya-apoteker") ? "text-[#EE0037]" : " "
                 } hover:text-[#EE0037] hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
                 color="foreground"
                 href="/tanya-apoteker"
@@ -65,10 +65,10 @@ export default function Header(props) {
                 Tanya Apoteker
               </Link>
             </NavbarItem>
-            <NavbarItem isActive={pathName === "/forum-kesehatan"}>
+            <NavbarItem isActive={pathName.includes("/forum-kesehatan")}>
               <Link
                 className={`${
-                  pathName === "/forum-kesehatan" ? "text-[#EE0037]" : " "
+                  pathName.includes("/forum-kesehatan") ? "text-[#EE0037]" : " "
                 } hover:text-[#EE0037] hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
                 color="foreground"
                 href="/forum-kesehatan"
