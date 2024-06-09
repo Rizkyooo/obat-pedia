@@ -7,7 +7,7 @@ export default function Loading() {
         <Spinner
           label="Loading"
           color="danger"
-          size="xl"
+          size="md"
         />
       </main>
     )
