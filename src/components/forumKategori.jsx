@@ -47,11 +47,11 @@ export default function ForumKategori() {
             Buat Diskusi Baru
           </Button>
           <RadioGroup className="mt-4">
-            <Radio value="buenos-aires">Buenos Aires</Radio>
-            <Radio value="sydney">Sydney</Radio>
-            <Radio value="san-francisco">San Francisco</Radio>
-            <Radio value="london">London</Radio>
-            <Radio value="tokyo">Tokyo</Radio>
+            <Radio value="buenos-aires">Obat</Radio>
+            <Radio value="sydney">Kesehatan</Radio>
+            <Radio value="san-francisco">Flu</Radio>
+            <Radio value="london">Mag</Radio>
+            <Radio value="tokyo">Diare</Radio>
           </RadioGroup>
         </div>
       </div>
