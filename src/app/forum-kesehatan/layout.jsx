@@ -6,7 +6,9 @@ export default function layout({ children }) {
         <h3 className="text-md sm:text-lg font-semibold py-4">Forum Kesehatan</h3>
         <div className="sm:flex gap-4">
         <ForumKategori/>
+        <div className="sm:w-5/6">
         {children}
+        </div>
         </div>
       </div>
     </>

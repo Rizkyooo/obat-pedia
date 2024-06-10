@@ -14,7 +14,7 @@ export default function DetailForum({ image, judul, deskripsi, penulis }) {
     <div className="flex flex-col p-4 gap-4 bg-white rounded-lg w-full justify-start items-start h-full shadow-sm">
       <div className="flex items-center gap-2 justify-center ">
         <Avatar
-          className=" w-10 sm:mt-6 h-auto sm:w-16"
+          className=" w-10 sm:mt-6 h-auto"
           src="/images/obat-icon.svg"
         />
         <div className="flex flex-col justify-center items-start ">

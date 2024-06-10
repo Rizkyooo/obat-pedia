@@ -11,6 +11,7 @@ import {
     useDisclosure,Image
   } from "@nextui-org/react";
 import { createClient } from "@/utils/supabase/client";
+import { getUser } from "@/libs/actions";
 export default function EditProfil() {
   const [user, setUser] = useState(null);
   const [nama , setNama] = useState("");
@@ -53,8 +54,9 @@ export default function EditProfil() {
   }
   
   useEffect(() => {
-    async function getUser() {
-      const users = await getUserFromDatabase();
+    async function getUsers() {
+      const role = await getUser();
+      const users = await getUserFromDatabase(role?.user_metadata?.role || 'pengguna');
       console.log(users);
       setUser(users);
       setNama(users?.nama);
@@ -63,7 +65,7 @@ export default function EditProfil() {
       return users;
     }
 
-    getUser();
+    getUsers();
   }, []);
   return (
     <div className=" mt-4 ">
