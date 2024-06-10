@@ -12,27 +12,57 @@ import {
   ModalFooter,
   Modal,
   Input,
-  Textarea
+  Textarea,
+  DropdownItem,
+  DropdownMenu,
+  Dropdown,
+  DropdownTrigger
 } from "@nextui-org/react";
+import { ListFilter, Pencil } from "lucide-react";
+import { useMemo, useState } from "react";
 
 export default function ForumKategori() {
+  const [selectedKeys, setSelectedKeys] = useState(new Set(["text"]));
+
+  const selectedValue = useMemo(
+    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
+    [selectedKeys]
+  );
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <>
-      <div className="flex justify-center items-center gap-2 sm:hidden mb-6">
-        <Select
-          className="shadow-xs"
-          size="xs"
-          radius="md"
-          color={"#EE0037"}
+      <div className="flex justify-start items-center gap-2 sm:hidden mb-6 ">
+      <Input
+      className="bg-white rounded-xl"
+          value={''}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          size="md"
+          placeholder="Cari Obat"
+          type="search"
           variant="bordered"
-          labelPlacement="outside"
-          placeholder="Kategori"
-        >
-          <SelectItem>Obat</SelectItem>
-          <SelectItem>Kesehatan</SelectItem>
-        </Select>
+          fullWidth = {true}
+        />
+         <Dropdown>
+      <DropdownTrigger>
+        <button><ListFilter className="text-[#EE0037]"/></button>
+      </DropdownTrigger>
+      <DropdownMenu 
+        aria-label="Single selection example"
+        variant="flat"
+        disallowEmptySelection
+        selectionMode="single"
+        selectedKeys={selectedKeys}
+        onSelectionChange={setSelectedKeys}
+      >
+        <DropdownItem key="text">Text</DropdownItem>
+        <DropdownItem key="number">Number</DropdownItem>
+        <DropdownItem key="date">Date</DropdownItem>
+        <DropdownItem key="single_date">Single Date</DropdownItem>
+        <DropdownItem key="iteration">Iteration</DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
         <Button
+          startContent={<Pencil />}
           onPress={onOpen}
           size="sm"
           className="shadow-sm bg-[#EE0037] text-white"
