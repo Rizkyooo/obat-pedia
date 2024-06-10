@@ -34,10 +34,10 @@ export default function ForumKategori() {
       <div className="flex justify-start items-center gap-2 sm:hidden mb-6 ">
       <Input
       className="bg-white rounded-xl"
-          value={''}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          // value={''}
+          // onChange={(e) => setSearchQuery(e.target.value)}
           size="md"
-          placeholder="Cari Obat"
+          placeholder="Cari Diskusi"
           type="search"
           variant="bordered"
           fullWidth = {true}
