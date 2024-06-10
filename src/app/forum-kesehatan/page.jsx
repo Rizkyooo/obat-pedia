@@ -34,7 +34,7 @@ export default function Forum(){
       <main className="min-h-screen bg-gray-100">
           <div className=" flex flex-col justify-center items-center gap-2">
             {forum?.map((forum) => (
-            <ForumItem key={forum?.id} date={forum?.created_at} jml_komentar={forum?.jml_komentar} penulis={forum?.penulis} judul={forum?.judul} deskripsi={forum?.deskripsi} image={"/images/obat-icon.svg"}/>
+            <ForumItem id={forum?.id} key={forum?.id} date={forum?.created_at} jml_komentar={forum?.jml_komentar} penulis={forum?.penulis} judul={forum?.judul} deskripsi={forum?.deskripsi} image={"/images/obat-icon.svg"}/>
               ))}
             <Button size="sm" className="mt-4" color="danger" variant="ghost">
               Load More

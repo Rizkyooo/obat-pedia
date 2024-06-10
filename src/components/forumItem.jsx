@@ -2,11 +2,11 @@ import { Avatar } from "@nextui-org/react"
 import Link from "next/link";
 import { MessageCircleMore, UserCircle } from "lucide-react";
 import { formatDistanceToNow } from 'date-fns';
-import { id } from 'date-fns/locale';
-export default function ForumItem({image, judul, deskripsi, penulis, jml_komentar, date}) {
+import { id as localeID } from 'date-fns/locale';
+export default function ForumItem({id,image, judul, deskripsi, penulis, jml_komentar, date}) {
   const TimeAgo = ({ date }) => {
     return (
-      <span>{formatDistanceToNow(new Date(date), { addSuffix: true, locale: id })}</span>
+      <span>{formatDistanceToNow(new Date(date), { addSuffix: true, locale: localeID })}</span>
     );
   };
   
@@ -16,9 +16,11 @@ export default function ForumItem({image, judul, deskripsi, penulis, jml_komenta
         }
         return text;
     }
+
+    const encodedTitle = encodeURIComponent(judul).toLocaleLowerCase();
   return (
     
-    <Link href={"/forum-kesehatan/1"} className="flex p-2 gap-4 bg-white rounded-lg justify-start items-center sm:items-start shadow-sm w-full">
+    <Link href={`/forum-kesehatan/${encodedTitle}?id=${id}`} className="flex p-2 gap-4 bg-white rounded-lg justify-start items-center sm:items-start shadow-sm w-full">
         <Avatar  icon = {<UserCircle/>}  className=" h-8 sm:h-10  sm:mt-6  " src={image}/>
 
         <div className="w-full py-4">
