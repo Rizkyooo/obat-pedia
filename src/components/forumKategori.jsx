@@ -63,6 +63,7 @@ export default function ForumKategori({checkUser}) {
       toast.success("Berhasil Membuat Diskusi Baru", {
         position: "top-center",
         autoClose: 1500,
+
       })
       setIsLoading(false);
       onOpenChange(false);
@@ -224,7 +225,7 @@ export default function ForumKategori({checkUser}) {
           )}
         </ModalContent>
       </Modal>
-      <ToastContainer />
+      <ToastContainer/>
     </>
   );
 }
