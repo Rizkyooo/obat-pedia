@@ -21,22 +21,22 @@ import {
   Dropdown,
   DropdownTrigger,
 } from "@nextui-org/react";
-import { interval } from "date-fns";
 import { ListFilter, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ForumItem from "./forumItem";
 
 export default function ForumKategori({checkUser}) {
-  const [selectedKeys, setSelectedKeys] = useState(new Set(["text"]));
+  const [selectedKeys, setSelectedKeys] = useState(new Set([""]));
   const [judul, setJudul] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
   const [kategori, setKategori] = useState([]);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter()
-
+  const [searchQuery, setSearchQuery] = useState("");
   const selectedValue = useMemo(
     () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
     [selectedKeys]
@@ -50,7 +50,7 @@ export default function ForumKategori({checkUser}) {
     try {
       const { error } = await supabase
         .from("diskusi")
-        .insert({judul:judul, kategori:selectedValue, penulis:user?.nama, deskripsi:deskripsi });
+        .insert({judul: judul, kategori: selectedValue, penulis: user?.nama, deskripsi: deskripsi });
       if (error) {
         console.log(error);
         setIsLoading(false);
@@ -58,21 +58,19 @@ export default function ForumKategori({checkUser}) {
           position: "top-center",
           autoClose: 2000,
         })
+      } else {
+        toast.success("Berhasil Membuat Diskusi Baru", {
+          position: "top-center",
+          autoClose: 1500,
+        })
+        setIsLoading(false);
+        onOpenChange(false);
+        router.refresh();
       }
-
-      toast.success("Berhasil Membuat Diskusi Baru", {
-        position: "top-center",
-        autoClose: 1500,
-
-      })
-      setIsLoading(false);
-      onOpenChange(false);
-      router.refresh()
     } catch (error) {
       console.log(error);
     }
   }
-  
 
   async function fetchKategori() {
     const supabase = createClient();
@@ -94,7 +92,6 @@ export default function ForumKategori({checkUser}) {
     }
   }
 
-  
   useEffect(() => {
     async function getUsers() {
       const role = await getUser();
@@ -112,8 +109,8 @@ export default function ForumKategori({checkUser}) {
       <div className="flex justify-start items-center gap-2 sm:hidden mb-6 ">
         <Input
           className="bg-white rounded-xl"
-          // value={''}
-          // onChange={(e) => setSearchQuery(e.target.value)}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           size="md"
           placeholder="Cari Diskusi"
           type="search"
@@ -134,14 +131,14 @@ export default function ForumKategori({checkUser}) {
             selectedKeys={selectedKeys}
             onSelectionChange={setSelectedKeys}
           >
-            {kategori.length>0 && kategori.map((item) => (
+            {kategori.length > 0 && kategori.map((item) => (
               <DropdownItem key={item.nama}>{item.nama}</DropdownItem>
-            ))} 
+            ))}
           </DropdownMenu>
         </Dropdown>
         <Button
           startContent={<Pencil />}
-          onPress={()=> {checkUser? onOpen():router.push('/login')} }
+          onPress={() => { checkUser ? onOpen() : router.push('/login') }}
           size="sm"
           className="shadow-sm bg-[#EE0037] text-white"
         >
@@ -151,24 +148,24 @@ export default function ForumKategori({checkUser}) {
 
       <div className="hidden sm:block sm:w-2/6">
         <div className="sticky px-6 top-20 z-10 flex flex-col justify-start py-6 bg-white rounded-lg shadow-sm ">
-          <div className="flex  gap-2">
-          <Input
-          className="bg-white rounded-xl"
-          // value={''}
-          // onChange={(e) => setSearchQuery(e.target.value)}
-          size="sm"
-          placeholder="Cari Diskusi"
-          type="search"
-          variant="bordered"
-          fullWidth={true}
-        />
-          <Button startContent={<Pencil />} size="sm" onPress={()=> {checkUser? onOpen():router.push('/login')} } color="danger">
-            Buat
-          </Button>
+          <div className="flex gap-2">
+            <Input
+              className="bg-white rounded-xl"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              size="sm"
+              placeholder="Cari Diskusi"
+              type="search"
+              variant="bordered"
+              fullWidth={true}
+            />
+            <Button startContent={<Pencil />} size="sm" onPress={() => { checkUser ? onOpen() : router.push('/login') }} color="danger">
+              Buat
+            </Button>
           </div>
-        
+
           <RadioGroup className="mt-4">
-            {kategori.length>0 && kategori.map((item) => (
+            {kategori.length > 0 && kategori.map((item) => (
               <Radio key={item.id} value={item.nama}>{item.nama}</Radio>
             ))}
           </RadioGroup>
@@ -213,22 +210,23 @@ export default function ForumKategori({checkUser}) {
                   color={"#EE0037"}
                   variant="bordered"
                   label="Pilih Topik"
-            selectionMode="single"
-            selectedKeys={selectedKeys}
-            onSelectionChange={setSelectedKeys}
+                  selectionMode="single"
+                  selectedKeys={selectedKeys}
+                  onSelectionChange={setSelectedKeys}
+                  placeholder="Pilih Topik"
                 >
-              {kategori.length > 0 && (
-              kategori.map((item) => (
-                <SelectItem key={item.nama}>{item.nama}</SelectItem>
-              ))
-            )}
+                  {kategori.length > 0 && (
+                    kategori.map((item) => (
+                      <SelectItem key={item.nama}>{item.nama}</SelectItem>
+                    ))
+                  )}
                 </Select>
               </ModalBody>
               <ModalFooter>
                 <Button variant="flat" onPress={onClose}>
                   Batal
                 </Button>
-                <Button isLoading={isLoading} color="danger" onPress={()=>{addNewForum()}}>
+                <Button isLoading={isLoading} color="danger" onPress={addNewForum}>
                   Submit
                 </Button>
               </ModalFooter>
@@ -236,7 +234,10 @@ export default function ForumKategori({checkUser}) {
           )}
         </ModalContent>
       </Modal>
-      <ToastContainer/>
+      <div className="flex flex-col justify-start items-center gap-2 sm:w-4/6">
+        <ForumItem searchQuery={searchQuery} searchByKategori={selectedValue} />
+      </div>
+      <ToastContainer />
     </>
   );
 }

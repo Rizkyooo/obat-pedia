@@ -6,36 +6,51 @@ import { formatDistanceToNow } from "date-fns";
 import { id as localeID } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
-export default function ForumItem() {
+
+export default function ForumItem({ searchQuery, searchByKategori }) {
   const [forum, setForum] = useState([]);
   const [loadMore, setLoadMore] = useState(14);
   const [isLoading, setIsLoading] = useState(false);
 
-  async function fetchForum(limit) {
+  async function fetchForum(limit, searchQuery = "", searchByKategori = "") {
     setIsLoading(true);
     const supabase = createClient();
     try {
-      const { data, error } = await supabase
+      let supabaseQuery = supabase
         .from("diskusi")
         .select("*")
         .order("created_at", { ascending: false })
         .range(0, limit);
-      if (error) {
-        console.log(error);
+
+      if (searchQuery) {
+        supabaseQuery = supabaseQuery.ilike("judul", `%${searchQuery}%`);
       }
+
+      if (searchByKategori) {
+        supabaseQuery = supabaseQuery.ilike("kategori", `%${searchByKategori}%`);
+      }
+
+      let { data, error } = await supabaseQuery;
+
+      if (error) {
+        console.error(error);
+      }
+
       if (data) {
+        console.log(data);
         setForum(data);
         setIsLoading(false);
         return data;
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
   useEffect(() => {
-    fetchForum(loadMore);
-  }, []);
+    fetchForum(loadMore, searchQuery, searchByKategori);
+  }, [searchQuery, searchByKategori]);
+
   const TimeAgo = ({ date }) => {
     return (
       <span>
@@ -59,48 +74,47 @@ export default function ForumItem() {
     return text;
   };
 
-  const encodedTitle = encodeURIComponent(forum?.judul).toLocaleLowerCase();
   return (
     <>
-    {forum?.map((forum) => (  
-      <Link
-        href={`/forum-kesehatan/${encodedTitle}?id=${forum?.id}`}
-        className="flex p-4 flex-col gap-2 bg-white rounded-lg justify-start items-start sm:items-start shadow-sm w-full"
-      >
-        <User
-          name={forum?.penulis}
-          description="pengguna"
-          avatarProps={{
-            src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-            size: "sm",
-          }}
-        />
-        <div className="w-full flex flex-col gap-1">
-          <p className="text-sm  sm:text-lg font-semibold sm:mb-0">
-            {truncateText(forum?.judul, 50)}
-          </p>
-          <p className="sm:block text-sm mb-1 hidden">
-            {truncateText(forum?.deskripsi, 200)}
-          </p>
-          {/* <p className="text-xs mb-4">{penulis}</p> */}
-          <div className="flex justify-between mt-4">
-            <div className="flex gap-1 ">
-              <MessageCircleMore
-                className="text-slate-600 opacity-75"
-                size={15}
-              />
-              <p className="text-xs opacity-75">{forum?.jml_komentar}</p>
+      {forum?.map((forum) => {
+        const encodedTitle = encodeURIComponent(forum?.judul).toLowerCase();
+        return (
+          <Link
+            key={forum?.id}
+            href={`/forum-kesehatan/${encodedTitle}?id=${forum?.id}`}
+            className="flex p-4 flex-col gap-2 bg-white rounded-lg justify-start items-start sm:items-start shadow-sm w-full"
+          >
+            <User
+              name={forum?.penulis}
+              description="pengguna"
+              avatarProps={{
+                src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
+                size: "sm",
+              }}
+            />
+            <div className="w-full flex flex-col gap-1">
+              <p className="text-sm sm:text-lg font-semibold sm:mb-0">
+                {truncateText(forum?.judul, 50)}
+              </p>
+              <p className="sm:block text-sm mb-1 hidden">
+                {truncateText(forum?.deskripsi, 200)}
+              </p>
+              <div className="flex justify-between mt-4">
+                <div className="flex gap-1 ">
+                  <MessageCircleMore
+                    className="text-slate-600 opacity-75"
+                    size={15}
+                  />
+                  <p className="text-xs opacity-75">{forum?.jml_komentar}</p>
+                </div>
+                <p className="text-[0.65rem] font-semibold opacity-55 px-2">
+                  <TimeAgo date={forum?.created_at} />
+                </p>
+              </div>
             </div>
-            <p
-              href={"#"}
-              className="text-[0.65rem]  font-semibold opacity-55 px-2"
-            >
-              <TimeAgo date={forum?.created_at} />
-            </p>
-          </div>
-        </div>
-      </Link>
-    ))}
+          </Link>
+        );
+      })}
       <Button
         isLoading={isLoading}
         onPress={handleMore}
