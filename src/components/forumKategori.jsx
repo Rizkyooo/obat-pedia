@@ -21,9 +21,12 @@ import {
   Dropdown,
   DropdownTrigger,
 } from "@nextui-org/react";
+import { interval } from "date-fns";
 import { ListFilter, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ForumKategori({checkUser}) {
   const [selectedKeys, setSelectedKeys] = useState(new Set(["text"]));
@@ -51,10 +54,21 @@ export default function ForumKategori({checkUser}) {
       if (error) {
         console.log(error);
         setIsLoading(false);
+        toast.error("Gagal Membuat Diskusi Baru", {
+          position: "top-center",
+          autoClose: 1500,
+        })
       }
 
+      toast.success("Berhasil Membuat Diskusi Baru", {
+        position: "top-center",
+        autoClose: 1500,
+      })
       setIsLoading(false);
-      router.refresh()
+      onOpenChange(false);
+      setTimeout(() => {
+        router.refresh()
+      }, 1500);
     } catch (error) {
       console.log(error);
     }
@@ -210,6 +224,7 @@ export default function ForumKategori({checkUser}) {
           )}
         </ModalContent>
       </Modal>
+      <ToastContainer />
     </>
   );
 }
