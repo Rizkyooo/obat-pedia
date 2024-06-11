@@ -25,7 +25,7 @@ import { ListFilter, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
-export default function ForumKategori() {
+export default function ForumKategori({checkUser}) {
   const [selectedKeys, setSelectedKeys] = useState(new Set(["text"]));
   const [judul, setJudul] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
@@ -81,16 +81,14 @@ export default function ForumKategori() {
     }
   }
 
-  async function getUsers() {
-    const role = await getUser();
-    const usera = await getUserFromDatabase(role?.user_metadata?.role || 'pengguna');
-    setUser(usera);
-    console.log(usera.nama);
-  }
-
   
   useEffect(() => {
-    
+    async function getUsers() {
+      const role = await getUser();
+      const usera = await getUserFromDatabase(role?.user_metadata?.role || 'pengguna');
+      setUser(usera);
+      console.log(usera?.nama);
+    }  
     fetchKategori();
     getUsers();
     console.log(user)
@@ -130,7 +128,7 @@ export default function ForumKategori() {
         </Dropdown>
         <Button
           startContent={<Pencil />}
-          onPress={()=> {user? onOpen():router.push('/login')} }
+          onPress={()=> {checkUser? onOpen():router.push('/login')} }
           size="sm"
           className="shadow-sm bg-[#EE0037] text-white"
         >
@@ -140,7 +138,7 @@ export default function ForumKategori() {
 
       <div className="hidden sm:block sm:w-1/6">
         <div className="sticky px-6 top-20 z-10 flex flex-col justify-start py-6 bg-white rounded-lg shadow-sm ">
-          <Button onPress={onOpen} fullWidth color="danger">
+          <Button onPress={()=> {checkUser? onOpen():router.push('/login')} } fullWidth color="danger">
             Buat Diskusi Baru
           </Button>
           <RadioGroup className="mt-4">
