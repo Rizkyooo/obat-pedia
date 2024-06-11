@@ -56,7 +56,7 @@ export default function ForumKategori({checkUser}) {
         setIsLoading(false);
         toast.error("Gagal Membuat Diskusi Baru", {
           position: "top-center",
-          autoClose: 1500,
+          autoClose: 2000,
         })
       }
 
@@ -67,9 +67,7 @@ export default function ForumKategori({checkUser}) {
       })
       setIsLoading(false);
       onOpenChange(false);
-      setTimeout(() => {
-        router.refresh()
-      }, 1500);
+      router.refresh()
     } catch (error) {
       console.log(error);
     }
@@ -151,11 +149,24 @@ export default function ForumKategori({checkUser}) {
         </Button>
       </div>
 
-      <div className="hidden sm:block sm:w-1/6">
+      <div className="hidden sm:block sm:w-2/6">
         <div className="sticky px-6 top-20 z-10 flex flex-col justify-start py-6 bg-white rounded-lg shadow-sm ">
-          <Button onPress={()=> {checkUser? onOpen():router.push('/login')} } fullWidth color="danger">
-            Buat Diskusi Baru
+          <div className="flex  gap-2">
+          <Input
+          className="bg-white rounded-xl"
+          // value={''}
+          // onChange={(e) => setSearchQuery(e.target.value)}
+          size="sm"
+          placeholder="Cari Diskusi"
+          type="search"
+          variant="bordered"
+          fullWidth={true}
+        />
+          <Button startContent={<Pencil />} size="sm" onPress={()=> {checkUser? onOpen():router.push('/login')} } color="danger">
+            Buat
           </Button>
+          </div>
+        
           <RadioGroup className="mt-4">
             {kategori.length>0 && kategori.map((item) => (
               <Radio key={item.id} value={item.nama}>{item.nama}</Radio>
