@@ -45,10 +45,10 @@ export default function ForumItem({
         }}
       />
       <div className="w-full flex flex-col gap-1">
-        <p className="text-sm pl-10 sm:text-lg font-semibold sm:mb-0">
+        <p className="text-sm  sm:text-lg font-semibold sm:mb-0">
           {truncateText(judul, 50)}
         </p>
-        <p className="sm:block pl-10 text-sm mb-1 hidden">
+        <p className="sm:block text-sm mb-1 hidden">
           {truncateText(deskripsi, 200)}
         </p>
         {/* <p className="text-xs mb-4">{penulis}</p> */}
