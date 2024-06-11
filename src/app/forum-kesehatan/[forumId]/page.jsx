@@ -18,8 +18,6 @@ export default async function page({ searchParams }) {
         console.log(error);
       }
       if (data) {
-        const date = 
-        console.log(date);
         return data;
       }
     } catch (error) {
@@ -28,6 +26,7 @@ export default async function page({ searchParams }) {
   }
 
   const forum = await fetchForum();
+  console.log(forum);
   return (
     <main className="min-h-screen">
         <div className="flex flex-col gap-2">
