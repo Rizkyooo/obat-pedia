@@ -2,7 +2,7 @@ import { Avatar, User } from "@nextui-org/react";
 import { MessageCircleMore, UserCircle } from "lucide-react";
 import Komentar from "./komentar";
 import KomentarItem from "./komentarItem";
-export default function DetailForum({ image, judul, deskripsi, penulis, jml_komentar, date }) {
+export default function DetailForum({ image, role, judul, deskripsi, penulis, jml_komentar, date }) {
 
   return (
     <> 
@@ -10,9 +10,9 @@ export default function DetailForum({ image, judul, deskripsi, penulis, jml_kome
       <div className="flex items-center gap-2 justify-center ">
       <User
         name={penulis}
-        description="pengguna"
+        description={role}
         avatarProps={{
-          src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
+          src: image,
           size: "sm",
         }}
       />
