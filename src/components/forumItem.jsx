@@ -1,5 +1,5 @@
 "use client";
-import { Button, User } from "@nextui-org/react";
+import { Button, Chip, User } from "@nextui-org/react";
 import Link from "next/link";
 import { MessageCircleMore } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
@@ -8,21 +8,32 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { getUser } from "@/libs/actions";
 
-export default function ForumItem({ searchQuery, searchByKategori, radioKategori }) {
+export default function ForumItem({
+  searchQuery,
+  searchByKategori,
+  radioKategori,
+}) {
   const [forum, setForum] = useState([]);
   const [loadMore, setLoadMore] = useState(14);
   const [isLoading, setIsLoading] = useState(false);
 
-  async function fetchForum(limit, searchQuery = "", searchByKategori = "", radioKategori="") {
+  async function fetchForum(
+    limit,
+    searchQuery = "",
+    searchByKategori = "",
+    radioKategori = ""
+  ) {
     setIsLoading(true);
-    const user =  await getUser()
-    const role = user?.user_metadata?.role || 'pengguna'
-    const userIdField = role === 'apoteker' ? 'id_apoteker' : 'id_pengguna';
+    const user = await getUser();
+    const role = user?.user_metadata?.role || "pengguna";
+    const userIdField = role === "apoteker" ? "id_apoteker" : "id_pengguna";
     const supabase = createClient();
     try {
       let supabaseQuery = supabase
         .from("diskusi")
-        .select(`id, created_at, judul, deskripsi, penulis, kategori, jml_komentar, ${userIdField}(picture, nama, role)`)
+        .select(
+          `id, created_at, judul, deskripsi, penulis, kategori, jml_komentar, ${userIdField}(picture, nama, role)`
+        )
         .order("created_at", { ascending: false })
         .range(0, limit);
 
@@ -31,7 +42,10 @@ export default function ForumItem({ searchQuery, searchByKategori, radioKategori
       }
 
       if (searchByKategori) {
-        supabaseQuery = supabaseQuery.ilike("kategori", `%${searchByKategori}%`);
+        supabaseQuery = supabaseQuery.ilike(
+          "kategori",
+          `%${searchByKategori}%`
+        );
       }
       if (radioKategori) {
         supabaseQuery = supabaseQuery.ilike("kategori", `%${radioKategori}%`);
@@ -55,7 +69,9 @@ export default function ForumItem({ searchQuery, searchByKategori, radioKategori
   }
 
   useEffect(() => {
+    const controller = new AbortController();
     fetchForum(loadMore, searchQuery, searchByKategori, radioKategori);
+    return () => controller.abort();
   }, [searchQuery, searchByKategori, radioKategori]);
 
   const TimeAgo = ({ date }) => {
@@ -83,60 +99,81 @@ export default function ForumItem({ searchQuery, searchByKategori, radioKategori
 
   return (
     <>
-    {forum.length>0 ? (
-      <>
-        {forum?.map((forum) => {
-        const encodedTitle = encodeURIComponent(forum?.judul).toLowerCase();
-        return (
-          <Link
-            key={forum?.id}
-            href={`/forum-kesehatan/${encodedTitle}?id=${forum?.id}`}
-            className="flex p-4 flex-col gap-2 bg-white rounded-lg justify-start items-start sm:items-start shadow-sm w-full"
-          >
-            <User
-              name={forum?.id_pengguna?.nama || forum?.id_apoteker?.nama}
-              description={forum?.id_pengguna?.role || forum?.id_apoteker?.role || 'pengguna'}
-              avatarProps={{
-                src: `${forum?.id_pengguna?.picture || forum?.id_apoteker?.picture || 'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI='}`,
-                size: "sm",
-              }}
-            />
-            <div className="w-full flex flex-col gap-1">
-              <p className="text-sm sm:text-lg font-semibold sm:mb-0">
-                {truncateText(forum?.judul, 50)}
-              </p>
-              <p className="sm:block text-sm mb-1 hidden">
-                {truncateText(forum?.deskripsi, 200)}
-              </p>
-              <div className="flex justify-between mt-4">
-                <div className="flex gap-1 ">
-                  <MessageCircleMore
-                    className="text-slate-600 opacity-75"
-                    size={15}
+      {forum.length > 0 ? (
+        <>
+          {forum?.map((forum) => {
+            const encodedTitle = encodeURIComponent(forum?.judul).toLowerCase();
+            return (
+              <Link
+                key={forum?.id}
+                href={`/forum-kesehatan/${encodedTitle}?id=${forum?.id}`}
+                className="flex p-4 flex-col gap-2 bg-white rounded-lg justify-start items-start sm:items-start shadow-sm w-full"
+              >
+                <div className="w-full flex justify-between">
+                  <User
+                    name={forum?.id_pengguna?.nama || forum?.id_apoteker?.nama}
+                    description={
+                      forum?.id_pengguna?.role ||
+                      forum?.id_apoteker?.role ||
+                      "pengguna"
+                    }
+                    avatarProps={{
+                      src: `${
+                        forum?.id_pengguna?.picture ||
+                        forum?.id_apoteker?.picture ||
+                        "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
+                      }`,
+                      size: "sm",
+                    }}
                   />
-                  <p className="text-xs opacity-75">{forum?.jml_komentar}</p>
+                  <Chip size="sm" color="default">
+                    {forum?.kategori}
+                  </Chip>
                 </div>
-                <p className="text-[0.65rem] font-semibold opacity-55 px-2">
-                  <TimeAgo date={forum?.created_at} />
-                </p>
-              </div>
-            </div>
-          </Link>
-        );
-      })}
-      <Button
-        isLoading={isLoading}
-        onPress={handleMore}
-        size="sm"
-        className="mt-4"
-        color="danger"
-        variant="ghost"
-      >
-        Load More
-      </Button>
-      </>
-    ): (<div className="flex min-h-screen justify-center items-center pb-48 sm:pb-0">Ooppss Data tidak ditemukan</div>)}
-      
+                <div className="w-full flex flex-col gap-1">
+                  <p className="text-sm sm:text-lg font-semibold sm:mb-0">
+                    {truncateText(forum?.judul, 50)}
+                  </p>
+                  <p className="sm:block text-sm mb-1 hidden">
+                    {truncateText(forum?.deskripsi, 200)}
+                  </p>
+                  <div className="flex justify-between mt-4">
+                    <div className="flex gap-8">
+                      
+                    <p className="text-[0.65rem] font-semibold opacity-55 ">
+                      <TimeAgo date={forum?.created_at} />
+                    </p>
+                    </div>
+                    <div className="flex gap-1 justify-center items-center">
+                        <MessageCircleMore
+                          className="text-slate-600 opacity-75"
+                          size={15}
+                        />
+                        <p className="text-xs opacity-75">
+                          {forum?.jml_komentar} komentar
+                        </p>
+                      </div>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+          <Button
+            isLoading={isLoading}
+            onPress={handleMore}
+            size="sm"
+            className="mt-4"
+            color="danger"
+            variant="ghost"
+          >
+            Load More
+          </Button>
+        </>
+      ) : (
+        <div className="flex min-h-screen justify-center items-center pb-48 sm:pb-0">
+          Ooppss Data tidak ditemukan
+        </div>
+      )}
     </>
   );
 }
