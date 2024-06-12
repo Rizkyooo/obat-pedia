@@ -135,7 +135,7 @@ export default function ForumItem({ searchQuery, searchByKategori, radioKategori
         Load More
       </Button>
       </>
-    ): (<div>Ooppss Data tidak ditemukan</div>)}
+    ): (<div className="flex min-h-screen justify-center items-center pb-48 sm:pb-0">Ooppss Data tidak ditemukan</div>)}
       
     </>
   );
