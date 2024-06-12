@@ -95,7 +95,7 @@ export default function ForumItem({ searchQuery, searchByKategori, radioKategori
           >
             <User
               name={forum?.id_pengguna?.nama || forum?.id_apoteker?.nama}
-              description= {`${forum?.id_pengguna !==null ? 'pengguna':'apoteker'}`}
+              description={forum?.id_pengguna?.role || forum?.id_apoteker?.role || 'pengguna'}
               avatarProps={{
                 src: `${forum?.id_pengguna?.picture || forum?.id_apoteker?.picture || 'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI='}`,
                 size: "sm",
