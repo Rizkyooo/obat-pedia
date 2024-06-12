@@ -37,6 +37,7 @@ export default function ForumKategori({checkUser}) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("");
+  const [selected, setSelected] = useState("");
   const selectedValue = useMemo(
     () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
     [selectedKeys]
@@ -46,11 +47,14 @@ export default function ForumKategori({checkUser}) {
 
   async function addNewForum(){
     setIsLoading(true);
+    const user =  await getUser()
+    const role = user?.user_metadata?.role || 'pengguna'
+    const userIdField = role === 'apoteker' ? 'id_apoteker' : 'id_pengguna';
     const supabase = createClient();
     try {
       const { error } = await supabase
         .from("diskusi")
-        .insert({judul: judul, kategori: selectedValue, penulis: user?.nama, deskripsi: deskripsi });
+        .insert({judul: judul, kategori: selectedValue, deskripsi: deskripsi , [userIdField]: user?.id},);
       if (error) {
         console.log(error);
         setIsLoading(false);
@@ -164,7 +168,7 @@ export default function ForumKategori({checkUser}) {
             </Button>
           </div>
 
-          <RadioGroup className="mt-4">
+          <RadioGroup value={selected} onValueChange={setSelected} className="mt-4">
             {kategori.length > 0 && kategori.map((item) => (
               <Radio key={item.id} value={item.nama}>{item.nama}</Radio>
             ))}
@@ -235,7 +239,7 @@ export default function ForumKategori({checkUser}) {
         </ModalContent>
       </Modal>
       <div className="flex flex-col justify-start items-center gap-2 sm:w-4/6">
-        <ForumItem searchQuery={searchQuery} searchByKategori={selectedValue} />
+        <ForumItem searchQuery={searchQuery} radioKategori={selected} searchByKategori={selectedValue} />
       </div>
       <ToastContainer />
     </>

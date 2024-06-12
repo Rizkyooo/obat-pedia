@@ -28,7 +28,7 @@ export default async function page({ searchParams }) {
   const forum = await fetchForum();
   console.log(forum);
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen sm:px-16">
         <div className="flex flex-col gap-2">
         <DetailForum id={forum?.id} date={formatDistanceToNow(new Date(forum?.created_at), { addSuffix: true, locale: localeID })} jml_komentar={forum?.jml_komentar} penulis={forum?.penulis} judul={forum?.judul} deskripsi={forum?.deskripsi} image={"/images/obat-icon.svg"}/>
         </div>

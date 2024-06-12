@@ -7,6 +7,8 @@ import { Button } from "@nextui-org/react";
 
 export default async function Forum(){
   const user  = await getUser();
+  console.log(user)
+  const role = user?.user_metadata?.role || 'pengguna';
 
     return (
     <main className="">

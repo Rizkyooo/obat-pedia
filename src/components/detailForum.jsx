@@ -16,12 +16,6 @@ export default function DetailForum({ image, judul, deskripsi, penulis, jml_kome
           size: "sm",
         }}
       />
-        {/* <div className="flex flex-col justify-center items-start ">
-          <p className="text-xs ">{penulis}</p>
-          <p className="text-[0.6rem] font-semibold opacity-75">
-            {date}
-          </p>
-        </div> */}
       </div>
 
       <div className="w-full ">

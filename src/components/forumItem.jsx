@@ -6,19 +6,23 @@ import { formatDistanceToNow } from "date-fns";
 import { id as localeID } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { getUser } from "@/libs/actions";
 
-export default function ForumItem({ searchQuery, searchByKategori }) {
+export default function ForumItem({ searchQuery, searchByKategori, radioKategori }) {
   const [forum, setForum] = useState([]);
   const [loadMore, setLoadMore] = useState(14);
   const [isLoading, setIsLoading] = useState(false);
 
-  async function fetchForum(limit, searchQuery = "", searchByKategori = "") {
+  async function fetchForum(limit, searchQuery = "", searchByKategori = "", radioKategori="") {
     setIsLoading(true);
+    const user =  await getUser()
+    const role = user?.user_metadata?.role || 'pengguna'
+    const userIdField = role === 'apoteker' ? 'id_apoteker' : 'id_pengguna';
     const supabase = createClient();
     try {
       let supabaseQuery = supabase
         .from("diskusi")
-        .select("*")
+        .select(`id, created_at, judul, deskripsi, penulis, kategori, jml_komentar, ${userIdField}(picture, nama, role)`)
         .order("created_at", { ascending: false })
         .range(0, limit);
 
@@ -28,6 +32,9 @@ export default function ForumItem({ searchQuery, searchByKategori }) {
 
       if (searchByKategori) {
         supabaseQuery = supabaseQuery.ilike("kategori", `%${searchByKategori}%`);
+      }
+      if (radioKategori) {
+        supabaseQuery = supabaseQuery.ilike("kategori", `%${radioKategori}%`);
       }
 
       let { data, error } = await supabaseQuery;
@@ -48,8 +55,8 @@ export default function ForumItem({ searchQuery, searchByKategori }) {
   }
 
   useEffect(() => {
-    fetchForum(loadMore, searchQuery, searchByKategori);
-  }, [searchQuery, searchByKategori]);
+    fetchForum(loadMore, searchQuery, searchByKategori, radioKategori);
+  }, [searchQuery, searchByKategori, radioKategori]);
 
   const TimeAgo = ({ date }) => {
     return (
@@ -76,7 +83,9 @@ export default function ForumItem({ searchQuery, searchByKategori }) {
 
   return (
     <>
-      {forum?.map((forum) => {
+    {forum.length>0 ? (
+      <>
+        {forum?.map((forum) => {
         const encodedTitle = encodeURIComponent(forum?.judul).toLowerCase();
         return (
           <Link
@@ -85,10 +94,10 @@ export default function ForumItem({ searchQuery, searchByKategori }) {
             className="flex p-4 flex-col gap-2 bg-white rounded-lg justify-start items-start sm:items-start shadow-sm w-full"
           >
             <User
-              name={forum?.penulis}
-              description="pengguna"
+              name={forum?.id_pengguna?.nama || forum?.id_apoteker?.nama}
+              description={forum?.id_pengguna?.role || forum?.id_apoteker?.role}
               avatarProps={{
-                src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
+                src: `${forum?.id_pengguna?.picture || forum?.id_apoteker?.picture || 'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI='}`,
                 size: "sm",
               }}
             />
@@ -125,6 +134,9 @@ export default function ForumItem({ searchQuery, searchByKategori }) {
       >
         Load More
       </Button>
+      </>
+    ): (<div>Ooppss Data tidak ditemukan</div>)}
+      
     </>
   );
 }
