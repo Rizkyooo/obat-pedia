@@ -126,9 +126,7 @@ export default function ForumItem({
                       size: "sm",
                     }}
                   />
-                  <Chip size="sm" color="default">
-                    {forum?.kategori}
-                  </Chip>
+                 
                 </div>
                 <div className="w-full flex flex-col gap-1">
                   <p className="text-sm sm:text-lg font-semibold sm:mb-0">
@@ -138,12 +136,6 @@ export default function ForumItem({
                     {truncateText(forum?.deskripsi, 200)}
                   </p>
                   <div className="flex justify-between mt-4">
-                    <div className="flex gap-8">
-                      
-                    <p className="text-[0.65rem] font-semibold opacity-55 ">
-                      <TimeAgo date={forum?.created_at} />
-                    </p>
-                    </div>
                     <div className="flex gap-1 justify-center items-center">
                         <MessageCircleMore
                           className="text-slate-600 opacity-75"
@@ -153,6 +145,9 @@ export default function ForumItem({
                           {forum?.jml_komentar} komentar
                         </p>
                       </div>
+                      <p className="text-[0.65rem] font-semibold opacity-55 ">
+                      <TimeAgo date={forum?.created_at} />
+                    </p>
                   </div>
                 </div>
               </Link>
