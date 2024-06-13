@@ -56,12 +56,14 @@ export default function KomentarItem({
         />
         <p className="text-sm">{comment.isi}</p>
         <div className="flex gap-4">
+          {depth < 2 && (
           <p
             onClick={() => setIsOpen(!isOpen)}
             className="text-xs font-semibold cursor-pointer w-fit py-2"
           >
             Reply
           </p>
+          )}
           {replies?.length>0 &&(
             <p
             onClick={() => setShowReplies(!showReplies)}

@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "../utils/supabase/client";
 import { getUser } from "@/libs/actions";
 import { usePathname } from "next/navigation";
+import { MessageCircleMore } from "lucide-react";
 
 export default function DetailForum({
   image,
@@ -77,6 +78,10 @@ export default function DetailForum({
           <p className="sm:block text-sm mb-1">{deskripsi}</p>
           <div className="flex justify-between mt-6">
             <div className="flex gap-1">
+            <MessageCircleMore
+                          className="text-slate-600 opacity-75"
+                          size={15}
+                        />
               <p className="text-xs opacity-75">{jml_komentar} Komentar</p>
             </div>
             <p className="text-[0.6rem] sm:text-xs font-semibold opacity-65">
