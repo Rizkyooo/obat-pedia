@@ -18,10 +18,8 @@ export default function KomentarItem({
   const [replies, setReplies] = useState([]);
 
   useEffect(() => {
-    if (showReplies) {
       fetchReplies();
-    }
-  }, [showReplies]);
+  }, []);
 
   const fetchReplies = async () => {
     const supabase = createClient();
@@ -33,10 +31,11 @@ export default function KomentarItem({
     if (error) {
       console.error(error);
     } else {
+      console.log(data);
       setReplies(data);
     }
   };
-
+console.log(replies)
   return (
     <>
       <div
@@ -61,16 +60,18 @@ export default function KomentarItem({
           >
             Reply
           </p>
-          <p
+          {replies?.length>0 &&(
+            <p
             onClick={() => setShowReplies(!showReplies)}
             className="text-xs font-semibold cursor-pointer w-fit py-2"
-          >
-            { replies
-              ? showReplies
+          > 
+                {showReplies
                 ? "Hide Replies"
                 : `Show ${replies.length} Replies`
-              : ""}{" "}
+}
           </p>
+          )}
+          
         </div>
       </div>
       {showReplies && (
