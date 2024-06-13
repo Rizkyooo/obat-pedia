@@ -6,6 +6,7 @@ import KomentarItem from "./komentarItem";
 import { useState, useEffect } from "react";
 import { createClient } from "../utils/supabase/client";
 import { getUser } from "@/libs/actions";
+import { usePathname } from "next/navigation";
 
 export default function DetailForum({
   image,
@@ -31,6 +32,7 @@ export default function DetailForum({
   // parent_id: null,
   // isi: 'test',
   // id_diskusi: 
+  const pathName = usePathname()
 
   const fetchComments = async () => {
     const user = await getUser();
@@ -39,9 +41,10 @@ export default function DetailForum({
     const supabase = createClient();
     const { data, error } = await supabase
       .from("komentar_diskusi")
-      .select(`id, created_at, isi, ${userIdField}(picture, nama, role), parent_id, jml_like, id_diskusi`)
+      .select(`id, created_at, isi, ${userIdField}(picture, nama, role), parent_id, jml_like, id_diskusi(id, judul)`)
       .eq("id_diskusi", id_diskusi)
-      .is("parent_id", null);
+      .is("parent_id", null)
+      .order("created_at", { ascending: false });
 
     if (error) {
       console.error(error);
@@ -82,10 +85,10 @@ export default function DetailForum({
           </div>
         </div>
       </div>
-      <Komentar id_diskusi={id_diskusi} onSubmit={fetchComments} />
+      <Komentar route={pathName} id_diskusi={id_diskusi} onSubmit={fetchComments} />
       <h3 className="text-md sm:text-lg font-semibold">Komentar</h3>
       {comments.map((comment) => (
-        <KomentarItem key={comment.id} penulis = {comment.id_pengguna?.nama || comment.id_apoteker?.nama} picture = {comment.id_pengguna?.picture || comment.id_apoteker?.picture} role = {comment.id_pengguna?.role || comment.id_apoteker?.role} comment={comment} id_diskusi={id_diskusi} />
+        <KomentarItem route={pathName} key={comment.id} penulis = {comment.id_pengguna?.nama || comment.id_apoteker?.nama} picture = {comment.id_pengguna?.picture || comment.id_apoteker?.picture} role = {comment.id_pengguna?.role || comment.id_apoteker?.role} comment={comment} id_diskusi={id_diskusi} />
       ))}
     </>
   );

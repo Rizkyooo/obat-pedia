@@ -68,6 +68,8 @@ export default function ForumItem({
     }
   }
 
+  
+
   useEffect(() => {
     const controller = new AbortController();
     fetchForum(loadMore, searchQuery, searchByKategori, radioKategori);

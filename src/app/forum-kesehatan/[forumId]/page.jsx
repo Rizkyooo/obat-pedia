@@ -32,7 +32,7 @@ export default async function Page({ searchParams }) {
 
   return (
     <main className="min-h-screen sm:px-16">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 pb-40">
         <DetailForum
           id_diskusi={forum?.id}
           kategori={forum?.kategori}
