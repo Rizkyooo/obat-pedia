@@ -65,7 +65,7 @@ export default function KomentarItem({
             onClick={() => setShowReplies(!showReplies)}
             className="text-xs font-semibold cursor-pointer w-fit py-2"
           >
-            {replies && replies.length > 0
+            { replies
               ? showReplies
                 ? "Hide Replies"
                 : `Show ${replies.length} Replies`
