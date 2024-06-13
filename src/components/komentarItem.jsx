@@ -3,6 +3,7 @@ import { User, Button, Textarea } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import Komentar from "./komentar";
 import { createClient } from "@/utils/supabase/client";
+import { getUser } from "@/libs/actions";
 
 export default function KomentarItem({
   comment,
@@ -22,20 +23,21 @@ export default function KomentarItem({
   }, []);
 
   const fetchReplies = async () => {
+    const user = await getUser();
+    const role = user?.user_metadata?.role || "pengguna";
+    const userIdField = role === "apoteker" ? "id_apoteker" : "id_pengguna";
     const supabase = createClient();
     const { data, error } = await supabase
       .from("komentar_diskusi")
-      .select("*")
+      .select(`id, created_at, isi, ${userIdField}(picture, nama, role), parent_id, jml_like, id_diskusi(id, judul)`)
       .eq("parent_id", comment.id);
 
     if (error) {
       console.error(error);
     } else {
-      console.log(data);
       setReplies(data);
     }
   };
-console.log(replies)
   return (
     <>
       <div
@@ -77,7 +79,7 @@ console.log(replies)
       {showReplies && (
         <div className="flex flex-col gap-2 pl-4 ">
           {replies.map((reply) => (
-            <KomentarItem key={reply.id} comment={reply} depth={depth + 1} />
+            <KomentarItem key={reply.id} comment={reply} depth={depth + 1} penulis={reply?.id_pengguna?.nama || reply?.id_apoteker?.nama} role={reply?.id_pengguna?.role || reply?.id_apoteker?.role} picture={reply?.id_pengguna?.picture || reply?.id_apoteker?.picture}/>
           ))}
           
         </div>
