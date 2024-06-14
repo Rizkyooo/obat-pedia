@@ -49,7 +49,7 @@ export default function Komentar({ parent_id, onSubmit, id_diskusi, checkUser })
     setIsLoading(true);
     const user = await getUser();
     if(!user){
-      router.push('/login');
+      return router.push('/login');
     }
     const role = user?.user_metadata?.role || 'pengguna';
     const userIdField = role === 'apoteker' ? 'id_apoteker' : 'id_pengguna';
