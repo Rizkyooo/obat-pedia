@@ -1,6 +1,5 @@
 "use client";
 import { getUser } from "@/libs/actions";
-import { getUserFromDatabase } from "@/services/getUserFromDatabase";
 import { createClient } from "@/utils/supabase/client";
 import {
   Button,
@@ -33,7 +32,6 @@ export default function ForumKategori({checkUser}) {
   const [judul, setJudul] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
   const [kategori, setKategori] = useState([]);
-  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("");
@@ -95,18 +93,69 @@ export default function ForumKategori({checkUser}) {
       console.log(error);
     }
   }
+  const [forum, setForum] = useState([]);
+  const [loadMore, setLoadMore] = useState(14);
+  
+  async function fetchForum(
+    limit,
+    searchQuery = "",
+    searchByKategori = "",
+    radioKategori = ""
+  ) {
+    setIsLoading(true);
+    const user = await getUser();
+    const role = user?.user_metadata?.role || "pengguna";
+    const userIdField = role === "apoteker" ? "id_apoteker" : "id_pengguna";
+    const supabase = createClient();
+    try {
+      let supabaseQuery = supabase
+        .from("diskusi")
+        .select(
+          `id, created_at, judul, deskripsi, penulis, kategori, jml_komentar, ${userIdField}(picture, nama, role)`
+        )
+        .order("created_at", { ascending: false })
+        .range(0, limit);
 
-  useEffect(() => {
-    async function getUsers() {
-      const role = await getUser();
-      const usera = await getUserFromDatabase(role?.user_metadata?.role || 'pengguna');
-      setUser(usera);
-      console.log(usera?.nama);
-    }  
+      if (searchQuery) {
+        supabaseQuery = supabaseQuery.ilike("judul", `%${searchQuery}%`);
+      }
+
+      if (searchByKategori) {
+        supabaseQuery = supabaseQuery.ilike(
+          "kategori",
+          `%${searchByKategori}%`
+        );
+      }
+      if (radioKategori) {
+        supabaseQuery = supabaseQuery.ilike("kategori", `%${radioKategori}%`);
+      }
+
+      let { data, error } = await supabaseQuery;
+
+      if (error) {
+        console.error(error);
+      }
+
+      if (data) {
+        console.log(data);
+        setForum(data);
+        setIsLoading(false);
+        return data;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleMore = () => {
+    setLoadMore(loadMore + 14);
+    fetchForum(loadMore + 14, searchQuery, selectedValue, selected);
+  };
+
+  useEffect(() => {  
     fetchKategori();
-    getUsers();
-    console.log(user)
-  }, []);
+    fetchForum(loadMore, searchQuery, selectedValue, selected);
+  }, [loadMore, searchQuery, selectedValue, selected]);
 
   return (
     <>
@@ -239,7 +288,7 @@ export default function ForumKategori({checkUser}) {
         </ModalContent>
       </Modal>
       <div className="flex flex-col justify-start items-center gap-2 sm:w-4/6">
-        <ForumItem searchQuery={searchQuery} radioKategori={selected} searchByKategori={selectedValue} />
+        <ForumItem handleMore={handleMore} isLoading={isLoading} forum={forum} />
       </div>
       <ToastContainer />
     </>

@@ -25,14 +25,6 @@ export default function DetailForum({
     fetchComments();
   }, []);
 
-  // // id: '8a4a4969-8353-4e54-b22a-bb251971040d',
-  // created_at: '2024-06-13T07:42:32.772599+00:00',
-  // id_apoteker: null,
-  // id_pengguna: '1328a25b-e42b-4f3e-983e-8c6f0df71b9f',
-  // jml_like: null,
-  // parent_id: null,
-  // isi: 'test',
-  // id_diskusi: 
   const pathName = usePathname()
 
   const fetchComments = async () => {
@@ -90,7 +82,7 @@ export default function DetailForum({
           </div>
         </div>
       </div>
-      <Komentar route={pathName} id_diskusi={id_diskusi} onSubmit={fetchComments} />
+      <Komentar checkUser={false} route={pathName} id_diskusi={id_diskusi} onSubmit={fetchComments} />
       <h3 className="text-md sm:text-lg font-semibold">Komentar</h3>
       {comments.map((comment) => (
         <KomentarItem route={pathName} key={comment.id} penulis = {comment.id_pengguna?.nama || comment.id_apoteker?.nama} picture = {comment.id_pengguna?.picture || comment.id_apoteker?.picture} role = {comment.id_pengguna?.role || comment.id_apoteker?.role} comment={comment} id_diskusi={id_diskusi} />

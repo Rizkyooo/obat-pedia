@@ -3,12 +3,12 @@ import { getUser } from "@/libs/actions";
 import { createClient } from "@/utils/supabase/client";
 import { Textarea, Button } from "@nextui-org/react";
 import { revalidatePath } from "next/cache";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Komentar({ parent_id, onSubmit, id_diskusi, route }) {
+export default function Komentar({ parent_id, onSubmit, id_diskusi, checkUser }) {
   const [komentar, setKomentar] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const pathName = usePathname()
@@ -43,10 +43,14 @@ export default function Komentar({ parent_id, onSubmit, id_diskusi, route }) {
       console.error('Error updating comment count:', error);
     }
   }
+  const router = useRouter();
 
   async function hanldeSubmit() {
     setIsLoading(true);
     const user = await getUser();
+    if(!user){
+      router.push('/login');
+    }
     const role = user?.user_metadata?.role || 'pengguna';
     const userIdField = role === 'apoteker' ? 'id_apoteker' : 'id_pengguna';
     const supabase = createClient();
@@ -94,7 +98,7 @@ export default function Komentar({ parent_id, onSubmit, id_diskusi, route }) {
       </div>
 
       <div className="flex justify-end rounded-xl mt-1">
-        <Button onPress={hanldeSubmit} isLoading={isLoading} isDisabled={!komentar} className="bg-[#EE0037] text-white" size="sm">
+        <Button  onPress={hanldeSubmit} isLoading={isLoading} isDisabled={!komentar} className="bg-[#EE0037] text-white" size="sm">
           Submit
         </Button>
       </div>

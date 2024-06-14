@@ -1,80 +1,14 @@
-"use client";
-import { Button, Chip, User } from "@nextui-org/react";
+import { Button, User } from "@nextui-org/react";
 import Link from "next/link";
 import { MessageCircleMore } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { id as localeID } from "date-fns/locale";
-import { useEffect, useState } from "react";
-import { createClient } from "@/utils/supabase/client";
-import { getUser } from "@/libs/actions";
 
 export default function ForumItem({
-  searchQuery,
-  searchByKategori,
-  radioKategori,
+  handleMore,
+  forum,
+  isLoading
 }) {
-  const [forum, setForum] = useState([]);
-  const [loadMore, setLoadMore] = useState(14);
-  const [isLoading, setIsLoading] = useState(false);
-
-  async function fetchForum(
-    limit,
-    searchQuery = "",
-    searchByKategori = "",
-    radioKategori = ""
-  ) {
-    setIsLoading(true);
-    const user = await getUser();
-    const role = user?.user_metadata?.role || "pengguna";
-    const userIdField = role === "apoteker" ? "id_apoteker" : "id_pengguna";
-    const supabase = createClient();
-    try {
-      let supabaseQuery = supabase
-        .from("diskusi")
-        .select(
-          `id, created_at, judul, deskripsi, penulis, kategori, jml_komentar, ${userIdField}(picture, nama, role)`
-        )
-        .order("created_at", { ascending: false })
-        .range(0, limit);
-
-      if (searchQuery) {
-        supabaseQuery = supabaseQuery.ilike("judul", `%${searchQuery}%`);
-      }
-
-      if (searchByKategori) {
-        supabaseQuery = supabaseQuery.ilike(
-          "kategori",
-          `%${searchByKategori}%`
-        );
-      }
-      if (radioKategori) {
-        supabaseQuery = supabaseQuery.ilike("kategori", `%${radioKategori}%`);
-      }
-
-      let { data, error } = await supabaseQuery;
-
-      if (error) {
-        console.error(error);
-      }
-
-      if (data) {
-        console.log(data);
-        setForum(data);
-        setIsLoading(false);
-        return data;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  
-
-  useEffect(() => {
-    const controller = new AbortController();
-    fetchForum(loadMore, searchQuery, searchByKategori, radioKategori);
-    return () => controller.abort();
-  }, [searchQuery, searchByKategori, radioKategori]);
 
   const TimeAgo = ({ date }) => {
     return (
@@ -86,12 +20,6 @@ export default function ForumItem({
       </span>
     );
   };
-
-  const handleMore = () => {
-    setLoadMore(loadMore + 14);
-    fetchForum(loadMore + 14);
-  };
-
   const truncateText = (text, maxLength) => {
     if (text?.length > maxLength) {
       return text?.slice(0, maxLength) + " ...";
@@ -101,7 +29,7 @@ export default function ForumItem({
 
   return (
     <>
-      {forum.length > 0 ? (
+      {forum ? (
         <>
           {forum?.map((forum) => {
             const encodedTitle = encodeURIComponent(forum?.judul).toLowerCase();

@@ -1,10 +1,7 @@
-import ForumItem from "@/components/forumItem";
 import ForumKategori from "@/components/forumKategori";
 import { getUser } from "@/libs/actions";
-import { createClient } from "@/utils/supabase/client";
-import { Button } from "@nextui-org/react";
-// import { useEffect, useState } from "react";
 
+  
 export default async function Forum(){
   const user  = await getUser();
   console.log(user)

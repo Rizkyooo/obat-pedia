@@ -1,5 +1,5 @@
 "use client";
-import { User, Button, Textarea } from "@nextui-org/react";
+import { User } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import Komentar from "./komentar";
 import { createClient } from "@/utils/supabase/client";
@@ -18,26 +18,27 @@ export default function KomentarItem({
   const [showReplies, setShowReplies] = useState(false);
   const [replies, setReplies] = useState([]);
 
-  useEffect(() => {
-      fetchReplies();
-  }, []);
-
+  
   const fetchReplies = async () => {
     const user = await getUser();
     const role = user?.user_metadata?.role || "pengguna";
     const userIdField = role === "apoteker" ? "id_apoteker" : "id_pengguna";
     const supabase = createClient();
     const { data, error } = await supabase
-      .from("komentar_diskusi")
-      .select(`id, created_at, isi, ${userIdField}(picture, nama, role), parent_id, jml_like, id_diskusi(id, judul)`)
+    .from("komentar_diskusi")
+    .select(`id, created_at, isi, ${userIdField}(picture, nama, role), parent_id, jml_like, id_diskusi(id, judul)`)
       .eq("parent_id", comment.id);
 
     if (error) {
       console.error(error);
-    } else {
+    } 
+    if(data){
       setReplies(data);
     }
   };
+  useEffect(() => {
+      fetchReplies();
+  }, []);
   return (
     <>
       <div
@@ -87,7 +88,7 @@ export default function KomentarItem({
         </div>
       )}
       {isOpen && (
-            <Komentar
+            <Komentar checkUser={false}
             route={route}
               id_diskusi={id_diskusi}
               parent_id={comment?.id}
