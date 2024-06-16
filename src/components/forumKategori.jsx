@@ -23,12 +23,13 @@ import {
 import { ListFilter, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import ForumItem from "./forumItem";
+import toast, { Toaster } from 'react-hot-toast';
+import { revalidatePath } from "next/cache";
 
 export default function ForumKategori({checkUser}) {
   const [selectedKeys, setSelectedKeys] = useState(new Set([""]));
+  const [selectedInsertKeys, setSelectedInsertKeys] = useState(new Set([""]));
   const [judul, setJudul] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
   const [kategori, setKategori] = useState([]);
@@ -39,6 +40,11 @@ export default function ForumKategori({checkUser}) {
   const selectedValue = useMemo(
     () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
     [selectedKeys]
+  );
+
+  const selectedInsertValue = useMemo(
+    () => Array.from(selectedInsertKeys).join(", ").replaceAll("_", " "),
+    [selectedInsertKeys]
   );
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   console.log(selectedValue);
@@ -52,18 +58,18 @@ export default function ForumKategori({checkUser}) {
     try {
       const { error } = await supabase
         .from("diskusi")
-        .insert({judul: judul, kategori: selectedValue, deskripsi: deskripsi , [userIdField]: user?.id},);
+        .insert({judul: judul, kategori: selectedInsertValue, deskripsi: deskripsi , [userIdField]: user?.id},);
       if (error) {
         console.log(error);
         setIsLoading(false);
         toast.error("Gagal Membuat Diskusi Baru", {
           position: "top-center",
-          autoClose: 2000,
+          duration: 2000,
         })
       } else {
         toast.success("Berhasil Membuat Diskusi Baru", {
           position: "top-center",
-          autoClose: 1500,
+          duration: 1500,
         })
         setIsLoading(false);
         onOpenChange(false);
@@ -264,8 +270,8 @@ export default function ForumKategori({checkUser}) {
                   variant="bordered"
                   label="Pilih Topik"
                   selectionMode="single"
-                  selectedKeys={selectedKeys}
-                  onSelectionChange={setSelectedKeys}
+                  selectedKeys={selectedInsertKeys}
+                  onSelectionChange={setSelectedInsertKeys}
                   placeholder="Pilih Topik"
                 >
                   {kategori.length > 0 && (
@@ -290,7 +296,7 @@ export default function ForumKategori({checkUser}) {
       <div className="flex flex-col justify-start items-center gap-2 sm:w-4/6">
         <ForumItem handleMore={handleMore} isLoading={isLoading} forum={forum} />
       </div>
-      <ToastContainer />
+      {/* <Toaster/> */}
     </>
   );
 }

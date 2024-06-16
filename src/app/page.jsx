@@ -3,7 +3,6 @@ import NavHero from "@/components/nav-hero";
 import ListArtikel from "@/components/listArtikel";
 import { getUser } from "@/libs/actions";
 import { redirect } from "next/navigation";
-import { ToastContainer } from "react-toastify";
 export default async function  Home() {
   const user = await getUser();
   const role = user?.user_metadata?.role
@@ -30,7 +29,6 @@ if (role === 'admin') {
       <div className=" mt-28 sm:mt-0 sm:p-9 container mx-auto px-6 mb-20">
       <ListArtikel></ListArtikel>
       </div>
-      <ToastContainer />
     </main>
     </>
   );

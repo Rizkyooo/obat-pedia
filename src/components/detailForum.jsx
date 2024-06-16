@@ -1,4 +1,3 @@
-// components/detailForum.js
 'use client';
 import { User, Button } from "@nextui-org/react";
 import Komentar from "./komentar";
@@ -20,12 +19,8 @@ export default function DetailForum({
   id_diskusi
 }) {
   const [comments, setComments] = useState([]);
-
-  useEffect(() => {
-    fetchComments();
-  }, []);
-
-  const pathName = usePathname()
+  const [commentCount, setCommentCount] = useState(jml_komentar);
+  const pathName = usePathname();
 
   const fetchComments = async () => {
     const user = await getUser();
@@ -45,6 +40,15 @@ export default function DetailForum({
       setComments(data);
       console.log(data);
     }
+  };
+
+  useEffect(() => {
+    fetchComments();
+  }, []);
+
+  const handleCommentSubmit = () => {
+    fetchComments();
+    setCommentCount(commentCount + 1); // Update the comment count
   };
 
   return (
@@ -70,11 +74,11 @@ export default function DetailForum({
           <p className="sm:block text-sm mb-1">{deskripsi}</p>
           <div className="flex justify-between mt-6">
             <div className="flex gap-1">
-            <MessageCircleMore
-                          className="text-slate-600 opacity-75"
-                          size={15}
-                        />
-              <p className="text-xs opacity-75">{jml_komentar} Komentar</p>
+              <MessageCircleMore
+                className="text-slate-600 opacity-75"
+                size={15}
+              />
+              <p className="text-xs opacity-75">{commentCount} Komentar</p>
             </div>
             <p className="text-[0.6rem] sm:text-xs font-semibold opacity-65">
               {date}
@@ -82,10 +86,10 @@ export default function DetailForum({
           </div>
         </div>
       </div>
-      <Komentar checkUser={false} route={pathName} id_diskusi={id_diskusi} onSubmit={fetchComments} />
+      <Komentar checkUser={false} route={pathName} id_diskusi={id_diskusi} onSubmit={handleCommentSubmit} />
       <h3 className="text-md sm:text-lg font-semibold">Komentar</h3>
       {comments.map((comment) => (
-        <KomentarItem route={pathName} key={comment.id} penulis = {comment.id_pengguna?.nama || comment.id_apoteker?.nama} picture = {comment.id_pengguna?.picture || comment.id_apoteker?.picture} role = {comment.id_pengguna?.role || comment.id_apoteker?.role} comment={comment} id_diskusi={id_diskusi} />
+        <KomentarItem route={pathName} key={comment.id} penulis={comment.id_pengguna?.nama || comment.id_apoteker?.nama} picture={comment.id_pengguna?.picture || comment.id_apoteker?.picture} role={comment.id_pengguna?.role || comment.id_apoteker?.role} comment={comment} id_diskusi={id_diskusi} />
       ))}
     </>
   );

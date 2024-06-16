@@ -1,4 +1,3 @@
-// pages/forum/[id].js
 import DetailForum from "@/components/detailForum";
 import { createClient } from "@/utils/supabase/client";
 import { formatDistanceToNow } from "date-fns";

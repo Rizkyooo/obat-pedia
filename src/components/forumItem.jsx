@@ -4,7 +4,7 @@ import { MessageCircleMore } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { id as localeID } from "date-fns/locale";
 
-export default function ForumItem({
+export  default function ForumItem({
   handleMore,
   forum,
   isLoading
@@ -27,11 +27,12 @@ export default function ForumItem({
     return text;
   };
 
+
   return (
     <>
       {forum ? (
         <>
-          {forum?.map((forum) => {
+          { forum?.map((forum) => {
             const encodedTitle = encodeURIComponent(forum?.judul).toLowerCase();
             return (
               <Link

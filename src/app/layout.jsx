@@ -7,6 +7,7 @@ import Footer from "@/components/footer";
 const inter = Inter({ subsets: ["latin"] });
 import { getUserFromDatabase } from "@/services/getUserFromDatabase";
 import { getUser } from "@/libs/actions";
+import toast, {Toaster} from "react-hot-toast";
 export const metadata = {
   title: "obat pedia",
   description: "website edukasi obat-obatan terlengkap",
@@ -29,6 +30,7 @@ export default async function RootLayout({ children }) {
           {children}
           <Footer />
         </Providers>
+        <Toaster/>
       </body>
     </html>
   );
