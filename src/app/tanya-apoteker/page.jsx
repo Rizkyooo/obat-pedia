@@ -3,7 +3,6 @@ import { getApoteker } from "@/services/getApoteker"
 
 export default async function TanyaApoteker(){
     const apoteker = await getApoteker();
-    console.log(apoteker)
     return(
         <main className="min-h-screen mx-auto ">
             <div className="pt-4  w-full pb-6 px-6">

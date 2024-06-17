@@ -1,5 +1,7 @@
 "use client";
 import {
+  Accordion,
+  AccordionItem,
   Button,
   Image,
   Input,
@@ -16,11 +18,20 @@ import { useState } from "react";
 export default function ApotekerItem({ apoteker }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedApoteker, setSelectedApoteker] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleOpenModal = (apotekerItem) => {
     setSelectedApoteker(apotekerItem);
     onOpen();
   };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredApoteker = apoteker.filter((apotekerItem) =>
+    apotekerItem.nama.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   console.log(apoteker);
   return (
@@ -30,9 +41,11 @@ export default function ApotekerItem({ apoteker }) {
         className="bg-white rounded-full"
         placeholder="cari apoteker"
         type="search"
+        value={searchQuery}
+        onChange={handleSearchChange}
       />
       <div className="bg-gray-100 mt-2 rounded-md p-2 grid sm:grid-cols-2 gap-2">
-        {apoteker?.map((apotekerItem) => (
+        {filteredApoteker?.map((apotekerItem) => (
           <div
             key={apotekerItem.id}
             className="bg-white shadow-sm rounded-md p-4 flex justify-between"
@@ -66,6 +79,11 @@ export default function ApotekerItem({ apoteker }) {
           </div>
         ))}
       </div>
+        {filteredApoteker.length === 0 && (
+          <div className="flex justify-center items-center min-h-[200px]">
+            <p>Oppss Apoteker tidak ditemukan</p>
+          </div>
+        )}
 
       {selectedApoteker && (
         <Modal
@@ -88,33 +106,55 @@ export default function ApotekerItem({ apoteker }) {
                     </div>
 
                     <div className="flex flex-col gap-1">
+                      <div className="text-sm flex flex-col gap-1">
+                        <div className="shadow-sm min-w-full p-2 rounded-md bg-white flex flex-col justify-start items-start">
+                          <p className="font-semibold">Nama Lengkap</p>
+                          <p>Apt. {selectedApoteker?.nama}</p>
+                        </div>
+                      </div>
+                      <div className="text-sm flex flex-col gap-1">
+                        <div className="shadow-sm min-w-full p-2 rounded-md bg-white flex flex-col justify-start items-start">
+                          <p className="font-semibold">Nomor STR</p>
+                          <p>{selectedApoteker?.no_str}</p>
+                        </div>
+                      </div>
+                      <div className="text-sm flex flex-col gap-1">
+                        <div className="shadow-sm min-w-full p-2 rounded-md bg-white flex flex-col justify-start items-start">
+                          <p className="font-semibold">Tempat Praktik</p>
+                          <p>{selectedApoteker?.status_keanggotaan}</p>
+                        </div>
+                      </div>
 
-                    <div className="text-sm flex flex-col gap-1">
-                      <div className="shadow-sm min-w-full p-2 rounded-md bg-white flex flex-col justify-start items-start">
-                        <p className="font-semibold">Nama Lengkap</p>
-                        <p>{selectedApoteker?.nama}</p>
-                      </div>
-                    </div>
-                    <div className="text-sm flex flex-col gap-1">
-                      <div className="shadow-sm min-w-full p-2 rounded-md bg-white flex flex-col justify-start items-start">
-                        <p className="font-semibold">Nomor STR</p>
-                        <p>{selectedApoteker?.no_str}</p>
-                      </div>
-                    </div>
-                    <div className="text-sm flex flex-col gap-1">
-                      <div className="shadow-sm min-w-full p-2 rounded-md bg-white flex flex-col justify-start items-start">
-                        <p className="font-semibold">Tempat Praktik</p>
-                        <p>{selectedApoteker?.status_keanggotaan}</p>
-                      </div>
-                    </div>
-                    <div className="text-sm flex flex-col gap-1">
-                      <div className="shadow-sm min-w-full p-2 rounded-md bg-white flex flex-col justify-start items-start">
-                        <p className="font-semibold">Riwayat Pendidikan</p>
-                        <p>{selectedApoteker?.status_keanggotaan}</p>
-                      </div>
-                    </div>
-                    </div>
+                      <Accordion className=" shadow-sm px-2 bg-white rounded-md">
+                        <AccordionItem
+                          classNames={{
+                            title: "font-semibold text-[0.9rem]",
+                            content: "text-sm",
+                          }}
+                          key="1"
+                          aria-label="Pengalaman"
+                          title="Pengalaman"
+                        >
+                          <p>
+                          {selectedApoteker?.pengalaman}
+                          </p>
+                        </AccordionItem>
+                      </Accordion>
 
+                      <Accordion className=" shadow-sm px-2 bg-white rounded-md">
+                        <AccordionItem
+                          classNames={{
+                            title: "font-semibold text-sm",
+                            content: "text-sm",
+                          }}
+                          key="1"
+                          aria-label="Riwayat Pendidikan"
+                          title="Riwayat Pendidikan"
+                        >
+                          <p>{selectedApoteker?.riwayat_pendidikan}</p>
+                        </AccordionItem>
+                      </Accordion>
+                    </div>
                   </div>
                 </ModalBody>
                 <ModalFooter>
@@ -122,7 +162,7 @@ export default function ApotekerItem({ apoteker }) {
                     Batal
                   </Button>
                   <Button size={"sm"} color="danger" onPress={""}>
-                    Chat Sekarang
+                    Mulai Konsultasi
                   </Button>
                 </ModalFooter>
               </>
