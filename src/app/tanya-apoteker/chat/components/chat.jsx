@@ -47,7 +47,7 @@ export default async function Chat({ id }) {
           type="text"
           variant="bordered"
           placeholder="masukkan pesan"
-          size="md"
+          size="lg"
           color="default"
           fullWidth
         />

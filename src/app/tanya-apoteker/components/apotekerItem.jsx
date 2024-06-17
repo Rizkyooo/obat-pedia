@@ -21,6 +21,7 @@ export default function ApotekerItem({ apoteker }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedApoteker, setSelectedApoteker] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleOpenModal = (apotekerItem) => {
@@ -33,11 +34,14 @@ export default function ApotekerItem({ apoteker }) {
   };
 
   const handleStartChat = async () => {
+    setIsLoading(true);
     const user = await getUser();
     if(!user){
-      return router.push('/login');
+      
+      return (router.push('/login')&&setIsLoading(false));
     } else{
-      return router.push('/tanya-apoteker/chat/' + selectedApoteker?.id);
+      return (router.push('/tanya-apoteker/chat/' + selectedApoteker?.id)&&      setIsLoading(false)
+      )
     }
   }
 
@@ -175,7 +179,7 @@ export default function ApotekerItem({ apoteker }) {
                   <Button size={"sm"} variant="flat" onPress={onClose}>
                     Batal
                   </Button>
-                  <Button onPress={handleStartChat} size={"sm"} color="danger" >
+                  <Button isLoading={isLoading} onPress={handleStartChat} size={"sm"} color="danger" >
                     Mulai Konsultasi
                   </Button>
                 </ModalFooter>

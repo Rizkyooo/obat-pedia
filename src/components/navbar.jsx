@@ -99,6 +99,7 @@ export default function Header(props) {
                         as="button"
                         size="sm"
                         isBordered
+                        color="danger"
                         icon={<UserIcon />}
                         src={
                           avatar_url
