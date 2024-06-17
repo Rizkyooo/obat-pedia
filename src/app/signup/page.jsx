@@ -39,7 +39,7 @@ export default function SignupPage() {
       options: {
         data: {
           name: name,
-          role: 'pengguna', 
+          role: 'apoteker', 
         },
       }
     }

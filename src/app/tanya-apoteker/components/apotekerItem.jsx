@@ -1,4 +1,5 @@
 "use client";
+import { getUser } from "@/libs/actions";
 import {
   Accordion,
   AccordionItem,
@@ -13,12 +14,14 @@ import {
   User,
   useDisclosure,
 } from "@nextui-org/react";
+import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function ApotekerItem({ apoteker }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedApoteker, setSelectedApoteker] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
   const handleOpenModal = (apotekerItem) => {
     setSelectedApoteker(apotekerItem);
@@ -28,6 +31,15 @@ export default function ApotekerItem({ apoteker }) {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
+
+  const handleStartChat = async () => {
+    const user = await getUser();
+    if(!user){
+      return router.push('/login');
+    } else{
+      return router.push('/tanya-apoteker/chat/' + selectedApoteker?.id);
+    }
+  }
 
   const filteredApoteker = apoteker.filter((apotekerItem) =>
     apotekerItem.nama.toLowerCase().includes(searchQuery.toLowerCase())
@@ -43,6 +55,7 @@ export default function ApotekerItem({ apoteker }) {
         type="search"
         value={searchQuery}
         onChange={handleSearchChange}
+        fullWidth={false}
       />
       <div className="bg-gray-100 mt-2 rounded-md p-2 grid sm:grid-cols-2 gap-2">
         {filteredApoteker?.map((apotekerItem) => (
@@ -87,6 +100,7 @@ export default function ApotekerItem({ apoteker }) {
 
       {selectedApoteker && (
         <Modal
+        scrollBehavior="inside"
           className="bg-gray-50"
           isDismissable={false}
           isOpen={isOpen}
@@ -161,7 +175,7 @@ export default function ApotekerItem({ apoteker }) {
                   <Button size={"sm"} variant="flat" onPress={onClose}>
                     Batal
                   </Button>
-                  <Button size={"sm"} color="danger" onPress={""}>
+                  <Button onPress={handleStartChat} size={"sm"} color="danger" >
                     Mulai Konsultasi
                   </Button>
                 </ModalFooter>

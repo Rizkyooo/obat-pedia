@@ -7,7 +7,8 @@ export default function Footer() {
     const header = ["/apoteker", "/admin"];
    
   const pathName = usePathname();
-  const showHeader = header.some(path => pathName.includes(path));
+  const showHeader = header.some(path => pathName.includes(path)) || /^\/tanya-apoteker\/chat\/[a-f0-9-]+$/.test(pathName);
+  
     return (
         <>
         {!showHeader &&

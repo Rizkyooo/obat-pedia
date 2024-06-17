@@ -5,8 +5,8 @@ import { HomeIcon, UserGroupIcon, ChatBubbleLeftEllipsisIcon, BeakerIcon, UserIc
 import { HomeIcon as HomeIconSolid , UserGroupIcon as UserGroupIconSolid, ChatBubbleLeftEllipsisIcon as ChatBubbleLeftEllipsisIconSolid, BeakerIcon as BeakerIconSolid, UserIcon as UserIconSolid} from '@heroicons/react/24/solid'
 export default function BottomNav(){
     const pathName = usePathname()
-    const header = ["/apoteker", "/admin", "/login", "/signup"];
-  const showHeader = header.some(path => pathName.includes(path));
+    const header = ["/apoteker", "/admin", "/login", "/signup", "/tanya-apoteker/chat/:id"];
+  const showHeader = header.some(path => pathName.includes(path))|| /^\/tanya-apoteker\/chat\/[a-f0-9-]+$/.test(pathName);
     return(
         <>
         {!showHeader && 
