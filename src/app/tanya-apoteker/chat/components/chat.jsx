@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/client";
-import { Input, User } from "@nextui-org/react";
+import { Button, Input, User } from "@nextui-org/react";
 import { color } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Send } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 export default async function Chat({ id }) {
@@ -22,8 +22,8 @@ export default async function Chat({ id }) {
   const apoteker = await getApoteker(id);
   console.log(apoteker);
   return (
-    <div>
-      <div className="px-4 py-2 bg-gray-100 flex gap-1 items-center">
+    <div className="bg-gray-100">
+      <div className="px-4 py-2 bg-gray-300 flex gap-1 items-center">
         <div className="flex gap-1 items-center">
           <Link href={`/tanya-apoteker/chat`}>
             <ArrowLeft cursor={"pointer"} className="sm:hidden" />
@@ -39,11 +39,61 @@ export default async function Chat({ id }) {
           />
         </div>
       </div>
-      <div className=" h-svh flex justify-center items-center">
-        <div className="">belum ada pesan</div>
+      <div className="overflow-y-scroll sm:h-[calc(100vh-100px)] h-[calc(100vh-200px)] bg-gray-100 flex justify-cente mb-4">
+        <div className="w-full flex flex-col items-center pt-10">
+          <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
+          <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
+          <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
+            <div className="absolute top-0 left-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-r-[16px] border-r-white border-b-[16px] border-b-transparent"></div>
+          </div>
+
+          <div className="relative max-w-[50%] self-end text-sm bg-[#EE0037] text-white  px-2 py-1 rounded-lg shadow-md mb-4 mr-4 flex flex-col ">
+            <p className="text-sm pt-1">okey mantap nih</p>
+            <p className="text-[0.55rem] self-end">1.48 PM</p>
+            <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
+          </div>
+
+          <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
+          <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
+          <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
+            <div className="absolute top-0 left-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-r-[16px] border-r-white border-b-[16px] border-b-transparent"></div>
+          </div>
+
+          <div className="relative max-w-[50%] self-end text-sm bg-[#EE0037] text-white  px-2 py-1 rounded-lg shadow-md mb-4 mr-4 flex flex-col ">
+            <p className="text-sm pt-1">okey mantap nih</p>
+            <p className="text-[0.55rem] self-end">1.48 PM</p>
+            <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
+          </div>
+
+          <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
+          <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
+          <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
+            <div className="absolute top-0 left-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-r-[16px] border-r-white border-b-[16px] border-b-transparent"></div>
+          </div>
+
+          <div className="relative max-w-[50%] self-end text-sm bg-[#EE0037] text-white  px-2 py-1 rounded-lg shadow-md mb-4 mr-4 flex flex-col ">
+            <p className="text-sm pt-1">okey mantap nih</p>
+            <p className="text-[0.55rem] self-end">1.48 PM</p>
+            <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
+          </div>
+
+          <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
+          <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
+          <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
+            <div className="absolute top-0 left-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-r-[16px] border-r-white border-b-[16px] border-b-transparent"></div>
+          </div>
+
+          <div className="relative max-w-[50%] self-end text-sm bg-[#EE0037] text-white  px-2 py-1 rounded-lg shadow-md mb-4 mr-4 flex flex-col ">
+            <p className="text-sm pt-1">okey mantap nih</p>
+            <p className="text-[0.55rem] self-end">1.48 PM</p>
+            <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
+          </div>
+
+        </div>
       </div>
-      <div className="fixed w-full sm:w-1/2 bottom-2 px-2 bg-white">
+      <div className=" justify-center items-center w-full  flex gap-1 px-2 bg-gray-100">
         <Input
+        className="bg-white rounded-full"
           type="text"
           variant="bordered"
           placeholder="masukkan pesan"
@@ -51,7 +101,8 @@ export default async function Chat({ id }) {
           color="default"
           fullWidth
         />
-      </div>{" "}
+        <Button color="danger" startContent={<Send size={20} />} size="md"></Button>
+      </div>
     </div>
   );
 }

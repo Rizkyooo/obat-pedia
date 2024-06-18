@@ -1,11 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
-import { Chip, Input, User } from "@nextui-org/react";
-import { Search } from "lucide-react";
-import Link from "next/link";
 import ListApoteker from "./listApoteker";
+import { createClient } from "@/utils/supabase/client";
 
 export default function ListUser() {
   const pathname = usePathname();
@@ -33,14 +30,33 @@ export default function ListUser() {
     console.log("Is Mobile:", isMobile);
   }, [pathname, isMobile]);
 
+  const [apoteker, setApoteker] = useState([]);
+
+    useEffect(() => {
+        async function getApoteker() {
+            const supabase = createClient();
+            const { data, error } = await supabase
+              .from("apoteker")
+              .select("*")
+              .order("id", { ascending: true });
+            if (error) {
+              throw new Error(error.message);
+            }
+            setApoteker(data);
+            return data;
+        }
+        getApoteker();
+    },[])
+    console.log(apoteker)
+
   // Conditional rendering based on path and screen size
   const isChatPath = pathname === "/tanya-apoteker/chat";
 
   if ((isChatPath && !isMobile) || (!isChatPath && !isMobile)) {
-    return <ListApoteker />;
+    return <ListApoteker apoteker={apoteker}/>;
   }
   if (isChatPath && isMobile) {
-    return <ListApoteker />;
+    return <ListApoteker apoteker={apoteker} />;
   }
   return null;
 }
