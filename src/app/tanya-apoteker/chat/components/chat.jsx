@@ -41,7 +41,7 @@ export default async function Chat({ id }) {
       
       <div className="mb-14">
 
-      <div className="overflow-y-scroll  h-[calc(100vh-150px)] sm:h-[calc(100vh-200px)] bg-gray-100 flex justify-center">
+      <div className="overflow-y-scroll  h-[calc(100vh-170px)] sm:h-[calc(100vh-200px)] bg-gray-100 flex justify-center">
         <div className="w-full flex flex-col items-center pt-10">
           <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
           <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
