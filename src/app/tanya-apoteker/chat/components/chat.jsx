@@ -1,9 +1,7 @@
 import { createClient } from "@/utils/supabase/client";
 import { Button, Input, User } from "@nextui-org/react";
-import { color } from "framer-motion";
 import { ArrowLeft, Send } from "lucide-react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 export default async function Chat({ id }) {
   async function getApoteker(id) {
     if (!id) return;
@@ -23,6 +21,7 @@ export default async function Chat({ id }) {
   console.log(apoteker);
   return (
     <div className="bg-gray-100">
+
       <div className="px-4 py-2 bg-gray-300 flex gap-1 items-center">
         <div className="flex gap-1 items-center">
           <Link href={`/tanya-apoteker/chat`}>
@@ -39,7 +38,10 @@ export default async function Chat({ id }) {
           />
         </div>
       </div>
-      <div className="overflow-y-scroll sm:h-[calc(100vh-100px)] h-[calc(100vh-200px)] bg-gray-100 flex justify-cente mb-4">
+      
+      <div className="mb-14">
+
+      <div className="overflow-y-scroll  h-[calc(100vh-150px)] sm:h-[calc(100vh-200px)] bg-gray-100 flex justify-center">
         <div className="w-full flex flex-col items-center pt-10">
           <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
           <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
@@ -91,7 +93,9 @@ export default async function Chat({ id }) {
 
         </div>
       </div>
-      <div className=" justify-center items-center w-full  flex gap-1 px-2 bg-gray-100">
+      </div>
+
+      <div className=" justify-center items-center w-full fixed sm:sticky flex bottom-0 gap-1 px-2 bg-gray-100">
         <Input
         className="bg-white rounded-full"
           type="text"
