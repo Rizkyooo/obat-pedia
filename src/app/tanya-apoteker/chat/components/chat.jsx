@@ -95,7 +95,7 @@ export default async function Chat({ id }) {
       </div>
       </div>
 
-      <div className=" justify-center items-center w-full fixed sm:sticky flex bottom-0 gap-1 px-2 bg-gray-100">
+      <div className=" justify-center items-center w-full fixed sm:sticky flex bottom-0 sm:bottom-2 gap-1 px-2 bg-gray-100">
         <Input
         className="bg-white rounded-full"
           type="text"
