@@ -2,14 +2,13 @@
 import { Button } from "@nextui-org/react"
 import { MoreVertical, ChevronLast, ChevronFirst } from "lucide-react"
 import { useContext, createContext, useState } from "react"
-import { logOut } from "@/libs/actions"
 const SidebarContext = createContext()
 
 export default function SideBarApoteker({ children }) {
     const [expanded, setExpanded] = useState(false)
   
   return (
-    <aside className="h-screen ">
+    <aside className="h-screen hidden sticky top-0 sm:block">
       <nav className="h-full inline-flex flex-col bg-white border-r shadow-sm">
         <div className="p-4 pb-2 flex justify-between items-center">
           <img

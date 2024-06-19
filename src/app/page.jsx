@@ -9,7 +9,7 @@ export default async function  Home() {
   console.log(user?.user_metadata?.role);
 
   if (role === 'apoteker') {
-    redirect('/apoteker');
+    redirect('/apoteker/obat-a-z');
 }
 
 if (role === 'admin') {

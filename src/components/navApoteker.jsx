@@ -1,16 +1,82 @@
-'use client'
+"use client";
 import { logOut } from "@/libs/actions";
-import { LogOutIcon } from "lucide-react";
-export default function NavApoteker() {
-    const handleLogout = () => {
-        logOut();
-      };
+import {
+  Avatar,
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  User,
+} from "@nextui-org/react";
+import { LogOutIcon, UserIcon } from "lucide-react";
+import Link from "next/link";
+export default function NavApoteker({user}) {
+  
+  const handleLogout = () => {
+    logOut();
+  };
+  console.log(user)
   return (
-    <nav className="w-full h-14 bg-white flex justify-end items-center ">
-        <div className="flex justify-center items-center p-3 rounded-full bg-slate-200 mr-4">
-        <LogOutIcon size={20} className=" cursor-pointer hover:scale-125 transition-all" onClick={handleLogout}/>
-        </div>
-        {/* <Button color="danger" className="mr-4" onClick={handleLogout}>Logout</Button> */}
-        </nav>
-  )
+    <Navbar isBlurred={false} maxWidth="xl" isBordered>
+          <NavbarBrand>
+            <p className="text-[#EE0037] font-bold text-inherit">ObatPedia</p>
+          </NavbarBrand>            
+          <NavbarContent justify="end">
+            <NavbarItem>
+              {user ? (
+                <Dropdown>
+                  <DropdownTrigger>
+                    <div className="flex items-center justify-center  gap-3">
+                      <Avatar
+                        className="transition-transform"
+                        as="button"
+                        size="sm"
+                        isBordered
+                        color="danger"
+                        icon={<UserIcon />}
+                        src={""}
+                      />
+                      <div className="sm:flex flex-col hidden">
+                        <p className="text-xs font-medium">{user?.user_metadata?.name}</p>
+                        <p className="text-[0.7rem]">{user.email}</p>
+                      </div>
+                    </div>
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label="a">
+                    <DropdownItem className=" pl-3" key="profil">
+                      <Link href="/profil"> Profile</Link>
+                    </DropdownItem>
+                    <DropdownItem href="/login" key="logout">
+                      <Button
+                        onClick={handleLogout}
+                        size="sm"
+                        className="bg-[#EE0037] text-white"
+                        variant="flat"
+                      >
+                        Logout
+                      </Button>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              ) : (
+                <Button
+                  size="sm"
+                  className="bg-[#EE0037] text-white"
+                  as={Link}
+                  color=""
+                  href="/login"
+                  variant="flat"
+                >
+                  Login
+                </Button>
+              )}
+            </NavbarItem>
+          </NavbarContent>
+        </Navbar>
+  );
 }

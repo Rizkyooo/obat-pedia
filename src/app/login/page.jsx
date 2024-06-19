@@ -65,7 +65,7 @@ export default function LoginPage() {
     if (role === "pengguna") {
       router.push("/");
     } else if (role === "apoteker") {
-      router.push("/apoteker");
+      router.push("/apoteker/obat-a-z");
     } else if (role === "admin") {
       router.push("/admin");
     }
