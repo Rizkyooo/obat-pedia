@@ -117,7 +117,7 @@ export default function ForumKategori({checkUser}) {
       let supabaseQuery = supabase
         .from("diskusi")
         .select(
-          `id, created_at, judul, deskripsi, penulis, kategori, jml_komentar, ${userIdField}(picture, nama, role)`
+          `id, created_at, judul, deskripsi, penulis, kategori, jml_komentar,id_pengguna(picture, nama, role) , id_apoteker(picture, nama, role)`
         )
         .order("created_at", { ascending: false })
         .range(0, limit);

@@ -30,6 +30,7 @@ export  default function ForumItem({
     return text;
   };
 
+  console.log(forum)
 
   return (
     <>
@@ -45,7 +46,7 @@ export  default function ForumItem({
               >
                 <div className="w-full flex justify-between">
                   <User
-                    name={forum?.id_pengguna?.nama || forum?.id_apoteker?.nama}
+                    name={forum?.id_pengguna?.nama}  
                     description={
                       forum?.id_apoteker?.role==="apoteker"? (<span className="flex gap-1">Apoteker <BadgeCheck color="#0766AD" size={15}/></span>)  :
                       forum?.id_pengguna?.role ||

@@ -7,6 +7,7 @@ const SidebarContext = createContext()
 import { getUser } from "@/libs/actions"
 import { getUserFromDatabase } from "@/services/getUserFromDatabase"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"
+import { logOut } from "@/libs/actions"
 
 export default function SideBarApoteker({ children }) {
     const [expanded, setExpanded] = useState(true)
@@ -25,6 +26,10 @@ export default function SideBarApoteker({ children }) {
       fetchUser()
     },[])
     console.log(user)
+
+    async function handleLogout() {
+      logOut()
+    }
   return (
     <aside className="h-screen hidden sticky top-0 sm:block">
       <nav className="h-full inline-flex flex-col bg-slate-100 border-r shadow-sm">
@@ -70,7 +75,7 @@ export default function SideBarApoteker({ children }) {
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
         <DropdownItem href="/apoteker/profil" startContent={<UserIcon size={20} />} key="profil" >Lihat Profil</DropdownItem>
-        <DropdownItem startContent={<LogOutIcon/>} key="logout" className="text-danger" color="danger">
+        <DropdownItem onPress={handleLogout} startContent={<LogOutIcon/>} key="logout" className="text-danger" color="danger">
           Logout
         </DropdownItem>
       </DropdownMenu>

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "../utils/supabase/client";
 import { getUser } from "@/libs/actions";
 import { usePathname } from "next/navigation";
-import { MessageCircleMore } from "lucide-react";
+import { BadgeCheck, MessageCircleMore } from "lucide-react";
 
 export default function DetailForum({
   image,
@@ -58,7 +58,7 @@ export default function DetailForum({
           <div className="w-full flex justify-between ">
             <User
               name={penulis}
-              description={role}
+              description={role==="apoteker"? (<span className="flex gap-1">Apoteker <BadgeCheck color="#0766AD" size={15}/></span>)  : "Pengguna"}
               avatarProps={{
                 src: image,
                 size: "sm",
