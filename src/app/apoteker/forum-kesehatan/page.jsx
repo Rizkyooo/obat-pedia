@@ -9,7 +9,7 @@ export default async function Forum(){
 
     return (
     <main className="">
-      <div className="min-h-screen sm:flex gap-2">
+      <div className=" sm:flex gap-2">
       <ForumKategori checkUser={user}/>
           {/* <div className=" flex flex-col justify-center items-center gap-2 sm:w-4/6">
           </div> */}
