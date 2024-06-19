@@ -27,7 +27,7 @@ export default function KomentarItem({
     const supabase = createClient();
     const { data, error } = await supabase
     .from("komentar_diskusi")
-    .select(`id, created_at, isi, ${userIdField}(picture, nama, role), parent_id, jml_like, id_diskusi(id, judul)`)
+    .select(`id, created_at, isi, id_apoteker(picture, nama, role), id_pengguna(picture, nama, role), parent_id, jml_like, id_diskusi(id, judul)`)
       .eq("parent_id", comment.id);
 
     if (error) {

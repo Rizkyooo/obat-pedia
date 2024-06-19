@@ -29,7 +29,7 @@ export default function DetailForum({
     const supabase = createClient();
     const { data, error } = await supabase
       .from("komentar_diskusi")
-      .select(`id, created_at, isi, ${userIdField}(picture, nama, role), parent_id, jml_like, id_diskusi(id, judul)`)
+      .select(`id, created_at, isi, id_apoteker(picture, nama, role), id_pengguna(picture, nama, role), parent_id, jml_like, id_diskusi(id, judul)`)
       .eq("id_diskusi", id_diskusi)
       .is("parent_id", null)
       .order("created_at", { ascending: false });
