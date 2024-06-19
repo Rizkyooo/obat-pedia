@@ -1,33 +1,25 @@
-import NavApoteker from "@/components/navApoteker"
 import SideBarApoteker from "@/components/sideBarApoteker"
 import { SidebarItem } from "@/components/sideBarApoteker"
-import { HomeIcon } from "lucide-react"
 import BottomNavApoteker from "./components/bottomNavApoteker"
 import { getUser } from "@/libs/actions"
+import { NewspaperIcon, UserGroupIcon, ChatBubbleLeftEllipsisIcon, BeakerIcon, UserIcon } from '@heroicons/react/24/outline'
 
 export default async function Layout({children}) {
-  const user = await getUser();
   return (
     <>
-    <div className="hidden sm:flex">
+    <div className="sm:flex">
       <SideBarApoteker>
-        <SidebarItem icon={<HomeIcon size={20}/>} text="Beranda" active />
-        <SidebarItem icon={<HomeIcon size={20}/>} text="Beranda" />
-        <SidebarItem icon={<HomeIcon size={20}/>} text="Beranda" />
+        <SidebarItem icon={<BeakerIcon className="h-6 text-slate-800"/>} link={"/apoteker/obat-a-z"} text="Obat A-Z" href={"/apoteker/obat-a-z"}/>
+        <SidebarItem icon={<NewspaperIcon className="h-6 text-slate-800"/>} link={"/apoteker/buat-artikel"} text="Artikel" href={"/apoteker/buat-artikel"}/>
+        <SidebarItem icon={<ChatBubbleLeftEllipsisIcon className="h-6 text-slate-800"/>} link={"/apoteker/chat"} text="Chat" href={"/apoteker/chat"}/>
+        <SidebarItem icon={<UserGroupIcon className="h-6 text-slate-800"/>} text="Forum" link={"/apoteker/forum-kesehatan"} href={"/apoteker/forum-kesehatan"}/>
       </SideBarApoteker>
-      <div className="flex-1 flex flex-col">
-        <NavApoteker user={user}/>
-        <div className="flex-1 overflow-auto">
+      <div className="w-full">
+
           {children}
-        </div>
-        <BottomNavApoteker/>
       </div>
-    </div>
-    <div className="sm:hidden">
-      <NavApoteker user={user}/>
-      {children}
-      <BottomNavApoteker/>
-    </div>
+      </div>
+        <BottomNavApoteker/>
     </>
   )
 }

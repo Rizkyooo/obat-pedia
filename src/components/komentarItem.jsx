@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Komentar from "./komentar";
 import { createClient } from "@/utils/supabase/client";
 import { getUser } from "@/libs/actions";
+import { BadgeCheck } from "lucide-react";
 
 export default function KomentarItem({
   comment,
@@ -47,7 +48,7 @@ export default function KomentarItem({
       >
         <User
           name={penulis}
-          description={role}
+          description={role==="apoteker"?(<span className="flex gap-1">Apoteker <BadgeCheck color="#0766AD" size={15}/></span>):"Pengguna"}
           avatarProps={{
             src:
               picture ||

@@ -24,21 +24,21 @@ export default function BottomNavApoteker(){
                 </div>
             </Link>
 
-            <Link className="" href={"/tanya-apoteker"}>
-            <div className="flex flex-col justify-center items-center "> {pathName.includes('/tanya-apoteker') ? (<ChatBubbleLeftEllipsisIconSolid className="h-6 text-[#EE0037]" title="Home"/>) : <ChatBubbleLeftEllipsisIcon className="h-6 text-slate-600" title="Home"/>}
-                <h5 className={`text-[0.60rem] ${pathName.includes('/tanya-apoteker') ? ("text-[#EE0037]") : ("text-slate-600")} `}>Pesan</h5>
+            <Link className="" href={"/apoteker/chat"}>
+            <div className="flex flex-col justify-center items-center "> {pathName.includes('/apoteker/chat') ? (<ChatBubbleLeftEllipsisIconSolid className="h-6 text-[#EE0037]" title="Home"/>) : <ChatBubbleLeftEllipsisIcon className="h-6 text-slate-600" title="Home"/>}
+                <h5 className={`text-[0.60rem] ${pathName.includes('/apoteker/chat') ? ("text-[#EE0037]") : ("text-slate-600")} `}>Pesan</h5>
                 </div>
             </Link>
 
-            <Link className="" href={"/forum-kesehatan"}>
-            <div className="flex flex-col justify-center items-center "> {pathName.includes('/forum-kesehatan') ? (<UserGroupIconSolid className="h-6 text-[#EE0037]" title="Home"/>) : <UserGroupIcon className="h-6 text-slate-600" title="Home"/>}
-                <h5 className={`text-[0.60rem] ${pathName.includes('/forum-kesehatan') ? ("text-[#EE0037]") : ("text-slate-600")} `}>Forum</h5>
+            <Link className="" href={"/apoteker/forum-kesehatan"}>
+            <div className="flex flex-col justify-center items-center "> {pathName.includes('/apoteker/forum-kesehatan') ? (<UserGroupIconSolid className="h-6 text-[#EE0037]" title="Home"/>) : <UserGroupIcon className="h-6 text-slate-600" title="Home"/>}
+                <h5 className={`text-[0.60rem] ${pathName.includes('/apoteker/forum-kesehatan') ? ("text-[#EE0037]") : ("text-slate-600")} `}>Forum</h5>
                 </div>
             </Link>
 
-            <Link className="" href={"/profil"}>
-            <div className="flex flex-col justify-center items-center "> {pathName.includes('/profil') ? (<UserIconSolid className="h-6 text-[#EE0037]" title="Home"/>) : <UserIcon className="h-6 text-slate-600" title="Home"/>}
-                <h5 className={`text-[0.60rem] ${pathName.includes('/profil') ? ("text-[#EE0037]") : ("text-slate-600")} `}>Profil</h5>
+            <Link className="" href={"/apoteker/profil"}>
+            <div className="flex flex-col justify-center items-center "> {pathName.includes('/apoteker/profil') ? (<UserIconSolid className="h-6 text-[#EE0037]" title="Home"/>) : <UserIcon className="h-6 text-slate-600" title="Home"/>}
+                <h5 className={`text-[0.60rem] ${pathName.includes('/apoteker/profil') ? ("text-[#EE0037]") : ("text-slate-600")} `}>Profil</h5>
                 </div>
             </Link>
          </nav>

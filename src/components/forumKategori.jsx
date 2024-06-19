@@ -206,7 +206,7 @@ export default function ForumKategori({checkUser}) {
       </div>
 
       <div className="hidden sm:block sm:w-2/6">
-        <div className="sticky px-6 top-20 z-10 flex flex-col justify-start py-6 bg-white rounded-lg shadow-sm ">
+        <div className="sticky px-6 top-10 z-10 flex flex-col justify-start py-6 bg-white rounded-lg shadow-sm ">
           <div className="flex gap-2">
             <Input
               className="bg-white rounded-xl"

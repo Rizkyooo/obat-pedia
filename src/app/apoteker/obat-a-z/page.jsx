@@ -47,7 +47,7 @@ export default function ObatAZ() {
   };
 
   return (
-    <main className="min-h-screen my-6 px-6">
+    <main className=" my-6 px-6">
       <div className="container mx-auto">
         <h2 className="text-xl font-bold mb-4">Temukan Obat</h2>
         <Input

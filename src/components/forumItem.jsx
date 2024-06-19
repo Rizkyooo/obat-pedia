@@ -1,15 +1,18 @@
+'use client'
 import { Button, User } from "@nextui-org/react";
 import Link from "next/link";
-import { MessageCircleMore } from "lucide-react";
+import { BadgeCheck, MessageCircleMore } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { id as localeID } from "date-fns/locale";
+import { usePathname } from "next/navigation";
 
 export  default function ForumItem({
   handleMore,
   forum,
   isLoading
 }) {
-
+  
+  const pathName = usePathname();
   const TimeAgo = ({ date }) => {
     return (
       <span>
@@ -37,13 +40,14 @@ export  default function ForumItem({
             return (
               <Link
                 key={forum?.id}
-                href={`/forum-kesehatan/${encodedTitle}?id=${forum?.id}`}
+                href={!pathName.includes('/apoteker')?`/forum-kesehatan/${encodedTitle}?id=${forum?.id}`: `/apoteker/forum-kesehatan/${encodedTitle}?id=${forum?.id}`}
                 className="flex p-4 flex-col gap-2 bg-white rounded-lg justify-start items-start sm:items-start shadow-sm w-full"
               >
                 <div className="w-full flex justify-between">
                   <User
                     name={forum?.id_pengguna?.nama || forum?.id_apoteker?.nama}
                     description={
+                      forum?.id_apoteker?.role==="apoteker"? (<span className="flex gap-1">Apoteker <BadgeCheck color="#0766AD" size={15}/></span>)  :
                       forum?.id_pengguna?.role ||
                       forum?.id_apoteker?.role ||
                       "pengguna"
