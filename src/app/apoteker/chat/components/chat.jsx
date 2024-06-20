@@ -37,7 +37,7 @@ export default function Chat({ id }) {
     <div className=" max-h-screen flex flex-col">
       <div className="px-4 z-50 sticky top-0 py-2 bg-gray-300 flex gap-1 items-center">
         <div className="flex gap-1 items-center">
-          <Link href={`/tanya-apoteker/chat`}>
+          <Link href={`/apoteker/chat`}>
             <ArrowLeft cursor={"pointer"} className="sm:hidden" />
           </Link>
           <User
