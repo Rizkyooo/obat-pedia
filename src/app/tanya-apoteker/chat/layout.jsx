@@ -8,10 +8,9 @@ export default async function Layout({ children }) {
     }
     
   return( 
-    <div className="flex gap-1 bg-gray-50">
+    <div className="flex" style={{ height: "calc(100vh - 65px)" }}>
     <ListUser/>
     {children}
-
     </div>
   );
 }

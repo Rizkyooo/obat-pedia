@@ -21,7 +21,7 @@ export default function ListApoteker({ apoteker }) {
     console.log(apoteker);
 
     return (
-        <div className="w-full shadow-md sm:w-1/4 sm:flex flex-col min-h-screen bg-white px-6 py-4">
+        <div className="w-full shadow-md sm:w-1/4 sm:flex flex-col bg-white px-6 py-4" style={{ height: "calc(100vh - 65px)" }}>
             <Input
                 onChange={handleSearchChange}
                 startContent={<Search size={20} opacity={0.5} />}

@@ -34,8 +34,8 @@ export default function Chat({ id }) {
   }, [apoteker]);
 
   return (
-    <div className="bg-gray-100">
-      <div className="px-4 sticky top-0 py-2 bg-gray-300 flex gap-1 items-center">
+    <div className=" flex flex-col" style={{ height: "calc(100vh - 65px)" }}>
+      <div className="px-4 z-50 sticky top-0 py-2 bg-gray-300 flex gap-1 items-center">
         <div className="flex gap-1 items-center">
           <Link href={`/tanya-apoteker/chat`}>
             <ArrowLeft cursor={"pointer"} className="sm:hidden" />
@@ -52,9 +52,8 @@ export default function Chat({ id }) {
         </div>
       </div>
       
-      <div className="mb-14">
-        <div ref={scrollRef} className="overflow-y-scroll scroll-smooth h-[calc(100vh-170px)] sm:h-[calc(100vh-200px)] bg-gray-100 flex justify-center">
-          <div className="w-full flex flex-col items-center pt-10">
+        <div ref={scrollRef} className="overflow-y-scroll mb-4 scroll-smooth max-h-screen bg-gray-100 flex justify-center">
+          <div className="w-full flex flex-col items-center ">
             <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
               <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
               <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
@@ -136,10 +135,9 @@ export default function Chat({ id }) {
               <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
             </div>
           </div>
-        </div>
       </div>
 
-      <div className="justify-center items-center w-full fixed sm:sticky flex bottom-0 sm:bottom-2 gap-1 px-2 bg-gray-100">
+      <div className="justify-center items-center w-full sticky flex bottom-2 gap-1 px-2 bg-gray-100">
         <Input
           className="bg-white rounded-full"
           type="text"
