@@ -6,7 +6,7 @@ import { NewspaperIcon as NewspaperIconSolid , UserGroupIcon as UserGroupIconSol
 export default function BottomNavApoteker(){
     const pathName = usePathname()
     const header = ["/admin", "/login", "/signup"];
-  const showHeader = header.some(path => pathName.includes(path));
+  const showHeader = header.some(path => pathName.includes(path))|| /^\/apoteker\/chat\/[a-f0-9-]+$/.test(pathName);
     return(
         <>
         {!showHeader && 
