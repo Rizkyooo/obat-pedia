@@ -61,6 +61,8 @@ export default function ApotekerItem({ apoteker }) {
         onChange={handleSearchChange}
         fullWidth={false}
       />
+      <div className="bg-gray-100 min-h-screen">
+
       <div className="bg-gray-100 mt-2 rounded-md p-2 grid sm:grid-cols-2 gap-2">
         {filteredApoteker?.map((apotekerItem) => (
           <div
@@ -95,6 +97,7 @@ export default function ApotekerItem({ apoteker }) {
             </Button>
           </div>
         ))}
+      </div>
       </div>
         {filteredApoteker.length === 0 && (
           <div className="flex justify-center items-center min-h-[200px]">
