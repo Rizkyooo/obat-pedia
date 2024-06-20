@@ -52,9 +52,19 @@ export default function Chat({ id }) {
         </div>
       </div>
       
-        <div ref={scrollRef} className="overflow-y-scroll mb-4 scroll-smooth max-h-screen bg-gray-100 flex justify-center">
-          <div className="w-full flex flex-col items-center ">
+        <div ref={scrollRef} className="overflow-y-scroll mb-4 scroll-smooth h-screen bg-gray-100 flex justify-center">
+          <div className="w-full flex flex-col pt-9 items-center ">
             <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
+              <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
+              <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
+              <div className="absolute top-0 left-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-r-[16px] border-r-white border-b-[16px] border-b-transparent"></div>
+            </div>
+            <div className="relative max-w-[50%] self-end text-sm bg-[#EE0037] text-white px-2 py-1 rounded-lg shadow-md mb-4 mr-4 flex flex-col">
+              <p className="text-sm pt-1">okey mantap nih</p>
+              <p className="text-[0.55rem] self-end">1.48 PM</p>
+              <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
+            </div>
+            {/* <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
               <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
               <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
               <div className="absolute top-0 left-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-r-[16px] border-r-white border-b-[16px] border-b-transparent"></div>
@@ -123,17 +133,7 @@ export default function Chat({ id }) {
               <p className="text-sm pt-1">okey mantap nih</p>
               <p className="text-[0.55rem] self-end">1.48 PM</p>
               <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
-            </div>
-            <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
-              <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
-              <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
-              <div className="absolute top-0 left-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-r-[16px] border-r-white border-b-[16px] border-b-transparent"></div>
-            </div>
-            <div className="relative max-w-[50%] self-end text-sm bg-[#EE0037] text-white px-2 py-1 rounded-lg shadow-md mb-4 mr-4 flex flex-col">
-              <p className="text-sm pt-1">okey mantap nih</p>
-              <p className="text-[0.55rem] self-end">1.48 PM</p>
-              <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
-            </div>
+            </div> */}
           </div>
       </div>
 
