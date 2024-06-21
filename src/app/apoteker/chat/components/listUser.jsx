@@ -44,7 +44,7 @@ const [checkSender, setCheckSender]  = useState()
         const { data: receivedMessages, error } = await supabase
           .from("messages")
           .select("*")
-          .eq("receiver_id", userId)
+          .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
           .order("created_at", { ascending: false });
 
         if (error) {
@@ -105,12 +105,12 @@ const [checkSender, setCheckSender]  = useState()
             const { data: userData, error: userError } = await supabase
               .from("pengguna")
               .select("id, nama, picture")
-              .eq("id", checkSender) 
+              .or(`id.eq.${message?.sender_id},id.eq.${message?.receiver_id}`)
               .single();
 
             if (userError) {
               console.error(
-                `Error fetching user data for user ID ${message.sender_id}:`,
+                `Error fetching user data for user ID ${checkSender}:`,
                 userError.message
               );
               return null;
@@ -127,6 +127,8 @@ const [checkSender, setCheckSender]  = useState()
           sender_name: usersData[index]?.nama,
           sender_picture: usersData[index]?.picture,
         }));
+
+        console.log(messagesWithUsers);
 
         setMessages(messagesWithUsers);
 

@@ -12,14 +12,26 @@ export default function Listmessages({ messages }) {
   };
 
   // Use useMemo to memoize the filtered list
-  const filteredmessages = useMemo(
+  const uniqueMessages = useMemo(() => {
+    const unique = {};
+    return messages?.filter((message) => {
+      if (!unique[message.sender_name]) {
+        unique[message.sender_name] = true;
+        return true;
+      }
+      return false;
+    });
+  }, [messages]);
+
+  // Use useMemo to memoize the filtered list based on search query
+  const filteredMessages = useMemo(
     () =>
-      messages?.filter((messages) =>
-        messages?.sender_name?.toLowerCase().includes(searchQuery.toLowerCase())
+      uniqueMessages?.filter((message) =>
+        message?.sender_name?.toLowerCase().includes(searchQuery.toLowerCase())
       ),
-    [searchQuery, messages]
+    [searchQuery, uniqueMessages]
   );
-  console.log(messages);
+ 
 
   return (
     <div
@@ -35,7 +47,7 @@ export default function Listmessages({ messages }) {
         className="mb-2"
       />
 
-      {filteredmessages.map((message, index) => (
+      {filteredMessages.map((message, index) => (
         <Link
           key={index}
           href={`/apoteker/chat/${message?.sender_id}`}

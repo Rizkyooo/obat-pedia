@@ -44,7 +44,7 @@ const [checkSender, setCheckSender]  = useState()
         const { data: receivedMessages, error } = await supabase
           .from("messages")
           .select("*")
-          .eq("receiver_id", userId)
+          .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
           .order("created_at", { ascending: false });
 
         if (error) {
@@ -56,6 +56,7 @@ const [checkSender, setCheckSender]  = useState()
         const uniqueSenders = Array.from(
           new Set(receivedMessages.map((msg) => msg.sender_id))
         );
+        console.log(uniqueSenders);
 
         // Ambil pesan terbaru dari setiap pengirim
         const latestMessages = await Promise.all(
@@ -78,7 +79,10 @@ const [checkSender, setCheckSender]  = useState()
               .limit(1)
               .single();
 
-              const latestMessage = latestMessageReceiver&&latestMessageSender!==null? (latestMessageSender?.created_at > latestMessageReceiver?.created_at ? latestMessageSender : latestMessageReceiver): latestMessageSender;
+
+              console.log(latestMessageSender, latestMessageReceiver);
+
+              const latestMessage = latestMessageSender?.created_at > latestMessageReceiver?.created_at ? latestMessageSender : latestMessageSender;
 
               console.log("Selected latest message:", latestMessage);
               return latestMessage;
@@ -104,7 +108,7 @@ const [checkSender, setCheckSender]  = useState()
             const { data: userData, error: userError } = await supabase
               .from("apoteker")
               .select("id, nama, picture")
-              .eq("id", checkSender )
+              .or(`id.eq.${message?.sender_id},id.eq.${message?.receiver_id}`)
               .single();
 
             if (userError) {
@@ -126,6 +130,7 @@ const [checkSender, setCheckSender]  = useState()
           sender_name: usersData[index]?.nama,
           sender_picture: usersData[index]?.picture,
         }));
+        console.log(messagesWithUsers);
 
         setMessages(messagesWithUsers);
 

@@ -12,14 +12,27 @@ export default function ListApoteker({ messages }) {
   };
 
   // Use useMemo to memoize the filtered list
-  const filteredmessages = useMemo(
+  const uniqueMessages = useMemo(() => {
+    const unique = {};
+    return messages?.filter((message) => {
+      if (!unique[message.sender_name]) {
+        unique[message.sender_name] = true;
+        return true;
+      }
+      return false;
+    });
+  }, [messages]);
+
+  // Use useMemo to memoize the filtered list based on search query
+  const filteredMessages = useMemo(
     () =>
-      messages?.filter((messages) =>
-        messages?.sender_name?.toLowerCase().includes(searchQuery.toLowerCase())
+      uniqueMessages?.filter((message) =>
+        message?.sender_name?.toLowerCase().includes(searchQuery.toLowerCase())
       ),
-    [searchQuery, messages]
+    [searchQuery, uniqueMessages]
   );
  
+  console.log(filteredMessages);
   return (
     <div
       className="w-full shadow-md sm:w-1/4 sm:flex flex-col bg-white px-6 py-4"
@@ -34,7 +47,7 @@ export default function ListApoteker({ messages }) {
         className="mb-2"
       />
 
-      {filteredmessages.map((message, index) => (
+      {filteredMessages.map((message, index) => (
         <Link
           key={index}
           href={`/tanya-apoteker/chat/${message?.sender_id}`}
