@@ -36,7 +36,6 @@ export default function Chat({ id, userId }) {
   }
 
   async function getMessages(userId, id) {
-    console.log(id, userId);
     if (!userId || !id) return;
     const { data, error } = await supabase
       .from("messages")

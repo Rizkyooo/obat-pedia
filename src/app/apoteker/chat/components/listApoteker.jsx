@@ -2,12 +2,10 @@
 import { Input, User } from "@nextui-org/react";
 import { Search } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState, useMemo } from "react";
 
 export default function Listmessages({ messages, userId }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const router = useRouter();
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -38,7 +36,7 @@ export default function Listmessages({ messages, userId }) {
 
   return (
     <div
-      className="w-full shadow-md sm:flex h-screen flex-col bg-white px-6 py-4"
+      className="w-full shadow-md sm:w-2/4 sm:flex flex-col bg-white px-6 py-4"
       style={{ height: "calc(100vh - 65px)" }}
     >
       <Input
@@ -53,7 +51,7 @@ export default function Listmessages({ messages, userId }) {
       {filteredMessages.map((message, index) => (
         <Link
           key={index}
-          href={message?.sender_id!==userId?`/apoteker/chat?id=${message?.sender_id}`:`/apoteker/chat?id=${message?.receiver_id}`}
+          href={message?.sender_id!==userId?`/apoteker/chat/${message?.sender_id}`:`/apoteker/chat/${message?.receiver_id}`}
           className="flex justify-between px-2 py-4"
         >
           <User

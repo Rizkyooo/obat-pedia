@@ -8,12 +8,9 @@ export default async function Layout({ children }) {
     }
     
   return( 
-    <>
+    <div className="flex gap-1 min-h-screen">
+    <ListUser/>
     {children}
-    </>
-    // <div className="flex gap-1 min-h-screen">
-    // <ListUser/>
-    // {children}
-    // </div>
+    </div>
   );
 }
