@@ -189,11 +189,6 @@ const [checkSender, setCheckSender]  = useState()
 
   
 
-  if ((isChatPath && !isMobile) || (!isChatPath && !isMobile)) {
-    return <ListApoteker userId={userId} messages={messages} />;
-  }
-  if (isChatPath && isMobile) {
-    return <ListApoteker userId={userId} messages={messages} />;
-  }
-  return null;
+  return <ListApoteker userId={userId} messages={messages} />;
+
 }

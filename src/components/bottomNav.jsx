@@ -1,12 +1,14 @@
 'use client'
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import { HomeIcon, UserGroupIcon, ChatBubbleLeftEllipsisIcon, BeakerIcon, UserIcon } from '@heroicons/react/24/outline'
 import { HomeIcon as HomeIconSolid , UserGroupIcon as UserGroupIconSolid, ChatBubbleLeftEllipsisIcon as ChatBubbleLeftEllipsisIconSolid, BeakerIcon as BeakerIconSolid, UserIcon as UserIconSolid} from '@heroicons/react/24/solid'
 export default function BottomNav(){
     const pathName = usePathname()
+    const searchParams = useSearchParams();
+    const id = searchParams.get('id');
     const header = ["/apoteker", "/admin", "/login", "/signup", "/tanya-apoteker/chat/:id"];
-  const showHeader = header.some(path => pathName.includes(path))|| /^\/tanya-apoteker\/chat\/[a-f0-9-]+$/.test(pathName);
+    const showHeader = header.some(path => pathName.includes(path)) || (pathName === '/apoteker/chat' && /^[a-f0-9-]+$/.test(id));
     return(
         <>
         {!showHeader && 

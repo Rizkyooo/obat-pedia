@@ -1,6 +1,4 @@
 'use client';
-import { getUser } from "@/libs/actions";
-import { getUserFromDatabase } from "@/services/getUserFromDatabase";
 import { createClient } from "@/utils/supabase/client";
 import { Button, Input, User } from "@nextui-org/react";
 import { ArrowLeft, Send } from "lucide-react";
@@ -38,6 +36,7 @@ export default function Chat({ id, userId }) {
   }
 
   async function getMessages(userId, id) {
+    console.log(id, userId);
     if (!userId || !id) return;
     const { data, error } = await supabase
       .from("messages")
@@ -48,8 +47,8 @@ export default function Chat({ id, userId }) {
       console.log(error);
       throw new Error(error.message);
     }
-    setMessages(data);
     console.log(data);
+    setMessages(data);
   }
   
 
