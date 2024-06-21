@@ -45,16 +45,19 @@ export default function Chat({ id, userId }) {
     getMessages(userId, id);
 
     const channel = supabase
-      .channel('messages')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
+    .channel('messages')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
+      if ((payload.new.sender_id === userId && payload.new.receiver_id === id) || 
+          (payload.new.sender_id === id && payload.new.receiver_id === userId)) {
         setMessages((prevMessages) => [...prevMessages, payload.new]);
-      })
-      .subscribe();
+      }
+    })
+    .subscribe();
 
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [id]);
+  }, [id, userId]);
 
   useEffect(() => {
     if (scrollRef.current) {
