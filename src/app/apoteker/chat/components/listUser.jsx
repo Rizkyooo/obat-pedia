@@ -112,7 +112,7 @@ export default function ListUser() {
   }, []);
 
   // Conditional rendering based on path and screen size
-  const isChatPath = pathname === "/tanya-apoteker/chat";
+  const isChatPath = pathname === "/apoteker/chat";
 
   if ((isChatPath && !isMobile) || (!isChatPath && !isMobile)) {
     return <ListApoteker messages={messages} />;
