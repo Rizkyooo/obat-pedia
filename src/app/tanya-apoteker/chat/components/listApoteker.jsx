@@ -4,7 +4,7 @@ import { Search } from "lucide-react";
 import Link from "next/link";
 import { useState, useMemo , useEffect} from "react";
 
-export default function ListApoteker({ messages }) {
+export default function ListApoteker({ messages, userId }) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearchChange = (event) => {
@@ -50,7 +50,7 @@ export default function ListApoteker({ messages }) {
       {filteredMessages.map((message, index) => (
         <Link
           key={index}
-          href={`/tanya-apoteker/chat/${message?.receiver_id}`}
+          href={message?.sender_id!==userId?`/tanya-apoteker/chat/${message?.sender_id}`:`/tanya-apoteker/chat/${message?.receiver_id}`}
           className="flex justify-between px-2 py-4"
         >
           <User

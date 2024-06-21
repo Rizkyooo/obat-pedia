@@ -171,15 +171,29 @@ const [checkSender, setCheckSender]  = useState()
 
     fetchConversations();
   }, [messages]);
+  
+
+  const [userId, setUserId] = useState(null);
+  useEffect(()=>{
+    async function fetchUser(){
+      const user = await getUser();
+      setUserId(user.id);
+    }
+
+    fetchUser();
+
+  },[])
 
   // Conditional rendering based on path and screen size
   const isChatPath = pathname === "/apoteker/chat";
 
+  
+
   if ((isChatPath && !isMobile) || (!isChatPath && !isMobile)) {
-    return <ListApoteker messages={messages} />;
+    return <ListApoteker userId={userId} messages={messages} />;
   }
   if (isChatPath && isMobile) {
-    return <ListApoteker messages={messages} />;
+    return <ListApoteker userId={userId} messages={messages} />;
   }
   return null;
 }
