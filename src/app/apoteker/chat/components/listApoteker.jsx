@@ -31,6 +31,7 @@ export default function Listmessages({ messages }) {
       ),
     [searchQuery, uniqueMessages]
   );
+  console.log(filteredMessages);
  
 
   return (

@@ -50,7 +50,7 @@ export default function ListApoteker({ messages }) {
       {filteredMessages.map((message, index) => (
         <Link
           key={index}
-          href={`/tanya-apoteker/chat/${message?.sender_id}`}
+          href={`/tanya-apoteker/chat/${message?.receiver_id}`}
           className="flex justify-between px-2 py-4"
         >
           <User
