@@ -78,7 +78,9 @@ const [checkSender, setCheckSender]  = useState()
               .limit(1)
               .single();
 
-              const latestMessage = latestMessageSender?.created_at > latestMessageReceiver?.created_at ? latestMessageSender : latestMessageReceiver;
+              console.log(latestMessageSender, latestMessageReceiver);
+
+              const latestMessage = latestMessageReceiver&&latestMessageSender!==null? (latestMessageSender?.created_at > latestMessageReceiver?.created_at ? latestMessageSender : latestMessageReceiver): latestMessageSender;
 
               console.log("Selected latest message:", latestMessage);
               return latestMessage;
@@ -103,7 +105,7 @@ const [checkSender, setCheckSender]  = useState()
             const { data: userData, error: userError } = await supabase
               .from("pengguna")
               .select("id, nama, picture")
-              .eq("id", checkSender )
+              .eq("id", message?.sender_id) 
               .single();
 
             if (userError) {
