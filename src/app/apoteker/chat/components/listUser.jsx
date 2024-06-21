@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import ListApoteker from "./listApoteker";
 import { createClient } from "@/utils/supabase/client";
+import { getUser } from "@/libs/actions";
 
 export default function ListUser() {
   const pathname = usePathname();
   const [isMobile, setIsMobile] = useState(false);
   const supabase = createClient();
-
-  // Check screen size on initial render and window resize
+const [checkSender, setCheckSender]  = useState()
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 640); // Tailwind's sm breakpoint is 640px
@@ -34,82 +34,140 @@ export default function ListUser() {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      // Fetch messages
-      const { data: messagesData, error: messagesError } = await supabase
-        .from('messages')
-        .select('*')
-        .order('created_at', { ascending: false });
+    async function fetchConversations() {
+      try {
+        const user = await getUser();
+        const userId = user?.id;
+        if (!userId) return;
 
-      if (messagesError) {
-        console.error(messagesError);
-        return;
-      }
+        // Ambil semua pesan yang melibatkan pengguna saat ini sebagai penerima
+        const { data: receivedMessages, error } = await supabase
+          .from("messages")
+          .select("*")
+          .eq("receiver_id", userId)
+          .order("created_at", { ascending: false });
 
-      // Extract unique user IDs
-      const userIds = [...new Set([
-        ...messagesData.map((msg) => msg.sender_id),
-        ...messagesData.map((msg) => msg.receiver_id)
-      ])];
-      console.log(userIds);
-
-      // Fetch user data
-      const { data: usersData, error: usersError } = await supabase
-        .from('pengguna')
-        .select('*')
-        .in('id', userIds);
-
-      if (usersError) {
-        console.error(usersError);
-        return;
-      }
-      console.log(usersData, messagesData);
-
-      // Create a mapping of user IDs to names
-      const usersMap = usersData.reduce((acc, user) => {
-        acc[user?.id] = user?.nama;
-        console.log(acc);
-        return acc;
-      }, {});
-
-      // Count messages per sender
-      const messageCounts = messagesData.reduce((acc, curr) => {
-        acc[curr.sender_id] = (acc[curr.sender_id] || 0) + 1;
-        console.log(Object.values(acc).reduce((sum, count) => sum + count, 0));
-        return acc
-      }, {});
-
-      // Get the latest message for each sender
-      const latestMessages = messagesData.reduce((acc, curr) => {
-        if (!acc[curr.sender_id]) {
-          acc[curr.sender_id] = {
-            message: curr.message,
-            senderName: usersMap[curr.sender_id],
-            receiverName: usersMap[curr.receiver_id],
-            senderId: curr.sender_id,
-            senderPicture: usersData.find(user => user.id === curr.sender_id)?.picture,
-          };
+        if (error) {
+          console.error("Error fetching received messages:", error.message);
+          return [];
         }
-        console.log(acc);
-        return acc;
-      }, {});
 
-      // Prepare the final response
-      const response = Object.keys(latestMessages).map((senderId) => ({
-        sender_name: latestMessages[senderId].senderName,
-        receiver_name: latestMessages[senderId].receiverName,
-        last_message: latestMessages[senderId]?.message,
-        message_count: messageCounts[senderId],
-        sender_id: senderId,// Correctly referencing senderId here
-        sender_picture: latestMessages[senderId].senderPicture,
-      }));
+        // Ambil pengirim pesan unik dari pesan yang diterima
+        const uniqueSenders = Array.from(
+          new Set(receivedMessages.map((msg) => msg.sender_id))
+        );
 
-      console.log(response);
-      setMessages(response);
-    };
+        // Ambil pesan terbaru dari setiap pengirim
+        const latestMessages = await Promise.all(
+          uniqueSenders.map(async (senderId) => {
+            // Query untuk mencari pesan terakhir dari sender ke user saat ini
+            const { data: latestMessageSender } = await supabase
+              .from("messages")
+              .select("*")
+              .eq("sender_id", senderId)
+              .order("created_at", { ascending: false })
+              .limit(1)
+              .single();
 
-    fetchMessages();
-  }, []);
+            // Query untuk mencari pesan terakhir dari user saat ini kepada sender
+            const { data: latestMessageReceiver } = await supabase
+              .from("messages")
+              .select("*")
+              .eq("receiver_id", senderId)
+              .order("created_at", { ascending: false })
+              .limit(1)
+              .single();
+
+              const latestMessage = latestMessageSender?.created_at > latestMessageReceiver?.created_at ? latestMessageSender : latestMessageReceiver;
+
+              console.log("Selected latest message:", latestMessage);
+              return latestMessage;
+          })
+        );
+
+        // Filter pesan yang tidak null (tidak ada pesan terbaru dari sender ke user saat ini)
+        const filteredMessages = latestMessages.filter((msg) => msg !== null);
+
+        console.log(filteredMessages);
+
+        // Ambil informasi pengguna (user) berdasarkan sender_id dari pesan-pesan terbaru
+
+        const usersData = await Promise.all(
+          filteredMessages.map(async (message) => {
+            console.log(message?.sender_id!==userId);
+            if(message?.sender_id===userId){
+              setCheckSender(message?.receiver_id)
+            }
+            if(message?.sender_id!==userId){
+              setCheckSender(message?.sender_id)
+            }
+            const { data: userData, error: userError } = await supabase
+              .from("pengguna")
+              .select("id, nama, picture")
+              .eq("id", checkSender )
+              .single();
+
+            if (userError) {
+              console.error(
+                `Error fetching user data for user ID ${message.sender_id}:`,
+                userError.message
+              );
+              return null;
+            }
+
+            console.log(userData);
+            return userData;
+          })
+        );
+
+        // Gabungkan informasi pengguna dengan pesan-pesan terbaru
+        const messagesWithUsers = filteredMessages.map((msg, index) => ({
+          ...msg,
+          sender_name: usersData[index]?.nama,
+          sender_picture: usersData[index]?.picture,
+        }));
+
+        setMessages(messagesWithUsers);
+
+        // Subscribe untuk update real-time dari tabel messages
+        const subscription = supabase
+          .channel("message")
+          .on(
+            "postgres_changes",
+            { event: "INSERT", schema: "public", table: "messages" },
+            (payload) => {
+              const newMessage = payload.new;
+              console.log(newMessage);
+              if (newMessage?.receiver_id === userId) {
+                // Jika pesan baru diterima, perbarui state messages
+                setMessages((prevMessages) => [
+                  ...prevMessages,
+                  {
+                    ...newMessage,
+                    sender_name: usersData?.find(
+                      (user) => user?.id === newMessage?.sender_id
+                    )?.nama,
+                    sender_picture: usersData?.find(
+                      (user) => user?.id === newMessage?.sender_id
+                    )?.picture,
+                  },
+                ]);
+              }
+            }
+          )
+          .subscribe();
+
+        // Cleanup subscription
+        return () => {
+          supabase.removeChannel(subscription);
+        };
+      } catch (error) {
+        console.error("Error fetching conversations:", error.message);
+      }
+    }
+
+    fetchConversations();
+  }, [messages]);
 
   // Conditional rendering based on path and screen size
   const isChatPath = pathname === "/apoteker/chat";

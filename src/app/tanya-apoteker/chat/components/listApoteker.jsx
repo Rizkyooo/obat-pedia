@@ -2,9 +2,9 @@
 import { Chip, Input, User } from "@nextui-org/react";
 import { Search } from "lucide-react";
 import Link from "next/link";
-import { useState, useMemo } from "react";
+import { useState, useMemo , useEffect} from "react";
 
-export default function Listmessages({ messages }) {
+export default function ListApoteker({ messages }) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearchChange = (event) => {
@@ -19,9 +19,7 @@ export default function Listmessages({ messages }) {
       ),
     [searchQuery, messages]
   );
-
-  console.log(messages);
-
+ 
   return (
     <div
       className="w-full shadow-md sm:w-1/4 sm:flex flex-col bg-white px-6 py-4"
@@ -44,7 +42,7 @@ export default function Listmessages({ messages }) {
         >
           <User
             name={message?.sender_name}
-            description={message?.last_message} // Display the complete last_message
+            description={message?.message} // Display the complete last_message
             avatarProps={{
               src:
                 message?.sender_picture ||

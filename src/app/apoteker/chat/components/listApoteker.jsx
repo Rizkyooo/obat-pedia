@@ -1,5 +1,5 @@
 "use client";
-import { Chip, Input, User } from "@nextui-org/react";
+import { Input, User } from "@nextui-org/react";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { useState, useMemo } from "react";
@@ -19,8 +19,6 @@ export default function Listmessages({ messages }) {
       ),
     [searchQuery, messages]
   );
-
-  console.log(messages);
 
   return (
     <div
@@ -44,7 +42,7 @@ export default function Listmessages({ messages }) {
         >
           <User
             name={message?.sender_name}
-            description={message?.last_message} // Display the complete last_message
+            description={message?.message}
             avatarProps={{
               src:
                 message?.sender_picture ||
