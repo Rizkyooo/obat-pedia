@@ -94,11 +94,10 @@ const [checkSender, setCheckSender]  = useState()
 
         const usersData = await Promise.all(
           filteredMessages.map(async (message) => {
-            console.log(message?.sender_id!==userId);
+            console.log(message?.sender_id===userId);
             if(message?.sender_id===userId){
               setCheckSender(message?.receiver_id)
-            }
-            if(message?.sender_id!==userId){
+            }else{
               setCheckSender(message?.sender_id)
             }
             const { data: userData, error: userError } = await supabase

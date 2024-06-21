@@ -19,10 +19,11 @@ export default function Listmessages({ messages }) {
       ),
     [searchQuery, messages]
   );
+  console.log(messages);
 
   return (
     <div
-      className="w-full shadow-md sm:w-1/4 sm:flex flex-col bg-white px-6 py-4"
+      className="w-full shadow-md sm:w-2/4 sm:flex flex-col bg-white px-6 py-4"
       style={{ height: "calc(100vh - 65px)" }}
     >
       <Input
