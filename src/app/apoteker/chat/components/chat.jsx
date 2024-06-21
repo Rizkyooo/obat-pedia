@@ -1,50 +1,105 @@
 'use client';
+import { getUser } from "@/libs/actions";
+import { getUserFromDatabase } from "@/services/getUserFromDatabase";
 import { createClient } from "@/utils/supabase/client";
 import { Button, Input, User } from "@nextui-org/react";
 import { ArrowLeft, Send } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-export default function Chat({ id }) {
-  const [apoteker, setApoteker] = useState(null);
+export default function Chat({ id, userId }) {
+  const [user, setUser] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState("");
   const scrollRef = useRef(null);
+  const supabase = createClient();
+  console.log(id, userId);
 
-  async function getApoteker(id) {
-    if (!id) return;
-    const supabase = createClient();
-    const { data, error } = await supabase
-      .from("apoteker")
-      .select("*")
-      .eq("id", id)
-      .single();
-    if (error) {
-      throw new Error(error.message);
+  async function fetchUser(id) {
+    try {
+      console.log(id);
+      if (!id) return;
+      const { data, error } = await supabase
+        .from("pengguna")
+        .select("*")
+        .eq("id", id)
+        .single();
+      if (error) {
+        throw new Error(error.message);
+      }
+      if(data){
+        setUser(data)
+      }
+    } catch (error) {
+      console.log(error);
+      
     }
-    setApoteker(data);
+
   }
 
+  async function getMessages(userId, id) {
+    if (!userId || !id) return;
+    const { data, error } = await supabase
+      .from("messages")
+      .select("*")
+      .or(`and(sender_id.eq.${userId},receiver_id.eq.${id}),and(sender_id.eq.${id},receiver_id.eq.${userId})`)
+      .order('created_at', { ascending: true });
+    if (error) {
+      console.log(error);
+      throw new Error(error.message);
+    }
+    setMessages(data);
+    console.log(data);
+  }
+  
+
   useEffect(() => {
-    getApoteker(id);
+    fetchUser(id)
+    getMessages(userId, id);
+
+    const channel = supabase
+      .channel('messages')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
+        setMessages((prevMessages) => [...prevMessages, payload.new]);
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [id]);
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    } 
+  }, [messages]);
+  console.log(messages);
+
+  const handleSendMessage = async () => {
+    if (inputMessage.trim() === "") return;
+    const { data, error } = await supabase
+      .from("messages")
+      .insert([{ receiver_id: id, message: inputMessage, sender_id: userId }]);
+    if (error) {
+      console.error("Error sending message:", error.message);
+      return;
     }
-  }, [apoteker]);
+    setInputMessage("");
+  };
 
   return (
-    <div className=" max-h-screen flex flex-col">
+    <div className="flex flex-col max-h-screen">
       <div className="px-4 z-50 sticky top-0 py-2 bg-gray-300 flex gap-1 items-center">
         <div className="flex gap-1 items-center">
           <Link href={`/apoteker/chat`}>
             <ArrowLeft cursor={"pointer"} className="sm:hidden" />
           </Link>
           <User
-            name={apoteker?.nama}
+            name={user?.nama}
             avatarProps={{
               src:
-                apoteker?.picture ||
+              user?.picture ||
                 "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
               size: "sm",
             }}
@@ -52,89 +107,16 @@ export default function Chat({ id }) {
         </div>
       </div>
       
-        <div ref={scrollRef} className="overflow-y-scroll mb-4 scroll-smooth h-screen bg-gray-100 flex justify-center">
-          <div className="w-full flex flex-col pt-9 items-center ">
-            <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
-              <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
-              <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
-              <div className="absolute top-0 left-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-r-[16px] border-r-white border-b-[16px] border-b-transparent"></div>
+      <div ref={scrollRef} className="overflow-y-scroll mb-4 scroll-smooth h-screen bg-gray-100 flex justify-center">
+        <div className="w-full flex pt-9 flex-col items-center">
+          {messages.map((msg, index) => (
+            <div key={index} className={`relative ${msg.sender_id === userId ? "self-end bg-[#EE0037] text-white" : "self-start bg-white text-black"} text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${msg.sender_id === userId ? "mr-4" : "ml-4"}`}>
+              <p className="text-sm pt-1">{msg.message}</p>
+              <p className="text-[0.55rem] px-2 self-end">{new Date(msg.created_at).toLocaleTimeString()}</p>
+              <div className={`absolute top-0 ${msg.sender_id === userId ? "right-[-8px] border-l-[#EE0037]" : "left-[-8px] border-r-white"} w-0 h-0 border-t-[16px] border-t-transparent border-b-[16px] border-b-transparent`}></div>
             </div>
-            <div className="relative max-w-[50%] self-end text-sm bg-[#EE0037] text-white px-2 py-1 rounded-lg shadow-md mb-4 mr-4 flex flex-col">
-              <p className="text-sm pt-1">okey mantap nih</p>
-              <p className="text-[0.55rem] self-end">1.48 PM</p>
-              <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
-            </div>
-            {/* <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
-              <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
-              <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
-              <div className="absolute top-0 left-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-r-[16px] border-r-white border-b-[16px] border-b-transparent"></div>
-            </div>
-            <div className="relative max-w-[50%] self-end text-sm bg-[#EE0037] text-white px-2 py-1 rounded-lg shadow-md mb-4 mr-4 flex flex-col">
-              <p className="text-sm pt-1">okey mantap nih</p>
-              <p className="text-[0.55rem] self-end">1.48 PM</p>
-              <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
-            </div>
-            <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
-              <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
-              <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
-              <div className="absolute top-0 left-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-r-[16px] border-r-white border-b-[16px] border-b-transparent"></div>
-            </div>
-            <div className="relative max-w-[50%] self-end text-sm bg-[#EE0037] text-white px-2 py-1 rounded-lg shadow-md mb-4 mr-4 flex flex-col">
-              <p className="text-sm pt-1">okey mantap nih</p>
-              <p className="text-[0.55rem] self-end">1.48 PM</p>
-              <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
-            </div>
-            <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
-              <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
-              <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
-              <div className="absolute top-0 left-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-r-[16px] border-r-white border-b-[16px] border-b-transparent"></div>
-            </div>
-            <div className="relative max-w-[50%] self-end text-sm bg-[#EE0037] text-white px-2 py-1 rounded-lg shadow-md mb-4 mr-4 flex flex-col">
-              <p className="text-sm pt-1">okey mantap nih</p>
-              <p className="text-[0.55rem] self-end">1.48 PM</p>
-              <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
-            </div>
-            <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
-              <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
-              <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
-              <div className="absolute top-0 left-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-r-[16px] border-r-white border-b-[16px] border-b-transparent"></div>
-            </div>
-            <div className="relative max-w-[50%] self-end text-sm bg-[#EE0037] text-white px-2 py-1 rounded-lg shadow-md mb-4 mr-4 flex flex-col">
-              <p className="text-sm pt-1">okey mantap nih</p>
-              <p className="text-[0.55rem] self-end">1.48 PM</p>
-              <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
-            </div>
-            <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
-              <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
-              <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
-              <div className="absolute top-0 left-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-r-[16px] border-r-white border-b-[16px] border-b-transparent"></div>
-            </div>
-            <div className="relative max-w-[50%] self-end text-sm bg-[#EE0037] text-white px-2 py-1 rounded-lg shadow-md mb-4 mr-4 flex flex-col">
-              <p className="text-sm pt-1">okey mantap nih</p>
-              <p className="text-[0.55rem] self-end">1.48 PM</p>
-              <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
-            </div>
-            <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
-              <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
-              <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
-              <div className="absolute top-0 left-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-r-[16px] border-r-white border-b-[16px] border-b-transparent"></div>
-            </div>
-            <div className="relative max-w-[50%] self-end text-sm bg-[#EE0037] text-white px-2 py-1 rounded-lg shadow-md mb-4 mr-4 flex flex-col">
-              <p className="text-sm pt-1">okey mantap nih</p>
-              <p className="text-[0.55rem] self-end">1.48 PM</p>
-              <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
-            </div>
-            <div className="relative self-start text-sm max-w-[50%] flex flex-col bg-white text-black px-2 py-1 rounded-lg shadow-md mb-4 ml-4">
-              <p className="text-sm pt-1">Hai saya Apt. {apoteker?.nama} Apakah ada yang bisa kami bantu?</p>
-              <p className="text-[0.55rem] px-2 self-end">1.48 PM</p>
-              <div className="absolute top-0 left-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-r-[16px] border-r-white border-b-[16px] border-b-transparent"></div>
-            </div>
-            <div className="relative max-w-[50%] self-end text-sm bg-[#EE0037] text-white px-2 py-1 rounded-lg shadow-md mb-4 mr-4 flex flex-col">
-              <p className="text-sm pt-1">okey mantap nih</p>
-              <p className="text-[0.55rem] self-end">1.48 PM</p>
-              <div className="absolute top-0 right-[-8px] w-0 h-0 border-t-[16px] border-t-transparent border-l-[16px] border-l-[#EE0037] border-b-[16px] border-b-transparent"></div>
-            </div> */}
-          </div>
+          ))}
+        </div>
       </div>
 
       <div className="justify-center items-center w-full sticky flex bottom-2 gap-1 px-2 bg-gray-100">
@@ -146,8 +128,10 @@ export default function Chat({ id }) {
           size="lg"
           color="default"
           fullWidth
+          value={inputMessage}
+          onChange={(e) => setInputMessage(e.target.value)}
         />
-        <Button color="danger" startContent={<Send size={20} />} size="md"></Button>
+        <Button color="danger" startContent={<Send size={20} />} size="md" onClick={handleSendMessage}></Button>
       </div>
     </div>
   );
