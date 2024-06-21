@@ -105,7 +105,7 @@ const [checkSender, setCheckSender]  = useState()
             const { data: userData, error: userError } = await supabase
               .from("pengguna")
               .select("id, nama, picture")
-              .eq("id", message?.sender_id) 
+              .eq("id", checkSender) 
               .single();
 
             if (userError) {
