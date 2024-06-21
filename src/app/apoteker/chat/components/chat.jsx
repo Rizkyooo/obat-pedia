@@ -26,6 +26,7 @@ export default function Chat({ id, userId }) {
         throw new Error(error.message);
       }
       if(data){
+        console.log(data);
         setUser(data)
       }
     } catch (error) {

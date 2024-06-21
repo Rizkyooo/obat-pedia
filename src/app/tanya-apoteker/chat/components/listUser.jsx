@@ -52,6 +52,7 @@ const [checkSender, setCheckSender]  = useState()
           return [];
         }
 
+
         // Ambil pengirim pesan unik dari pesan yang diterima
         const uniqueSenders = Array.from(
           new Set(receivedMessages.map((msg) => msg.sender_id))
@@ -79,10 +80,9 @@ const [checkSender, setCheckSender]  = useState()
               .limit(1)
               .single();
 
-
               console.log(latestMessageSender, latestMessageReceiver);
 
-              const latestMessage = latestMessageSender?.created_at > latestMessageReceiver?.created_at ? latestMessageSender : latestMessageSender;
+              const latestMessage = latestMessageReceiver&&latestMessageSender!==null? (latestMessageSender?.created_at > latestMessageReceiver?.created_at ? latestMessageSender : latestMessageReceiver): latestMessageSender;
 
               console.log("Selected latest message:", latestMessage);
               return latestMessage;
@@ -98,11 +98,10 @@ const [checkSender, setCheckSender]  = useState()
 
         const usersData = await Promise.all(
           filteredMessages.map(async (message) => {
-            console.log(message?.sender_id!==userId);
+            console.log(message?.sender_id===userId);
             if(message?.sender_id===userId){
               setCheckSender(message?.receiver_id)
-            }
-            if(message?.sender_id!==userId){
+            }else{
               setCheckSender(message?.sender_id)
             }
             const { data: userData, error: userError } = await supabase
@@ -113,7 +112,7 @@ const [checkSender, setCheckSender]  = useState()
 
             if (userError) {
               console.error(
-                `Error fetching user data for user ID ${message.sender_id}:`,
+                `Error fetching user data for user ID ${checkSender}:`,
                 userError.message
               );
               return null;
@@ -130,6 +129,7 @@ const [checkSender, setCheckSender]  = useState()
           sender_name: usersData[index]?.nama,
           sender_picture: usersData[index]?.picture,
         }));
+
         console.log(messagesWithUsers);
 
         setMessages(messagesWithUsers);
@@ -173,6 +173,7 @@ const [checkSender, setCheckSender]  = useState()
 
     fetchConversations();
   }, [messages]);
+  
 
   const [userId, setUserId] = useState(null);
   useEffect(()=>{
@@ -185,9 +186,10 @@ const [checkSender, setCheckSender]  = useState()
 
   },[])
 
-
   // Conditional rendering based on path and screen size
   const isChatPath = pathname === "/tanya-apoteker/chat";
+
+  
 
   if ((isChatPath && !isMobile) || (!isChatPath && !isMobile)) {
     return <ListApoteker userId={userId} messages={messages} />;
