@@ -143,7 +143,7 @@ const [checkSender, setCheckSender]  = useState()
             (payload) => {
               const newMessage = payload.new;
               console.log(newMessage);
-              if (newMessage?.receiver_id === userId) {
+              if (newMessage?.receiver_id === userId || newMessage?.sender_id === userId) {
                 // Jika pesan baru diterima, perbarui state messages
                 setMessages((prevMessages) => [
                   ...prevMessages,

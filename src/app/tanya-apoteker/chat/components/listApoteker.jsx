@@ -15,7 +15,7 @@ export default function Listmessages({ messages, userId }) {
     setSearchQuery(event.target.value);
   };
 
-  const getUniqueMessages = (messages) => {
+  const getUniqueMessages = (messages, userId) => {
     const uniqueMessages = [];
     const seenPairs = new Set();
   
@@ -23,7 +23,9 @@ export default function Listmessages({ messages, userId }) {
       const pair1 = `${message.sender_id}-${message.receiver_id}`;
       const pair2 = `${message.receiver_id}-${message.sender_id}`;
   
-      if (!seenPairs.has(pair1) && !seenPairs.has(pair2)) {
+      // Periksa apakah sender_id atau receiver_id cocok dengan userId
+      if ((message.sender_id === userId || message.receiver_id === userId) &&
+          (!seenPairs.has(pair1) && !seenPairs.has(pair2))) {
         uniqueMessages.push(message);
         seenPairs.add(pair1);
         seenPairs.add(pair2);
@@ -47,7 +49,7 @@ export default function Listmessages({ messages, userId }) {
     return unreadCounts;
   };
 
-  const last_message = getUniqueMessages(messages);
+  const last_message = getUniqueMessages(messages, userId);
   const unreadCounts = calculateUnreadCount(messages);
 
   const filteredMessages = useMemo(
@@ -58,7 +60,6 @@ export default function Listmessages({ messages, userId }) {
     [searchQuery, last_message]
   );
 
-  const router = useRouter();
   const handleLinkClick = async (senderId) => {
 
     // Update unread messages to read in the database
@@ -71,11 +72,6 @@ export default function Listmessages({ messages, userId }) {
     if (error) {
       console.error("Error updating messages:", error.message);
     }
-
-    // if (senderId !== userId) {
-    //   router.push(`/tanya-apoteker/chat/${senderId}`);
-    // }
-
   };
 
   return (

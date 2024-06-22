@@ -4,6 +4,8 @@ import { Button, Input, User } from "@nextui-org/react";
 import { ArrowLeft, Send } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { format, formatDistance, formatRelative, subDays } from 'date-fns'
+import idLocale from 'date-fns/locale/id';
 
 export default function Chat({ id, userId }) {
   const [user, setUser] = useState(null);
@@ -92,29 +94,29 @@ export default function Chat({ id, userId }) {
 
   return (
     <div className="flex flex-col max-h-screen">
-      <div className="px-4 z-50 sticky top-0 py-2 bg-gray-300 flex gap-1 items-center">
-        <div className="flex gap-1 items-center">
+      <div className="px-4 z-50 sticky top-0 py-2 bg-white flex gap-1 items-center">
+        <div className="flex gap-1 items-center py-2">
           <Link href={`/apoteker/chat`}>
-            <ArrowLeft cursor={"pointer"} className="sm:hidden" />
+            <ArrowLeft size={37} cursor={"pointer"} className="sm:hidden text-[#EE0037]" />
           </Link>
           <User
-            name={user?.nama}
+            name={(<p className="text-md">{user?.nama}</p>)}
             avatarProps={{
               src:
               user?.picture ||
                 "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
-              size: "sm",
+              size: "md",
             }}
           />
         </div>
       </div>
       
-      <div ref={scrollRef} className="overflow-y-scroll mb-4 scroll-smooth h-screen bg-gray-100 flex justify-center">
+      <div ref={scrollRef} className="overflow-y-scroll mb-4 scroll-smooth h-screen bg-slate-100 border-l-1 flex justify-center">
         <div className="w-full flex pt-9 flex-col items-center">
           {messages.map((msg, index) => (
             <div key={index} className={`relative ${msg.sender_id === userId ? "self-end bg-[#EE0037] text-white" : "self-start bg-white text-black"} text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${msg.sender_id === userId ? "mr-4" : "ml-4"}`}>
               <p className="text-sm pt-1">{msg.message}</p>
-              <p className="text-[0.55rem] px-2 self-end">{new Date(msg.created_at).toLocaleTimeString()}</p>
+              <p className="text-[0.55rem] px-2 self-end">  {format(new Date(msg.created_at), "HH:mm", { locale: idLocale })}</p>
               <div className={`absolute top-0 ${msg.sender_id === userId ? "right-[-8px] border-l-[#EE0037]" : "left-[-8px] border-r-white"} w-0 h-0 border-t-[16px] border-t-transparent border-b-[16px] border-b-transparent`}></div>
             </div>
           ))}
