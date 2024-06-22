@@ -20,7 +20,7 @@ export default function Chat({ id, userId }) {
       .eq("id", id)
       .single();
     if (error) {
-      throw new Error(error.message);
+      return console.log(error);
     }
     setApoteker(data);
   }

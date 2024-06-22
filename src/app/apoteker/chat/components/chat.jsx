@@ -23,7 +23,7 @@ export default function Chat({ id, userId }) {
         .eq("id", id)
         .single();
       if (error) {
-        throw new Error(error.message);
+        return console.log(error);
       }
       if(data){
         console.log(data);

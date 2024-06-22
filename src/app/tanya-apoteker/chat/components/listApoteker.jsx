@@ -3,41 +3,80 @@ import { Input, User } from "@nextui-org/react";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { useState, useMemo } from "react";
+import { createClient } from "@/utils/supabase/client"; // Adjust the import path as needed
+import { useRouter } from "next/navigation";
+
+const supabase = createClient(); // Create Supabase client
 
 export default function Listmessages({ messages, userId }) {
   const [searchQuery, setSearchQuery] = useState("");
-  console.log(messages);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  // Use useMemo to memoize the filtered list based on receiver_id
-  const userMessages = useMemo(() => {
-    return messages?.filter((message) => message.receiver_id === userId || message.sender_id === userId);
-  }, [messages, userId]);
-
-  // Use useMemo to memoize the filtered list to ensure uniqueness
-  const uniqueMessages = useMemo(() => {
-    const unique = {};
-    return userMessages?.filter((message) => {
-      if (!unique[message.sender_name]) {
-        unique[message.sender_name] = true;
-        return true;
+  const getUniqueMessages = (messages) => {
+    const uniqueMessages = [];
+    const seenPairs = new Set();
+  
+    messages.forEach((message) => {
+      const pair1 = `${message.sender_id}-${message.receiver_id}`;
+      const pair2 = `${message.receiver_id}-${message.sender_id}`;
+  
+      if (!seenPairs.has(pair1) && !seenPairs.has(pair2)) {
+        uniqueMessages.push(message);
+        seenPairs.add(pair1);
+        seenPairs.add(pair2);
       }
-      return false;
     });
-  }, [userMessages]);
+  
+    return uniqueMessages;
+  };
 
-  // Use useMemo to memoize the filtered list based on search query
+  const calculateUnreadCount = (messages) => {
+    const unreadCounts = {};
+    messages.forEach((message) => {
+      if (!message.read_at && message.receiver_id === userId) {
+        const senderId = message.sender_id;
+        if (!unreadCounts[senderId]) {
+          unreadCounts[senderId] = 0;
+        }
+        unreadCounts[senderId]++;
+      }
+    });
+    return unreadCounts;
+  };
+
+  const last_message = getUniqueMessages(messages);
+  const unreadCounts = calculateUnreadCount(messages);
+
   const filteredMessages = useMemo(
     () =>
-      uniqueMessages?.filter((message) =>
+      last_message?.filter((message) =>
         message?.sender_name?.toLowerCase().includes(searchQuery.toLowerCase())
       ),
-    [searchQuery, uniqueMessages]
+    [searchQuery, last_message]
   );
-  console.log(filteredMessages);
+
+  const router = useRouter();
+  const handleLinkClick = async (senderId) => {
+
+    // Update unread messages to read in the database
+    const { error } = await supabase
+      .from("messages")
+      .update({ read_at: new Date() })
+      .or(`sender_id.eq.${senderId},receiver_id.eq.${senderId}`)
+      .is("read_at", null);
+
+    if (error) {
+      console.error("Error updating messages:", error.message);
+    }
+
+    // if (senderId !== userId) {
+    //   router.push(`/tanya-apoteker/chat/${senderId}`);
+    // }
+
+  };
 
   return (
     <div
@@ -53,33 +92,39 @@ export default function Listmessages({ messages, userId }) {
         className="mb-2"
       />
 
+      <div className="flex flex-col gap-1">
+
       {filteredMessages.map((message, index) => (
         <Link
           key={index}
           href={
-            message.sender_id !== userId
+            message?.sender_id !== userId
               ? `/tanya-apoteker/chat/${message.sender_id}`
               : `/tanya-apoteker/chat/${message.receiver_id}`
           }
-          className="flex justify-between px-2 py-4"
+          className={`flex justify-between px-2 py-4 shadow-sm border-b-1 rounded-md border-gray-100 ${unreadCounts[message.sender_id] > 0 ? "bg-gray-100" : "bg-white"}`}
+          onClick={() => handleLinkClick(message.sender_id)}
         >
           <User
-            name={message.sender_name}
-            description={message.message}
+          className={unreadCounts[message.sender_id] > 0 ? "font-bold" : "font-normal"}
+            name={ message.sender_name}
+            description={(<p className="text-sm">{message.message}</p>)}
             avatarProps={{
               src:
                 message.sender_picture ||
                 "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
-              size: "sm",
+              size: "md",
             }}
           />
-          <div>
-            {/* <Chip size="sm" color="danger">
-              {message.message_count}
-            </Chip> */}
-          </div>
+          {unreadCounts[message.sender_id] > 0 && (
+            <div className="flex flex-col justify-center items-center">
+              <div className="bg-red-500 animate-pulse text-white rounded-full p-1 text-xs">
+              </div>
+            </div>
+          )}
         </Link>
       ))}
+      </div>
     </div>
   );
 }

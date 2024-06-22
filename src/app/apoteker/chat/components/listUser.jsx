@@ -82,8 +82,10 @@ const [checkSender, setCheckSender]  = useState()
 
               const latestMessage = latestMessageReceiver&&latestMessageSender!==null? (latestMessageSender?.created_at > latestMessageReceiver?.created_at ? latestMessageSender : latestMessageReceiver): latestMessageSender;
 
+              const latestMessagex = latestMessageSender || latestMessageReceiver;
               console.log("Selected latest message:", latestMessage);
-              return latestMessage;
+              console.log(latestMessagex)
+              return latestMessagex;
           })
         );
 
