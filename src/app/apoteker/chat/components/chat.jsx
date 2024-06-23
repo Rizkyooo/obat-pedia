@@ -2,8 +2,7 @@
 import { createClient } from "@/utils/supabase/client";
 import { Button, Input, User } from "@nextui-org/react";
 import { ArrowLeft, Send } from "lucide-react";
-import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 import idLocale from 'date-fns/locale/id';
 
@@ -80,6 +79,9 @@ export default function Chat({ id, userId }) {
   }, [messages]);
   console.log(messages);
 
+  const memoizedMessages = useMemo(() => messages, [messages]);
+  const memoizeUser = useMemo(() => user, [user]);
+
   const handleSendMessage = async () => {
     if (inputMessage.trim() === "") return;
     const { data, error } = await supabase
@@ -96,14 +98,14 @@ export default function Chat({ id, userId }) {
     <div className="flex flex-col max-h-screen">
       <div className="px-4 z-50 sticky top-0 py-2 bg-white flex gap-1 items-center">
         <div className="flex gap-1 items-center py-2">
-          <Link href={`/apoteker/chat`}>
+          <div onClick={() => window.history.back()}>
             <ArrowLeft size={37} cursor={"pointer"} className="sm:hidden text-[#EE0037]" />
-          </Link>
+          </div>
           <User
-            name={(<p className="text-md">{user?.nama}</p>)}
+            name={(<p className="text-md">{memoizeUser?.nama}</p>)}
             avatarProps={{
               src:
-              user?.picture ||
+              memoizeUser?.picture ||
                 "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
               size: "md",
             }}
@@ -113,7 +115,7 @@ export default function Chat({ id, userId }) {
       
       <div ref={scrollRef} className="overflow-y-scroll mb-4 scroll-smooth h-screen bg-slate-100 border-l-1 flex justify-center">
         <div className="w-full flex pt-9 flex-col items-center">
-          {messages.map((msg, index) => (
+          {memoizedMessages.map((msg, index) => (
             <div key={index} className={`relative ${msg.sender_id === userId ? "self-end bg-[#EE0037] text-white" : "self-start bg-white text-black"} text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${msg.sender_id === userId ? "mr-4" : "ml-4"}`}>
               <p className="text-sm pt-1">{msg.message}</p>
               <p className="text-[0.55rem] px-2 self-end">  {format(new Date(msg.created_at), "HH:mm", { locale: idLocale })}</p>

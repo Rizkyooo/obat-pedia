@@ -1,14 +1,20 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import ListApoteker from "./listApoteker";
 import { createClient } from "@/utils/supabase/client";
 import { getUser } from "@/libs/actions";
 
+import toast from "react-hot-toast";
+
 export default function ListUser() {
   const pathname = usePathname();
   const [isMobile, setIsMobile] = useState(false);
   const supabase = createClient();
+  useEffect(() => {
+    // Meminta izin notifikasi dari pengguna
+    Notification.requestPermission();
+  }, []);
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 640); // Tailwind's sm breakpoint is 640px
@@ -117,6 +123,7 @@ export default function ListUser() {
             { event: "INSERT", schema: "public", table: "messages" },
             (payload) => {
               const newMessage = payload.new;
+              console.log(newMessage);
               if (
                 newMessage?.receiver_id === userId ||
                 newMessage?.sender_id === userId
@@ -138,10 +145,17 @@ export default function ListUser() {
                     },
                   },
                 ]);
+                console.log(newMessage);
+                if(newMessage?.receiver_id === userId){
+                  toast('pesan baru: '+newMessage?.message, {duration: 3000});
+                  showNotification(newMessage);
+                }
               }
             }
-          )
-          .subscribe();
+            )
+            .subscribe();
+
+            
 
         // Cleanup subscription
         return () => {
@@ -156,6 +170,22 @@ export default function ListUser() {
     fetchUser();
   }, [messages]);
 
+  const showNotification = (message) => {
+    console.log(message); 
+    if (Notification.permission === "granted") {
+      const notification = new Notification('New Message', {
+        body: `pesan: ${message?.message}`,
+        icon: message?.senderProfile?.picture || 'https://example.com/default-profile-picture.png', // Ganti dengan URL gambar profil jika ada
+      });
+  
+      // Atur event listener jika pengguna mengklik notifikasi
+      notification.onclick = () => {
+        // Implementasikan navigasi atau tindakan yang sesuai saat notifikasi diklik
+        console.log('Notification clicked');
+      };
+    }
+  };
+
   async function fetchUser() {
     const user = await getUser();
     setUserId(user?.id);
@@ -165,11 +195,13 @@ export default function ListUser() {
  
   const isChatPath = pathname === "/apoteker/chat";
 
+  
+  const memoizedMessages = useMemo(() => messages, [messages]);
   if ((isChatPath && !isMobile) || (!isChatPath && !isMobile)) {
-    return <ListApoteker userId={userId} messages={messages} />;
+    return <ListApoteker userId={userId} messages={memoizedMessages} />;
   }
   if (isChatPath && isMobile) {
-    return <ListApoteker userId={userId} messages={messages} />;
+    return <ListApoteker userId={userId} messages={memoizedMessages} />;
   }
   return null;
 }

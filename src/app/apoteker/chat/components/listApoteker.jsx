@@ -56,8 +56,8 @@ export default function Listmessages({ messages, userId }) {
 
   return (
     <div
-      className="w-full sm:w-2/4 sm:flex flex-col bg-white px-6 py-4"
-      style={{ height: "calc(100vh - 65px)" }}
+      className="w-full overflow-scroll sm:w-2/4 sm:flex flex-col bg-white px-6 py-4"
+      style={{ height: "calc(100vh - 0px)" }}
     >
       <Input
       size="md"
