@@ -10,29 +10,10 @@ const supabase = createClient(); // Create Supabase client
 
 export default function Listmessages({ messages, userId }) {
   const [searchQuery, setSearchQuery] = useState("");
+  console.log(messages);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
-  };
-
-  const getUniqueMessages = (messages, userId) => {
-    const uniqueMessages = [];
-    const seenPairs = new Set();
-  
-    messages.forEach((message) => {
-      const pair1 = `${message.sender_id}-${message.receiver_id}`;
-      const pair2 = `${message.receiver_id}-${message.sender_id}`;
-  
-      // Periksa apakah sender_id atau receiver_id cocok dengan userId
-      if ((message.sender_id === userId || message.receiver_id === userId) &&
-          (!seenPairs.has(pair1) && !seenPairs.has(pair2))) {
-        uniqueMessages.push(message);
-        seenPairs.add(pair1);
-        seenPairs.add(pair2);
-      }
-    });
-  
-    return uniqueMessages;
   };
 
   const calculateUnreadCount = (messages) => {
@@ -49,15 +30,14 @@ export default function Listmessages({ messages, userId }) {
     return unreadCounts;
   };
 
-  const last_message = getUniqueMessages(messages, userId);
   const unreadCounts = calculateUnreadCount(messages);
 
   const filteredMessages = useMemo(
     () =>
-      last_message?.filter((message) =>
-        message?.sender_name?.toLowerCase().includes(searchQuery.toLowerCase())
+      messages?.filter((message) =>
+        message?.senderProfile.nama?.toLowerCase().includes(searchQuery.toLowerCase())
       ),
-    [searchQuery, last_message]
+    [searchQuery, messages]
   );
 
   const handleLinkClick = async (senderId) => {
@@ -76,13 +56,14 @@ export default function Listmessages({ messages, userId }) {
 
   return (
     <div
-      className="w-full shadow-md sm:w-1/3 sm:flex flex-col bg-white px-6 py-4"
+      className="w-full sm:w-2/4 sm:flex flex-col bg-white px-6 py-4"
       style={{ height: "calc(100vh - 65px)" }}
     >
       <Input
+      size="md"
         onChange={handleSearchChange}
         startContent={<Search size={20} opacity={0.5} />}
-        placeholder="cari messages"
+        placeholder="cari pesan"
         type="search"
         variant="bordered"
         className="mb-2"
@@ -95,21 +76,21 @@ export default function Listmessages({ messages, userId }) {
           key={index}
           href={
             message?.sender_id !== userId
-              ? `/tanya-apoteker/chat/${message.sender_id}`
-              : `/tanya-apoteker/chat/${message.receiver_id}`
+              ? `/tanya-apoteker/chat/${message.senderProfile?.id}`
+              : `/tanya-apoteker/chat/${message.senderProfile?.id}`
           }
           className={`flex justify-between px-2 py-4 shadow-sm border-b-1 rounded-md border-gray-100 ${unreadCounts[message.sender_id] > 0 ? "bg-gray-100" : "bg-white"}`}
-          onClick={() => handleLinkClick(message.sender_id)}
+          onClick={() => handleLinkClick(message?.sender_id)}
         >
           <User
           className={unreadCounts[message.sender_id] > 0 ? "font-bold" : "font-normal"}
-            name={ message.sender_name}
-            description={(<p className="text-sm">{message.message}</p>)}
+          name={(<p className="text-md font-medium"> {message?.senderProfile?.nama}</p>)}
+            description={(<p className="text-md">{message.message}</p>)}
             avatarProps={{
               src:
-                message.sender_picture ||
+                message.senderProfile?.picture ||
                 "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
-              size: "md",
+              size: "lg",
             }}
           />
           {unreadCounts[message.sender_id] > 0 && (

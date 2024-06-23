@@ -16,26 +16,6 @@ export default function Listmessages({ messages, userId }) {
     setSearchQuery(event.target.value);
   };
 
-  const getUniqueMessages = (messages, userId) => {
-    const uniqueMessages = [];
-    const seenPairs = new Set();
-  
-    messages.forEach((message) => {
-      const pair1 = `${message.sender_id}-${message.receiver_id}`;
-      const pair2 = `${message.receiver_id}-${message.sender_id}`;
-  
-      // Periksa apakah sender_id atau receiver_id cocok dengan userId
-      if ((message.sender_id === userId || message.receiver_id === userId) &&
-          (!seenPairs.has(pair1) && !seenPairs.has(pair2))) {
-        uniqueMessages.push(message);
-        seenPairs.add(pair1);
-        seenPairs.add(pair2);
-      }
-    });
-  
-    return uniqueMessages;
-  };
-
   const calculateUnreadCount = (messages) => {
     const unreadCounts = {};
     messages.forEach((message) => {
@@ -50,19 +30,16 @@ export default function Listmessages({ messages, userId }) {
     return unreadCounts;
   };
 
-  const last_message = getUniqueMessages(messages, userId);
-  console.log(last_message);
   const unreadCounts = calculateUnreadCount(messages);
 
   const filteredMessages = useMemo(
     () =>
-      last_message?.filter((message) =>
-        message?.sender_name?.toLowerCase().includes(searchQuery.toLowerCase())
+      messages?.filter((message) =>
+        message?.senderProfile.nama?.toLowerCase().includes(searchQuery.toLowerCase())
       ),
-    [searchQuery, last_message]
+    [searchQuery, messages]
   );
 
-  const router = useRouter();
   const handleLinkClick = async (senderId) => {
 
     // Update unread messages to read in the database
@@ -75,11 +52,6 @@ export default function Listmessages({ messages, userId }) {
     if (error) {
       console.error("Error updating messages:", error.message);
     }
-
-    // if (senderId !== userId) {
-    //   router.push(`apoteker/chat/${senderId}`);
-    // }
-
   };
 
   return (
@@ -104,19 +76,19 @@ export default function Listmessages({ messages, userId }) {
           key={index}
           href={
             message?.sender_id !== userId
-              ? `/apoteker/chat/${message.sender_id}`
-              : `/apoteker/chat/${message.receiver_id}`
+              ? `/apoteker/chat/${message.senderProfile?.id}`
+              : `/apoteker/chat/${message.senderProfile?.id}`
           }
           className={`flex justify-between px-2 py-4 shadow-sm border-b-1 rounded-md border-gray-100 ${unreadCounts[message.sender_id] > 0 ? "bg-gray-100" : "bg-white"}`}
-          onClick={() => handleLinkClick(message.sender_id)}
+          onClick={() => handleLinkClick(message?.sender_id)}
         >
           <User
           className={unreadCounts[message.sender_id] > 0 ? "font-bold" : "font-normal"}
-          name={(<p className="text-md font-medium"> {message?.sender_name}</p>)}
+          name={(<p className="text-md font-medium"> {message?.senderProfile?.nama}</p>)}
             description={(<p className="text-md">{message.message}</p>)}
             avatarProps={{
               src:
-                message.sender_picture ||
+                message.senderProfile?.picture ||
                 "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
               size: "lg",
             }}

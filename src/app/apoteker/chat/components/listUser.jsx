@@ -9,7 +9,6 @@ export default function ListUser() {
   const pathname = usePathname();
   const [isMobile, setIsMobile] = useState(false);
   const supabase = createClient();
-const [checkSender, setCheckSender]  = useState()
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 640); // Tailwind's sm breakpoint is 640px
@@ -38,9 +37,11 @@ const [checkSender, setCheckSender]  = useState()
       try {
         const user = await getUser();
         const userId = user?.id;
+
+        // If userId does not exist, return early
         if (!userId) return;
 
-        // Ambil semua pesan yang melibatkan pengguna saat ini sebagai penerima
+        // Fetch all messages involving the current user as sender or receiver
         const { data: receivedMessages, error } = await supabase
           .from("messages")
           .select("*")
@@ -52,87 +53,61 @@ const [checkSender, setCheckSender]  = useState()
           return [];
         }
 
-        // Ambil pengirim pesan unik dari pesan yang diterima
-        const uniqueSenders = Array.from(
-          new Set(receivedMessages.map((msg) => msg.sender_id))
-        );
+        // Extract sender IDs from received messages
+        const senderIds = receivedMessages
+          .map((msg) => msg.sender_id)
+          .filter(
+            (value, index, self) =>
+              self.indexOf(value) === index && value !== userId
+          );
 
-        // Ambil pesan terbaru dari setiap pengirim
-        const latestMessages = await Promise.all(
-          uniqueSenders.map(async (senderId) => {
-            // Query untuk mencari pesan terakhir dari sender ke user saat ini
-            const { data: latestMessageSender } = await supabase
-              .from("messages")
-              .select("*")
-              .eq("sender_id", senderId)
-              .order("created_at", { ascending: false })
-              .limit(1)
-              .single();
+        // Fetch profiles of senders
+        const { data: senderProfiles, error: profileError } = await supabase
+          .from("pengguna")
+          .select("*")
+          .in("id", senderIds);
 
-            // Query untuk mencari pesan terakhir dari user saat ini kepada sender
-            const { data: latestMessageReceiver } = await supabase
-              .from("messages")
-              .select("*")
-              .eq("receiver_id", senderId)
-              .order("created_at", { ascending: false })
-              .limit(1)
-              .single();
+        if (profileError) {
+          console.error(
+            "Error fetching sender profiles:",
+            profileError.message
+          );
+          return [];
+        }
 
-              console.log(latestMessageSender, latestMessageReceiver);
+        // Combine messages with sender profiles
+        const messagesWithProfiles = receivedMessages.map((msg) => {
+          const senderProfile = senderProfiles.find(
+            (profile) =>
+              profile.id === msg.sender_id || profile.id === msg.receiver_id
+          );
+          return {
+            ...msg,
+            senderProfile,
+          };
+        });
 
-              const latestMessage = latestMessageReceiver&&latestMessageSender!==null? (latestMessageSender?.created_at > latestMessageReceiver?.created_at ? latestMessageSender : latestMessageReceiver): latestMessageSender;
+        // Create a map to store the latest message for each conversation
+        const latestMessages = {};
 
-              const latestMessagex = latestMessageSender || latestMessageReceiver;
-              console.log("Selected latest message:", latestMessage);
-              console.log(latestMessagex)
-              return latestMessagex;
-          })
-        );
+        messagesWithProfiles.forEach((msg) => {
+          const otherUserId =
+            msg.sender_id === userId ? msg.receiver_id : msg.sender_id;
+          if (
+            !latestMessages[otherUserId] ||
+            new Date(msg.created_at) >
+              new Date(latestMessages[otherUserId].created_at)
+          ) {
+            latestMessages[otherUserId] = msg;
+          }
+        });
 
-        // Filter pesan yang tidak null (tidak ada pesan terbaru dari sender ke user saat ini)
-        const filteredMessages = latestMessages.filter((msg) => msg !== null);
+        // Convert the map to an array of messages
+        const latestMessagesArray = Object.values(latestMessages);
 
-        console.log(filteredMessages);
+        // Log the result
 
-        // Ambil informasi pengguna (user) berdasarkan sender_id dari pesan-pesan terbaru
-
-        const usersData = await Promise.all(
-          filteredMessages.map(async (message) => {
-            console.log(message?.sender_id===userId);
-            if(message?.sender_id===userId){
-              setCheckSender(message?.receiver_id)
-            }else{
-              setCheckSender(message?.sender_id)
-            }
-            const { data: userData, error: userError } = await supabase
-              .from("pengguna")
-              .select("id, nama, picture")
-              .or(`id.eq.${message?.sender_id},id.eq.${message?.receiver_id}`)
-              .single();
-
-            if (userError) {
-              console.error(
-                `Error fetching user data for user ID ${checkSender}:`,
-                userError.message
-              );
-              return null;
-            }
-
-            console.log(userData);
-            return userData;
-          })
-        );
-
-        // Gabungkan informasi pengguna dengan pesan-pesan terbaru
-        const messagesWithUsers = filteredMessages.map((msg, index) => ({
-          ...msg,
-          sender_name: usersData[index]?.nama,
-          sender_picture: usersData[index]?.picture,
-        }));
-
-        console.log(messagesWithUsers);
-
-        setMessages(messagesWithUsers);
+        setMessages(latestMessagesArray);
 
         // Subscribe untuk update real-time dari tabel messages
         const subscription = supabase
@@ -142,19 +117,25 @@ const [checkSender, setCheckSender]  = useState()
             { event: "INSERT", schema: "public", table: "messages" },
             (payload) => {
               const newMessage = payload.new;
-              console.log(newMessage);
-              if (newMessage?.receiver_id === userId || newMessage?.sender_id === userId) {
-                // Jika pesan baru diterima, perbarui state messages
+              if (
+                newMessage?.receiver_id === userId ||
+                newMessage?.sender_id === userId
+              ) {
+                // Find sender's profile
+                const senderProfile = senderProfiles.find(
+                  (profile) => profile.id === newMessage.sender_id
+                );
+
+                // Update messages state with new message and sender's profile
                 setMessages((prevMessages) => [
                   ...prevMessages,
                   {
                     ...newMessage,
-                    sender_name: usersData?.find(
-                      (user) => user?.id === newMessage?.sender_id
-                    )?.nama,
-                    sender_picture: usersData?.find(
-                      (user) => user?.id === newMessage?.sender_id
-                    )?.picture,
+                    senderProfile: {
+                      id: senderProfile?.id,
+                      nama: senderProfile?.nama,
+                      picture: senderProfile?.picture,
+                    },
                   },
                 ]);
               }
@@ -172,25 +153,17 @@ const [checkSender, setCheckSender]  = useState()
     }
 
     fetchConversations();
+    fetchUser();
   }, [messages]);
-  console.log(messages);
-  
+
+  async function fetchUser() {
+    const user = await getUser();
+    setUserId(user?.id);
+  }
 
   const [userId, setUserId] = useState(null);
-  useEffect(()=>{
-    async function fetchUser(){
-      const user = await getUser();
-      setUserId(user.id);
-    }
-
-    fetchUser();
-
-  },[])
-
-  // Conditional rendering based on path and screen size
+ 
   const isChatPath = pathname === "/apoteker/chat";
-
-  
 
   if ((isChatPath && !isMobile) || (!isChatPath && !isMobile)) {
     return <ListApoteker userId={userId} messages={messages} />;
