@@ -70,7 +70,7 @@ export default function Chat({ id, userId }) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [userId, id]);
 
   useEffect(() => {
     if (scrollRef.current) {
