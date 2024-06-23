@@ -4,7 +4,6 @@ import { Search } from "lucide-react";
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import { createClient } from "@/utils/supabase/client"; // Adjust the import path as needed
-import { useRouter } from "next/navigation";
 
 const supabase = createClient(); // Create Supabase client
 
