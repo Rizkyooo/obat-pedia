@@ -148,7 +148,7 @@ export default function ListUser() {
                 console.log(newMessage);
                 if(newMessage?.receiver_id === userId){
                   toast('pesan baru: '+newMessage?.message, {duration: 3000});
-                  showNotification(newMessage);
+                  // showNotification(newMessage);
                 }
               }
             }
@@ -170,21 +170,21 @@ export default function ListUser() {
     fetchUser();
   }, [messages]);
 
-  const showNotification = (message) => {
-    console.log(message); 
-    if (Notification.permission === "granted") {
-      const notification = new Notification('New Message', {
-        body: `pesan: ${message?.message}`,
-        icon: message?.senderProfile?.picture || 'https://example.com/default-profile-picture.png', // Ganti dengan URL gambar profil jika ada
-      });
+  // const showNotification = (message) => {
+  //   console.log(message); 
+  //   if (Notification.permission === "granted") {
+  //     const notification = new Notification('New Message', {
+  //       body: `pesan: ${message?.message}`,
+  //       icon: message?.senderProfile?.picture || 'https://example.com/default-profile-picture.png', // Ganti dengan URL gambar profil jika ada
+  //     });
   
-      // Atur event listener jika pengguna mengklik notifikasi
-      notification.onclick = () => {
-        // Implementasikan navigasi atau tindakan yang sesuai saat notifikasi diklik
-        console.log('Notification clicked');
-      };
-    }
-  };
+  //     // Atur event listener jika pengguna mengklik notifikasi
+  //     notification.onclick = () => {
+  //       // Implementasikan navigasi atau tindakan yang sesuai saat notifikasi diklik
+  //       console.log('Notification clicked');
+  //     };
+  //   }
+  // };
 
   async function fetchUser() {
     const user = await getUser();
