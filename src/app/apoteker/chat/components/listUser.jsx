@@ -12,8 +12,9 @@ export default function ListUser() {
   const [isMobile, setIsMobile] = useState(false);
   const supabase = createClient();
   useEffect(() => {
-    // Meminta izin notifikasi dari pengguna
-    Notification.requestPermission();
+    if (window.Notification && Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
   }, []);
   useEffect(() => {
     const handleResize = () => {

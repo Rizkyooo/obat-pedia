@@ -12,8 +12,9 @@ export default function ListUser() {
   const [isMobile, setIsMobile] = useState(false);
   const supabase = createClient();
   useEffect(() => {
-    // Meminta izin notifikasi dari pengguna
-    Notification.requestPermission();
+    if (window.Notification && Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
   }, []);
   useEffect(() => {
     const handleResize = () => {
@@ -123,7 +124,6 @@ export default function ListUser() {
             { event: "INSERT", schema: "public", table: "messages" },
             (payload) => {
               const newMessage = payload.new;
-              console.log(newMessage);
               if (
                 newMessage?.receiver_id === userId ||
                 newMessage?.sender_id === userId
@@ -145,17 +145,22 @@ export default function ListUser() {
                     },
                   },
                 ]);
-                console.log(newMessage);
-                if(newMessage?.receiver_id === userId){
-                  toast('pesan baru: '+newMessage?.message, {duration: 3000});
-                  // showNotification(newMessage);
+                if (newMessage?.receiver_id === userId) {
+                  toast(
+                    <span>
+                      pesan baru:
+                      <span className="font-bold">{` ${newMessage?.message}`}</span>
+                    </span>,
+                    {
+                      duration: 6000,
+                    }
+                  );
+                  showNotification(newMessage);
                 }
               }
             }
-            )
-            .subscribe();
-
-            
+          )
+          .subscribe();
 
         // Cleanup subscription
         return () => {
@@ -170,21 +175,22 @@ export default function ListUser() {
     fetchUser();
   }, [messages]);
 
-  // const showNotification = (message) => {
-  //   console.log(message); 
-  //   if (Notification.permission === "granted") {
-  //     const notification = new Notification('New Message', {
-  //       body: `pesan: ${message?.message}`,
-  //       icon: message?.senderProfile?.picture || 'https://example.com/default-profile-picture.png', // Ganti dengan URL gambar profil jika ada
-  //     });
-  
-  //     // Atur event listener jika pengguna mengklik notifikasi
-  //     notification.onclick = () => {
-  //       // Implementasikan navigasi atau tindakan yang sesuai saat notifikasi diklik
-  //       console.log('Notification clicked');
-  //     };
-  //   }
-  // };
+  const showNotification = (message) => {
+    if (Notification.permission === "granted") {
+      const notification = new Notification("Tanya Apoteker", {
+        body: `pesan: ${message?.message}`,
+        icon:
+          message?.senderProfile?.picture ||
+          "https://example.com/default-profile-picture.png", // Ganti dengan URL gambar profil jika ada
+      });
+
+      // Atur event listener jika pengguna mengklik notifikasi
+      notification.onclick = () => {
+        // Implementasikan navigasi atau tindakan yang sesuai saat notifikasi diklik
+        console.log("Notification clicked");
+      };
+    }
+  };
 
   async function fetchUser() {
     const user = await getUser();
@@ -192,10 +198,9 @@ export default function ListUser() {
   }
 
   const [userId, setUserId] = useState(null);
- 
+
   const isChatPath = pathname === "/tanya-apoteker/chat";
 
-  
   const memoizedMessages = useMemo(() => messages, [messages]);
   if ((isChatPath && !isMobile) || (!isChatPath && !isMobile)) {
     return <ListApoteker userId={userId} messages={memoizedMessages} />;

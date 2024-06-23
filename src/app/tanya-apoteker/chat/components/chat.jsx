@@ -4,7 +4,7 @@ import { Button, Input, User } from "@nextui-org/react";
 import { ArrowLeft, Send } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { format} from 'date-fns'
-import idLocale from 'date-fns/locale/id';
+import { id as localeID } from "date-fns/locale";
 import { useRouter } from "next/navigation";
 
 export default function Chat({ id, userId }) {
@@ -117,7 +117,7 @@ const router = useRouter()
           {messages.map((msg, index) => (
             <div key={index} className={`relative ${msg?.sender_id === userId ? "self-end bg-[#EE0037] text-white" : "self-start bg-white text-black"} text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${msg.sender_id === userId ? "mr-4" : "ml-4"}`}>
               <p className="text-sm pt-1">{msg?.message}</p>
-              <p className="text-[0.55rem] px-2 self-end">  {format(new Date(msg.created_at), "HH:mm", { locale: idLocale })}</p>
+              <p className="text-[0.55rem] px-2 self-end">  {format(new Date(msg.created_at), "HH:mm", { locale: localeID }, { timeZone: "Asia/Jakarta" })}</p>
               <div className={`absolute top-0 ${msg?.sender_id === userId ? "right-[-8px] border-l-[#EE0037]" : "left-[-8px] border-r-white"} w-0 h-0 border-t-[16px] border-t-transparent border-b-[16px] border-b-transparent`}></div>
             </div>
           ))}
