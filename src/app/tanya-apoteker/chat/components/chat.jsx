@@ -73,8 +73,8 @@ export default function Chat({ id, userId }) {
   }, []);
 
   useEffect(() => {
-    if (scrollRef?.current) {
-      scrollRef?.current?.scrollTop = scrollRef?.current?.scrollHeight;
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     } 
   }, [messages]);
 
