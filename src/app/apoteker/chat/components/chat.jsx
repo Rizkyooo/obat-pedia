@@ -46,7 +46,7 @@ export default function Chat({ id, userId }) {
       .order('created_at', { ascending: true });
     if (error) {
       console.log(error);
-      throw new Error(error.message);
+      throw new Error(error?.message);
     }
     console.log(data);
     setMessages(data);
@@ -60,9 +60,9 @@ export default function Chat({ id, userId }) {
     const channel = supabase
     .channel('messages')
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
-      if ((payload.new.sender_id === userId && payload.new.receiver_id === id) || 
-          (payload.new.sender_id === id && payload.new.receiver_id === userId)) {
-        setMessages((prevMessages) => [...prevMessages, payload.new]);
+      if ((payload?.new?.sender_id === userId && payload?.new?.receiver_id === id) || 
+          (payload?.new?.sender_id === id && payload?.new?.receiver_id === userId)) {
+        setMessages((prevMessages) => [...prevMessages, payload?.new]);
       }
     })
     .subscribe();
@@ -73,8 +73,8 @@ export default function Chat({ id, userId }) {
   }, [id, userId]);
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    if (scrollRef?.current) {
+      scrollRef?.current?.scrollTop = scrollRef.current.scrollHeight;
     } 
   }, [messages]);
   console.log(messages);
@@ -102,7 +102,7 @@ export default function Chat({ id, userId }) {
             <ArrowLeft size={37} cursor={"pointer"} className="sm:hidden text-[#EE0037]" />
           </div>
           <User
-            name={(<p className="text-md">{memoizeUser?.nama}</p>)}
+            name={(<p className="text-md">{user?.nama}</p>)}
             avatarProps={{
               src:
               user?.picture ||
@@ -116,10 +116,10 @@ export default function Chat({ id, userId }) {
       <div ref={scrollRef} className="overflow-y-scroll mb-4 scroll-smooth h-screen bg-slate-100 border-l-1 flex justify-center">
         <div className="w-full flex pt-9 flex-col items-center">
           {messages.map((msg, index) => (
-            <div key={index} className={`relative ${msg.sender_id === userId ? "self-end bg-[#EE0037] text-white" : "self-start bg-white text-black"} text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${msg.sender_id === userId ? "mr-4" : "ml-4"}`}>
-              <p className="text-sm pt-1">{msg.message}</p>
-              <p className="text-[0.55rem] px-2 self-end">  {format(new Date(msg.created_at), "HH:mm", { locale: idLocale })}</p>
-              <div className={`absolute top-0 ${msg.sender_id === userId ? "right-[-8px] border-l-[#EE0037]" : "left-[-8px] border-r-white"} w-0 h-0 border-t-[16px] border-t-transparent border-b-[16px] border-b-transparent`}></div>
+            <div key={index} className={`relative ${msg?.sender_id === userId ? "self-end bg-[#EE0037] text-white" : "self-start bg-white text-black"} text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${msg?.sender_id === userId ? "mr-4" : "ml-4"}`}>
+              <p className="text-sm pt-1">{msg?.message}</p>
+              <p className="text-[0.55rem] px-2 self-end">  {format(new Date(msg?.created_at), "HH:mm", { locale: idLocale })}</p>
+              <div className={`absolute top-0 ${msg?.sender_id === userId ? "right-[-8px] border-l-[#EE0037]" : "left-[-8px] border-r-white"} w-0 h-0 border-t-[16px] border-t-transparent border-b-[16px] border-b-transparent`}></div>
             </div>
           ))}
         </div>
