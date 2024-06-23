@@ -19,7 +19,7 @@ export default function Listmessages({ messages, userId }) {
   const calculateUnreadCount = (messages) => {
     const unreadCounts = {};
     messages.forEach((message) => {
-      if (!message.read_at && message.receiver_id === userId) {
+      if (!message?.read_at && message?.receiver_id === userId) {
         const senderId = message.sender_id;
         if (!unreadCounts[senderId]) {
           unreadCounts[senderId] = 0;
@@ -35,7 +35,7 @@ export default function Listmessages({ messages, userId }) {
   const filteredMessages = useMemo(
     () =>
       messages?.filter((message) =>
-        message?.senderProfile.nama?.toLowerCase().includes(searchQuery.toLowerCase())
+        message?.senderProfile?.nama?.toLowerCase().includes(searchQuery.toLowerCase())
       ),
     [searchQuery, messages]
   );
@@ -83,17 +83,17 @@ export default function Listmessages({ messages, userId }) {
           onClick={() => handleLinkClick(message?.sender_id)}
         >
           <User
-          className={unreadCounts[message.sender_id] > 0 ? "font-bold" : "font-normal"}
+          className={unreadCounts[message?.sender_id] > 0 ? "font-bold" : "font-normal"}
           name={(<p className="text-md font-medium"> {message?.senderProfile?.nama}</p>)}
-            description={(<p className="text-md">{message.message}</p>)}
+            description={(<p className="text-md">{message?.message}</p>)}
             avatarProps={{
               src:
-                message.senderProfile?.picture ||
+                message?.senderProfile?.picture ||
                 "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
               size: "lg",
             }}
           />
-          {unreadCounts[message.sender_id] > 0 && (
+          {unreadCounts[message?.sender_id] > 0 && (
             <div className="flex flex-col justify-center items-center">
               <div className="bg-red-500 animate-pulse text-white rounded-full p-1 text-xs">
               </div>
