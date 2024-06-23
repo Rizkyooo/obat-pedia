@@ -55,9 +55,12 @@ export default function LoginPage() {
       console.log(user);
       setIsLoading(false);
       onOpen();
+      setRedirectMessage("Tunggu Sebentar...");
       checkRole();
     }
   };
+
+  const [redirectMessage, setRedirectMessage] = useState("");
   const checkRole = async () => {
     const user = await getUser();
     const role = user?.user_metadata?.role;
@@ -169,7 +172,8 @@ export default function LoginPage() {
                 ) : (
                   <div className="flex flex-col justify-center items-center gap-2">
                   <Image className="animate-bounce" width={100} src="./images/happy-face.png" alt="error" />
-                  <p>Berhasil Login</p>
+                  <p>"login berhasil"</p>
+                  <p>{redirectMessage}</p>
                 </div>
                 )}
               </ModalBody>

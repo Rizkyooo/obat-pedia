@@ -105,7 +105,7 @@ export default function Chat({ id, userId }) {
             name={(<p className="text-md">{memoizeUser?.nama}</p>)}
             avatarProps={{
               src:
-              memoizeUser?.picture ||
+              user?.picture ||
                 "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
               size: "md",
             }}
@@ -115,7 +115,7 @@ export default function Chat({ id, userId }) {
       
       <div ref={scrollRef} className="overflow-y-scroll mb-4 scroll-smooth h-screen bg-slate-100 border-l-1 flex justify-center">
         <div className="w-full flex pt-9 flex-col items-center">
-          {memoizedMessages.map((msg, index) => (
+          {messages.map((msg, index) => (
             <div key={index} className={`relative ${msg.sender_id === userId ? "self-end bg-[#EE0037] text-white" : "self-start bg-white text-black"} text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${msg.sender_id === userId ? "mr-4" : "ml-4"}`}>
               <p className="text-sm pt-1">{msg.message}</p>
               <p className="text-[0.55rem] px-2 self-end">  {format(new Date(msg.created_at), "HH:mm", { locale: idLocale })}</p>

@@ -79,7 +79,7 @@ export default function Listmessages({ messages, userId }) {
               ? `/tanya-apoteker/chat/${message.senderProfile?.id}`
               : `/tanya-apoteker/chat/${message.senderProfile?.id}`
           }
-          className={`flex justify-between px-2 py-4 shadow-sm border-b-1 rounded-md border-gray-100 ${unreadCounts[message.sender_id] > 0 ? "bg-gray-100" : "bg-white"}`}
+          className={` hover:bg-slate-200 flex justify-between px-2 py-4 shadow-sm border-b-1 rounded-md border-gray-100 ${unreadCounts[message.sender_id] > 0 ? "bg-gray-100" : "bg-white"}`}
           onClick={() => handleLinkClick(message?.sender_id)}
         >
           <User
