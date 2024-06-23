@@ -163,7 +163,7 @@ export default function ListUser() {
 
   const [userId, setUserId] = useState(null);
  
-  const isChatPath = pathname === "/apoteker/chat";
+  const isChatPath = pathname === "/tanya-apoteker/chat";
 
   if ((isChatPath && !isMobile) || (!isChatPath && !isMobile)) {
     return <ListApoteker userId={userId} messages={messages} />;
