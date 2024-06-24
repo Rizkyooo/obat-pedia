@@ -172,8 +172,8 @@ export default function LoginPage() {
                 ) : (
                   <div className="flex flex-col justify-center items-center gap-2">
                   <Image className="animate-bounce" width={100} src="./images/happy-face.png" alt="error" />
-                  <p>"login berhasil"</p>
-                  <p>{redirectMessage}</p>
+                  <p>login berhasil</p>
+                  <p className="text-xs">{redirectMessage}</p>
                 </div>
                 )}
               </ModalBody>
