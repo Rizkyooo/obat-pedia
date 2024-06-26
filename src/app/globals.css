@@ -4,11 +4,34 @@
 
 html{
     scroll-behavior: smooth;
+    ol {
+    list-style-type: decimal;
+    padding-left: 20px;
+  }
+   ul {
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+
+  blockquote {
+    border-left: 4px solid #ccc;
+    margin: 1em 10px;
+    padding: 0.5em 10px;
+    color: #666;
+  }
+  p{
+    margin-bottom: 10px;
+  }
+
+    
 }
 
 .detail-obat p{
         margin-bottom: 10px;
     }
+    .ck-editor__editable_inline {
+      padding: 0 30px !important;
+  }
 
 .table-container {
     max-width: 100%;
@@ -49,5 +72,8 @@ html{
   .list-container ul li {
     margin-left: 20px; /* Atur jarak dari kiri */
   }
+  
+  
 
+  
  

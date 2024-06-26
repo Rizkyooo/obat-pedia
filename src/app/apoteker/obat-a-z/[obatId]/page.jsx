@@ -38,7 +38,7 @@ export default function ObatId({ searchParams }) {
   };
 
   return (
-    <main className="">
+    <main className="mb-16">
       <div className="detail-obat my-4 container mx-auto px-6 sm:flex min-h-screen">
         {loading && (
           <Spinner
