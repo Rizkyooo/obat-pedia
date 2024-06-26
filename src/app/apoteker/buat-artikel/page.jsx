@@ -29,7 +29,7 @@ export default async function page() {
   const artikels = await fetchArtikel(user?.id);
 
   return (
-    <div className="bg-gray-100 min-h-screen ml-1 mx-auto px-6 pt-6 ">
+    <div className="bg-gray-100 min-h-screen ml-1 mx-auto px-6 pt-6 mb-16 pb-24">
       <div className="container mx-auto ">
       <Artikel artikels={artikels} />
       </div>

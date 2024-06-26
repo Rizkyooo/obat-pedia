@@ -90,10 +90,10 @@ export default function Artikel({ artikels }) {
           {filteredArtikels?.map((artikel) => (
             <Card className="h-42" isBlurred shadow="sm">
               <CardBody>
-                <div className="flex gap-4 h-full ">
-                  <div className="h-full flex justify-center items-center">
+                <div className="flex flex-col sm:flex-row gap-4 h-full ">
+                  <div className="sm:h-full sm:flex justify-center items-center">
                     <Image
-                      className=" h-40 w-48 object-cover"
+                      className=" max-h-64 w-full sm:h-40 sm:w-48 object-cover"
                       alt="Album cover"
                       height={"100%"}
                       width={"100%"}
@@ -101,7 +101,7 @@ export default function Artikel({ artikels }) {
                       src={artikel?.gambar}
                     />
                   </div>
-                  <div className="w-full flex flex-col gap-2 justify-center ">
+                  <div className="w-full flex flex-col gap-2 mt-4 sm:mt-0 justify-center">
                     <div className="flex justify-between">
                       <Chip color="primary" size="sm">
                         {artikel?.id_kategori?.nama}
