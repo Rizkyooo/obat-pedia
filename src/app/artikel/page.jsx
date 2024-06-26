@@ -1,5 +1,5 @@
-import ListArtikel from "./components/ListArtikel";
 import { createClient } from "@/utils/supabase/client";
+import ListArtikel from "./components/listArtikel";
 
 export default async function Artikel() {
   const supabase = createClient();
