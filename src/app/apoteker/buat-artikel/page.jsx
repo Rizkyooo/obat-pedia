@@ -25,7 +25,7 @@ export default async function page() {
     }
   }
 
-  const user = await getUser();
+  const user = await getUser(); 
   const artikels = await fetchArtikel(user?.id);
 
   return (

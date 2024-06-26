@@ -1,15 +1,15 @@
 import { Image, link } from "@nextui-org/react";
 import { Chip } from "@nextui-org/react";
 import { Link } from "@nextui-org/react";
-import parse from 'html-react-parser';
-export default async function Artikel({artikel}) {
-    const truncateText = (text, maxLength) => {
-        if (text.length > maxLength) {
-          return text.slice(0, maxLength) + " ...";
-        }
-        return text;
+import parse from "html-react-parser";
+export default async function Artikel({ artikel }) {
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + " ...";
     }
-  
+    return text;
+  };
+
   return (
     <div className="flex items-center gap-4   shadow-gray-200 shadow-sm py-3 rounded-lg mb-4 sm:w-3/4">
       <div className="w-1/3 h-20 sm:h-full sm:w-[25rem] ">
@@ -30,9 +30,12 @@ export default async function Artikel({artikel}) {
           {truncateText(artikel?.judul, 60)}
         </div>
         <div className=" text-justify overflow-y-hidden hidden sm:flex sm:h-18">
-        {parse(truncateText(artikel?.konten, 130))}
+          {parse(truncateText(artikel?.konten, 130))}
         </div>
-        <Link className="hidden sm:block text-red-600 font-semibold" href={"#"}>
+        <Link
+          className="hidden sm:block text-red-600 font-semibold"
+          href={`/artikel/${artikel?.judul?.toLowerCase().replace(/ /g, "-")}`}
+        >
           Baca Selengkapnya
         </Link>
       </div>

@@ -1,21 +1,31 @@
+import ListArtikel from "./components/ListArtikel";
+import { createClient } from "@/utils/supabase/client";
 
-'use client'
-import { Chip } from "@nextui-org/react";
-import { Spinner } from "@nextui-org/react";
-import { useState } from "react";
+export default async function Artikel() {
+  const supabase = createClient();
 
-export default function Artikel(){
-    const [loading, setLoading] = useState(true);
-    setInterval(() => {
-        setLoading(false)
-    }, 2000)
-    return(
-        <main className="min-h-screen flex justify-center items-center">
+  async function fetchArtikel() {
+    try {
+      let { data, error } = await supabase
+        .from("artikel")
+        .select(`*,id_kategori (*), id_apoteker (*)`)
+        .eq("status", "published")
+        .order("created_at", { ascending: false });
 
-                {loading && <Spinner label="Loading" color="danger" size="xl" />}
-                {!loading &&
-                <Chip className=" animate-bounce" color="danger" size="lg">Coming Soon</Chip>
-                } 
-        </main>
-    )
+      if (error) {
+        console.error(error);
+      }
+
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const artikels = await fetchArtikel();
+  return (
+    <div>
+      <ListArtikel artikels={artikels} />
+    </div>
+  );
 }
