@@ -19,7 +19,7 @@ export default function DetailArtikel({ artikel }) {
                     {artikel?.id_apoteker?.nama}
                   </p>
                 }
-                description={<p className="text-md">{artikel?.created_at}</p>}
+                description={<p className="text-md">{"99 Juli 2023"}</p>}
                 avatarProps={{
                   src: artikel?.id_apoteker?.picture,
                   size: "lg",

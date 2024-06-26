@@ -24,7 +24,7 @@ export default async function Artikel() {
 
   const artikels = await fetchArtikel();
   return (
-    <div>
+    <div className="container mx-auto px-6 py-4">
       <ListArtikel artikels={artikels} />
     </div>
   );

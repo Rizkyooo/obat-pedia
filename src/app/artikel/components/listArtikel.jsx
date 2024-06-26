@@ -23,7 +23,9 @@ export default function ListArtikel({ artikels }) {
 
   return (
     <div className="container mx-auto sm:px-14 py-6">
-      <h3 className="text-lg font-semibold mb-4 sm:text-3xl">Artikel Kesehatan</h3>
+      <h3 className="text-lg font-semibold mb-4 sm:text-3xl">
+        Artikel Kesehatan
+      </h3>
       <Input
         onChange={handleSearchChange}
         value={searchQuery}
@@ -34,7 +36,10 @@ export default function ListArtikel({ artikels }) {
         placeholder="Cari artikel..."
       />
       {filteredArtikels.map((artikel) => (
-        <div key={artikel.id} className="flex items-center gap-4 shadow-gray-200 shadow-sm py-3 rounded-lg mb-4 sm:w-3/4">
+        <div
+          key={artikel.id}
+          className="flex items-center gap-4 shadow-gray-200 shadow-sm py-3 rounded-lg mb-4 sm:w-3/4"
+        >
           <div className="w-1/3 h-20 sm:h-full sm:w-[25rem]">
             <Image
               isZoomed={true}
@@ -49,15 +54,22 @@ export default function ListArtikel({ artikels }) {
             <Chip className="bg-sky-200 sm:mb-2" size="sm">
               {artikel?.id_kategori?.nama}
             </Chip>
-            <div className="text-xs font-semibold sm:text-xl overflow-hidden h-10 sm:h-14">
+            <Link
+              href={`/artikel/${artikel?.judul
+                ?.toLowerCase()
+                .replace(/ /g, "-")}`}
+              className="text-xs font-semibold sm:text-xl overflow-hidden h-10 sm:h-14"
+            >
               {truncateText(artikel?.judul, 60)}
-            </div>
+            </Link>
             <div className="text-justify overflow-y-hidden hidden sm:flex sm:h-18">
               {parse(truncateText(artikel?.konten, 130))}
             </div>
             <Link
               className="hidden sm:block text-red-600 font-semibold"
-              href={`/artikel/${artikel?.judul?.toLowerCase().replace(/ /g, "-")}`}
+              href={`/artikel/${artikel?.judul
+                ?.toLowerCase()
+                .replace(/ /g, "-")}`}
             >
               Baca Selengkapnya
             </Link>
