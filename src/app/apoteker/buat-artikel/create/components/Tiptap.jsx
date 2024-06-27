@@ -1,16 +1,26 @@
 "use client";
-
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
 import Underline from "@tiptap/extension-underline";
-import parse from 'html-react-parser';
+import HardBreak from "@tiptap/extension-hard-break";
 const Tiptap = ({ onChange, content }) => {
   const handleChange = (newContent) => {
     onChange(newContent);
   };
+  console.log(content);
   const editor = useEditor({
-    extensions: [StarterKit, Underline],
+    extensions: [
+      StarterKit,
+      Underline,
+      HardBreak.extend({
+        addKeyboardShortcuts () {
+          return {
+            Enter: () => this.editor.commands.setHardBreak()
+          }
+        }
+      }),
+    ],
     content: content,
     editorProps: {
       attributes: {

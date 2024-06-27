@@ -16,6 +16,8 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import { format } from "date-fns-tz";
+import { BadgeCheck } from "lucide-react";
 
 export default function DetailArtikel({ artikel }) {
   const [content, setContent] = useState(artikel?.konten);
@@ -25,12 +27,15 @@ export default function DetailArtikel({ artikel }) {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const timeZone = "Asia/Jakarta";
+
+  // const formattedDate = format(artikel?.created_at, 'dd MMM yyyy ', { timeZone });
+
   const supabase = createClient();
 
   const handleContentChange = (reason) => {
     setContent(reason);
   };
-
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -108,7 +113,7 @@ export default function DetailArtikel({ artikel }) {
         console.error(error);
         toast.error("Update failed");
       } else {
-        toast.success("Berhasil Perbarui Artikel" ,{duration: 3000});
+        toast.success("Berhasil Perbarui Artikel", { duration: 3000 });
         router.push("/apoteker/buat-artikel");
       }
     } catch (error) {
@@ -116,7 +121,7 @@ export default function DetailArtikel({ artikel }) {
       toast.error("An error occurred during update");
     } finally {
       setLoading(false);
-      }
+    }
   }
   const router = useRouter();
 
@@ -128,11 +133,20 @@ export default function DetailArtikel({ artikel }) {
           <div className="flex flex-col gap-6">
             <div className="">
               <User
-                name={<p className="text-md font-medium">{artikel?.id_apoteker?.nama}</p>}
-                description={<p className="text-md">{artikel?.created_at}</p>}
+                name={
+                  <p className="text-md font-medium flex justify-center items-center gap-1">
+                    Apt. {artikel?.id_apoteker?.nama}{" "}
+                    <BadgeCheck color="#0766AD" size={15} />
+                  </p>
+                }
+                description={
+                  <p className="text-md">
+                    {format(artikel?.created_at, "dd MMM yyyy ", { timeZone })}
+                  </p>
+                }
                 avatarProps={{
                   src: artikel?.id_apoteker?.picture,
-                  size: "lg",
+                  size: "sm",
                 }}
               />
             </div>
@@ -169,11 +183,18 @@ export default function DetailArtikel({ artikel }) {
           <Button onClick={onOpen} className="mt-4" color="danger">
             Simpan
           </Button>
-          <Modal hideCloseButton placement="center" isOpen={isOpen} onOpenChange={onOpenChange}>
+          <Modal
+            hideCloseButton
+            placement="center"
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+          >
             <ModalContent>
               {(onClose) => (
                 <>
-                  <ModalHeader className="flex flex-col gap-1">Simpan Perubahan</ModalHeader>
+                  <ModalHeader className="flex flex-col gap-1">
+                    Simpan Perubahan
+                  </ModalHeader>
                   <ModalBody>
                     <p className="text-lg">Apakah anda yakin?</p>
                   </ModalBody>
@@ -181,7 +202,11 @@ export default function DetailArtikel({ artikel }) {
                     <Button color="default" variant="flat" onPress={onClose}>
                       Batal
                     </Button>
-                    <Button isLoading={loading} color="danger" onClick={(e) => handleUpdate(e)}>
+                    <Button
+                      isLoading={loading}
+                      color="danger"
+                      onClick={(e) => handleUpdate(e)}
+                    >
                       Simpan
                     </Button>
                   </ModalFooter>
