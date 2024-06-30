@@ -89,6 +89,9 @@ export default function TulisArtikel() {
     }
   }
   const router = useRouter();
+  const createSlug = (title) => {
+    return title.replace(/ /g, "-").replace(/[^\w-]/g, "").toLowerCase();
+  };
 
   async function handleSubmit(e){
     setLoading(true)
@@ -96,17 +99,20 @@ export default function TulisArtikel() {
     try {
       const userId = await getUser()
       if(image){
+
         const imageUrl = await uploadImage(image);
-        const formattedTitle = title.replace(/-/g, ' ')
+        const slug = createSlug(title)
+        console.log(slug)
         const {data, error} = await supabase
         .from("artikel")
         .insert([{
           id_apoteker: userId?.id, 
-          judul: formattedTitle, 
+          judul: title, 
           konten: content, 
           gambar: imageUrl?.publicUrl, 
           id_kategori: parseInt(value.anchorKey),
-          status: "on review"
+          status: "on review", 
+          slug: slug
         }])
         if(error){
           setLoading(false)

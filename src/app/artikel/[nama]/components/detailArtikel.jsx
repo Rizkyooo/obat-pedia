@@ -23,6 +23,7 @@ export default async function DetailArtikel({ artikel }) {
         .from("artikel")
         .select(`*,id_kategori (*), id_apoteker (*)`)
         .eq("status", "published")
+        .neq("judul", title)
         .order("created_at", { ascending: false })
         .range(0,6)
 
@@ -43,9 +44,8 @@ export default async function DetailArtikel({ artikel }) {
   };
 
   const artikels = await fetchArtikel();
-  console.log(artikels)
   return (
-    <div className="container mx-auto p-2 mb-24 sm:mb-0">
+    <div className="container mx-auto sm:p-2 mb-24 sm:mb-0">
       <div className=" flex flex-col justify-center sm:flex-row">
         <div className="max-w-3xl sm:w-8/12 mt-6 py-6 px-6 bg-white">
           <div className="flex flex-col gap-6">
@@ -82,7 +82,7 @@ export default async function DetailArtikel({ artikel }) {
             </article>
           </div>
         </div>
-        <div className="sm:w-4/12 min-h-screen flex flex-col gap-2">
+        <div className="sm:w-4/12 min-h-screen flex flex-col gap-2 px-6 sm:px-0">
           <h3 className="mt-12 font-bold text-lg">Artikel Terkait</h3>
           {artikels?.map((artikel) => (
             <Card radius="none" className="h-42" isBlurred shadow="sm">

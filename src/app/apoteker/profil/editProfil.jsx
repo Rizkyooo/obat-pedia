@@ -1,29 +1,43 @@
 "use client";
-import { Input, RadioGroup, Radio, Button, Avatar, ModalFooter, ModalHeader } from "@nextui-org/react";
-import { getUserFromDatabase } from "@/services/getUserFromDatabase";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
+  Input,
+  RadioGroup,
+  Radio,
+  Button,
+  Avatar,
   Modal,
   ModalContent,
   ModalBody,
+  ModalFooter,
+  ModalHeader,
   useDisclosure,
-  Image,
 } from "@nextui-org/react";
 import { createClient } from "@/utils/supabase/client";
 import toast from "react-hot-toast";
-export default function EditProfil({user}) {
-  const [nama, setNama] = useState(user?.nama);
-  const [email, setEmail] = useState(user?.email);
-  const [kelamin, setKelamin] = useState(user?.jenis_kelamin);
+
+export default function EditProfil({ user }) {
+  const [userData, setUserData] = useState({
+    nama: user?.nama,
+    email: user?.email,
+    jenis_kelamin: user?.jenis_kelamin,
+    status_keanggotaan: user?.status_keanggotaan,
+    alamat: user?.alamat,
+    no_str: user?.no_str,
+    pengalaman: user?.pengalaman,
+    riwayat_pendidikan: user?.riwayat_pendidikan,
+    no_sip: user?.no_sip,
+    keahlian: user?.keahlian,
+    picture: user?.picture,
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [previewUrl, setPreviewUrl] = useState(user?.picture);
   const [image, setImage] = useState(null);
 
-  const handleSubmit = () => {
-    if (user) {
-      updateUser(user?.id, nama, email, kelamin, image);
-    }
+  const handleChange = (field) => (e) => {
+    setUserData({ ...userData, [field]: e.target.value });
   };
 
   const handleFileChange = (e) => {
@@ -37,13 +51,15 @@ export default function EditProfil({user}) {
       toast.error("Please select a valid image file (PNG, JPG, JPEG)");
     }
   };
-const supabase = createClient();
-  async function uploadImage(file) {
-    const fileName = `${Date.now()}_${file.name}`;
+
+  const supabase = createClient();
+
+  const uploadImage = async (file) => {
+    const fileName = `${Date.now()}_${file?.name}`;
     try {
       const { data, error } = await supabase.storage
         .from("artikel")
-        .upload(`picture_pengguna/${fileName}`, file, {
+        .upload(`picture_apoteker/${fileName}`, file, {
           cacheControl: "3600",
           upsert: false,
         });
@@ -54,69 +70,62 @@ const supabase = createClient();
         return null;
       }
 
-      if (data) {
-        const { data: publicUrl, error: publicUrlError } = supabase.storage
-          .from("artikel")
-          .getPublicUrl(`picture_pengguna/${fileName}`);
+      const { data: publicUrlData, error: publicUrlError } = supabase.storage
+        .from("artikel")
+        .getPublicUrl(`picture_apoteker/${fileName}`);
 
-        if (publicUrlError) {
-          console.error(publicUrlError);
-          toast.error("Failed to get image public URL");
-          return null;
-        }
-
-        return publicUrl.publicUrl;
+      if (publicUrlError) {
+        console.error(publicUrlError);
+        toast.error("Failed to get image public URL");
+        return null;
       }
+
+      return publicUrlData.publicUrl;
     } catch (error) {
       console.error(error);
       toast.error("An error occurred during image upload");
       return null;
     }
-  }
+  };
 
-  async function updateUser(id, nama, email, jenis_kelamin, image) {
+  const updateUser = async () => {
     setIsLoading(true);
     try {
-      if(!image){
-        return
-      }
-      const picture = await uploadImage(image)
-      const supabase = createClient();
+      const picture = image ? await uploadImage(image) : userData.picture;
+
       const { error } = await supabase
-        .from("pengguna")
-        .update({ nama: nama, email: email, jenis_kelamin: jenis_kelamin, picture: picture })
-        .eq("id", id);
-  
+        .from("apoteker")
+        .update({
+          ...userData,
+          picture,
+        })
+        .eq("id", user?.id);
+
       if (error) {
         console.log(error);
         setIsLoading(false);
-        toast.error("Tidak dapat perbarui profil")
+        return toast.error("Tidak dapat perbarui profil");
       }
 
-  
-      toast.success("Behasil perbarui profil")
-
+      toast.success("Behasil perbarui profil");
       setIsLoading(false);
       setTimeout(() => {
         window.location.reload();
       }, 500);
     } catch (error) {
-      console.log(error)
-      
+      console.log(error);
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col px-4 py-4 gap-4 sm:flex-row ">
-      <div className="bg-white flex flex-col justify-center items-center py-6 gap-4 sm:w-1/3">
+      <div className="bg-white flex flex-col justify-start items-center py-6 gap-4 sm:w-1/3">
         <Avatar
           isBordered={false}
           radius="full"
           className=" w-32 h-42  sm:w-52"
-          src={
-            previewUrl ||
-            "https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg"
-          }
+          src={previewUrl}
         />
         <div className="flex flex-col justify-center items-center">
           <p className="font-bold text-md sm:text-lg">{user?.nama}</p>
@@ -136,33 +145,82 @@ const supabase = createClient();
       <div className=" bg-white p-4 sm:w-2/3 sm:px-16">
         <p className="font-bold text-lg">Edit Profil</p>
         <div className=" mt-4 ">
-          <div className="grid gap-4 pb-6 " action="">
+          <div className="grid gap-4 pb-6">
             <Input
               type="nama"
               label="Nama"
               variant="bordered"
-              defaultValue={user?.nama}
-              onChange={(value) => setNama(value.target.value)}
+              defaultValue={userData.nama}
+              onChange={handleChange("nama")}
             />
             <Input
-            isDisabled
+              isDisabled
               type="email"
               label="Email"
-              placeholder={user?.email}
-              defaultValue={user?.email}
+              placeholder={userData.email}
+              defaultValue={userData.email}
               variant="bordered"
-              onChange={(value) => setEmail(value.target.value)}
+              onChange={handleChange("email")}
             />
-
             <RadioGroup
               label="Jenis Kelamin"
-              defaultValue={user?.jenis_kelamin}
-              onValueChange={(value) => setKelamin(value)}
+              defaultValue={userData.jenis_kelamin}
+              onValueChange={(value) =>
+                setUserData({ ...userData, jenis_kelamin: value })
+              }
             >
               <Radio value="laki-laki">Laki-laki</Radio>
               <Radio value="perempuan">Perempuan</Radio>
             </RadioGroup>
-
+            <Input
+              type="text"
+              label="Nomor STR"
+              defaultValue={userData.no_str}
+              variant="bordered"
+              onChange={handleChange("str")}
+            />
+            <Input
+              type="text"
+              label="Nomor SIP"
+              defaultValue={userData.no_sip}
+              variant="bordered"
+              onChange={handleChange("sip")}
+            />
+            <Input
+              type="text"
+              label="Tempat Praktek"
+              defaultValue={userData.status_keanggotaan}
+              variant="bordered"
+              onChange={handleChange("tempatPraktek")}
+            />
+            <Input
+              type="text"
+              label="Pengalaman"
+              defaultValue={userData.pengalaman}
+              variant="bordered"
+              onChange={handleChange("pengalaman")}
+            />
+            <Input
+              type="text"
+              label="Riwayat Pendidikan"
+              defaultValue={userData.riwayat_pendidikan}
+              variant="bordered"
+              onChange={handleChange("Pendidikan")}
+            />
+            <Input
+              type="text"
+              label="Keahlian"
+              defaultValue={userData.keahlian}
+              variant="bordered"
+              onChange={handleChange("keahlian")}
+            />
+            <Input
+              type="text"
+              label="Alamat"
+              defaultValue={userData.alamat}
+              variant="bordered"
+              onChange={handleChange("alamat")}
+            />
             <Button
               onPress={onOpen}
               className="mt-4"
@@ -195,7 +253,10 @@ const supabase = createClient();
                     <Button
                       isLoading={isLoading}
                       color="danger"
-                      onClick={handleSubmit}
+                      onClick={() => {
+                        updateUser();
+                        onClose();
+                      }}
                     >
                       Simpan
                     </Button>

@@ -141,8 +141,21 @@ export default function ApotekerItem({ apoteker }) {
                       </div>
                       <div className="text-sm flex flex-col gap-1">
                         <div className="shadow-sm min-w-full p-2 rounded-md bg-white flex flex-col justify-start items-start">
+                          <p className="font-semibold">Nomor SIP</p>
+                          <p>{selectedApoteker?.no_sip}</p>
+                        </div>
+                      </div>
+                      <div className="text-sm flex flex-col gap-1">
+                        <div className="shadow-sm min-w-full p-2 rounded-md bg-white flex flex-col justify-start items-start">
                           <p className="font-semibold">Tempat Praktik</p>
                           <p>{selectedApoteker?.status_keanggotaan}</p>
+                        </div>
+                      </div>
+
+                      <div className="text-sm flex flex-col gap-1">
+                        <div className="shadow-sm min-w-full p-2 rounded-md bg-white flex flex-col justify-start items-start">
+                          <p className="font-semibold"></p>
+                          <p>{selectedApoteker?.no_str}</p>
                         </div>
                       </div>
 
@@ -158,6 +171,22 @@ export default function ApotekerItem({ apoteker }) {
                         >
                           <p>
                           {selectedApoteker?.pengalaman}
+                          </p>
+                        </AccordionItem>
+                      </Accordion>
+
+                      <Accordion className=" shadow-sm px-2 bg-white rounded-md">
+                        <AccordionItem
+                          classNames={{
+                            title: "font-semibold text-[0.9rem]",
+                            content: "text-sm",
+                          }}
+                          key="1"
+                          aria-label="Keahlian"
+                          title="Keahlian"
+                        >
+                          <p>
+                          {selectedApoteker?.keahlian}
                           </p>
                         </AccordionItem>
                       </Accordion>

@@ -1,21 +1,19 @@
 import SideBarApoteker from "@/components/sideBarApoteker"
 import { SidebarItem } from "@/components/sideBarApoteker"
-import { HomeIcon, LogOutIcon } from "lucide-react"
+import { LayoutDashboard, NewspaperIcon, UserCircle } from "lucide-react"
 export default function layout({children}) {
   return (
-    < >
-    <div className="flex">
-      <SideBarApoteker>
-        <SidebarItem icon= {<HomeIcon size={20}/>}
-            text = "Beranda" active/>
-            <SidebarItem icon= {<HomeIcon size={20}/>}
-            text = "Beranda" />
-            <SidebarItem icon= {<HomeIcon size={20}/>}
-            text = "Beranda" />
-            
-      </SideBarApoteker>
-      {children}
-    </div>
+    <>
+      <div className="sm:flex min-h-screen ">
+        <SideBarApoteker>
+          <SidebarItem icon={<LayoutDashboard className="h-6 text-slate-800"/>} link={"/admin"} text="Dashboard" href={"/admin"}/>
+          <SidebarItem icon={<NewspaperIcon className="h-6 text-slate-800"/>} link={"/admin/kelola-artikel"} text="Artikel" href={"/admin/kelola-artikel"}/>
+          <SidebarItem icon={<UserCircle className="h-6 text-slate-800"/>} text="Pengguna" link={"/admin/kelola-pengguna"} href={"/admin/kelola-pengguna"}/>
+        </SideBarApoteker>
+        <div className="w-full">
+          {children}
+        </div>
+      </div>
     </>
   )
 }

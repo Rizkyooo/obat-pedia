@@ -1,12 +1,11 @@
 import { createClient } from "@/utils/supabase/client";
-import DetailArtikel from "./components/detailArtikel";
-
+import DetailArtikel from "../components/detailArtikel";
 export default async function page({params}) {
   const supabase = createClient()
-  const { judul } = params;
-  const decodedString = decodeURIComponent(judul);
+  const { nama } = params;
+  const decodedString = decodeURIComponent(nama);
   const formattedString = decodedString.replace(/-/g, ' '); 
-  console.log(judul);
+  console.log(formattedString);
 
   async function fetchArtikel(judul) {
     if (!judul) {
@@ -31,7 +30,7 @@ export default async function page({params}) {
   }
 }
 
-const artikel = await fetchArtikel(judul);
+const artikel = await fetchArtikel(nama);
 console.log(artikel);
   return (
     <div><DetailArtikel artikel={artikel}/></div>

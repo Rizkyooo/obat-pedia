@@ -13,7 +13,7 @@ import {
   NavbarItem,
   User,
 } from "@nextui-org/react";
-import { LogOutIcon, UserIcon } from "lucide-react";
+import { UserIcon } from "lucide-react";
 import Link from "next/link";
 export default function NavApoteker({user}) {
   

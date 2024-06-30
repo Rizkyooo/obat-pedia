@@ -15,7 +15,7 @@ export default async function Profil() {
             return
         }
         const {data, error} = await supabase
-        .from("apoteker")
+        .from("admin")
         .select("*")
         .eq("id", id)
         .single()

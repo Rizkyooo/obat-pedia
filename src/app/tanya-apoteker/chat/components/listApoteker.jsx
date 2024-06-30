@@ -55,7 +55,7 @@ export default function Listmessages({ messages, userId }) {
 
   return (
     <div
-      className="w-full sm:w-2/4 sm:flex flex-col bg-white px-6 py-4"
+      className="w-full sm:w-96 sm:flex flex-col bg-white px-6 py-4"
       style={{ height: "calc(100vh - 65px)" }}
     >
       <Input

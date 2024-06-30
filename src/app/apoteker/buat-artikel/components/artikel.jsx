@@ -117,10 +117,7 @@ export default function Artikel({ artikels }) {
                       <Button
                         onClick={() => {
                           router.push(
-                            `/apoteker/buat-artikel/edit/${artikel?.judul.replace(
-                              / /g,
-                              "-"
-                            )}`
+                            `/apoteker/buat-artikel/edit/${artikel?.slug}`
                           );
                         }}
                         color="default"
