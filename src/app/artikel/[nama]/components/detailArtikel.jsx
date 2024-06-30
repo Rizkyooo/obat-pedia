@@ -87,7 +87,7 @@ export default async function DetailArtikel({ artikel }) {
           {artikels?.map((artikel) => (
             <Card radius="none" className="h-42" isBlurred shadow="sm">
               <CardBody>
-                <Link href={`/artikel/${artikel?.judul?.toLowerCase().replace(/ /g, "-")}`} className="flex flex-col sm:flex-row gap-4 h-full sm:items-center">
+                <Link href={`/artikel/${artikel?.slug}`} className="flex flex-col sm:flex-row gap-4 h-full sm:items-center">
                   <div className="sm:h-32 h-42 sm:flex justify-center items-center">
                     <Image
                     isZoomed

@@ -16,7 +16,7 @@ export default async function page({params}) {
       let { data, error } = await supabase
         .from("artikel")
         .select(`*,id_kategori (*), id_apoteker (*)`)
-        .ilike("judul", judul)
+        .eq("slug", judul)
         .single();
       if (error) {
         console.error(error);
@@ -31,7 +31,7 @@ export default async function page({params}) {
   }
 }
 
-const artikel = await fetchArtikel(formattedString);
+const artikel = await fetchArtikel(nama);
 console.log(artikel);
   return (
     <div><DetailArtikel artikel={artikel}/></div>

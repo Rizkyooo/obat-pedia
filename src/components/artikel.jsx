@@ -12,7 +12,7 @@ export default function Artikel({ artikel }) {
 
   return (
     <Link
-      href={`/artikel/${artikel?.judul?.toLowerCase().replace(/ /g, "-")}`}
+      href={`/artikel/${artikel?.slug}`}
       className="flex items-center gap-4 text-black shadow-gray-200 shadow-sm py-3 rounded-lg mb-4 sm:w-3/4"
     >
       <div className="w-1/3 h-20 sm:h-full sm:w-[25rem] ">
