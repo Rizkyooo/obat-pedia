@@ -1,7 +1,7 @@
 "use client";
 import { createClient } from "@supabase/supabase-js";
 import { useState, useEffect } from "react";
-import { Tabs, Tab, Spinner } from "@nextui-org/react";
+import { Tabs, Tab, Spinner, Image } from "@nextui-org/react";
 import { Link } from "@nextui-org/react";
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -176,7 +176,12 @@ export default function ObatId({ searchParams }) {
           )}
         </div>
         <div className="sm:w-3/4 sm:px-14">
-          <h1 className="text-2xl font-bold mb-4">{obat?.title}</h1>
+          <h1 className="text-2xl font-bold mb-2">{obat?.title}</h1>
+          {obat?.picture && 
+          <div className="bg-gray-200 my-2 rounded-md w-fit">
+          <Image className="h-72" radius="none" isZoomed src={obat?.picture}/>
+          </div>
+          }
           <Tabs className="overflow-auto max-w-full sm:hidden mb-4">
             {obat?.ringkasan && obat?.ringkasan !== "null" && (
               <Tab title="Deskripsi">

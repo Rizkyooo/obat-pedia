@@ -177,6 +177,11 @@ export default function ObatId({ searchParams }) {
         </div>
         <div className="sm:w-3/4 sm:px-14">
           <h1 className="text-2xl font-bold mb-4">{obat?.title}</h1>
+          {obat?.picture && 
+          <div className="bg-gray-200 my-2 rounded-md w-fit">
+          <Image className="h-72" radius="none" isZoomed src={obat?.picture}/>
+          </div>
+          }
           <Tabs className=" flex overflow-auto max-w-[100vh] sm:hidden mb-4">
             {obat?.ringkasan && obat?.ringkasan !== "null" && (
               <Tab title="Deskripsi">
