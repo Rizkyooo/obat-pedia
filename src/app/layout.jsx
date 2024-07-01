@@ -19,7 +19,7 @@ export default async function RootLayout({ children }) {
   console.log(user);
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} min-h-screen`}>
         <Providers>
             <Header
               user={user}
