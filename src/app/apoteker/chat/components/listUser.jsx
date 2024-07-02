@@ -148,7 +148,7 @@ export default function ListUser() {
                 ]);
                 console.log(newMessage);
                 if(newMessage?.receiver_id === userId){
-                  toast('pesan baru: '+newMessage?.message, {duration: 3000});
+                  // toast('pesan baru: '+newMessage?.message, {duration: 3000});
                   showNotification(newMessage);
                 }
               }
@@ -169,7 +169,7 @@ export default function ListUser() {
 
     fetchConversations();
     fetchUser();
-  }, []);
+  }, [messages]);
 
   const showNotification = (message) => {
     console.log(message); 

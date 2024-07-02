@@ -146,15 +146,15 @@ export default function ListUser() {
                   },
                 ]);
                 if (newMessage?.receiver_id === userId) {
-                  toast(
-                    <span>
-                      pesan baru:
-                      <span className="font-bold">{` ${newMessage?.message}`}</span>
-                    </span>,
-                    {
-                      duration: 6000,
-                    }
-                  );
+                  // toast(
+                  //   <span>
+                  //     pesan baru:
+                  //     <span className="font-bold">{` ${newMessage?.message}`}</span>
+                  //   </span>,
+                  //   {
+                  //     duration: 6000,
+                  //   }
+                  // );
                   showNotification(newMessage);
                 }
               }
@@ -173,7 +173,7 @@ export default function ListUser() {
 
     fetchConversations();
     fetchUser();
-  }, []);
+  }, [messages]);
 
   const showNotification = (message) => {
     if (Notification.permission === "granted") {
@@ -197,11 +197,14 @@ export default function ListUser() {
     setUserId(user?.id);
   }
 
+  console.log(messages);
+
   const [userId, setUserId] = useState(null);
 
   const isChatPath = pathname === "/tanya-apoteker/chat";
 
   const memoizedMessages = useMemo(() => messages, [messages]);
+  console.log(memoizedMessages);
   if ((isChatPath && !isMobile) || (!isChatPath && !isMobile)) {
     return <ListApoteker userId={userId} messages={memoizedMessages} />;
   }

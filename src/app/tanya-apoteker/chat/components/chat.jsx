@@ -3,7 +3,7 @@ import { createClient } from "@/utils/supabase/client";
 import { Button, Input, User } from "@nextui-org/react";
 import { ArrowLeft, Send } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { format} from 'date-fns'
+import { format } from 'date-fns';
 import { id as localeID } from "date-fns/locale";
 import { useRouter } from "next/navigation";
 
@@ -26,15 +26,13 @@ export default function Chat({ id, userId }) {
       if (error) {
         return console.log(error);
       }
-      if(data){
+      if (data) {
         console.log(data);
-        setUser(data)
+        setUser(data);
       }
     } catch (error) {
       console.log(error);
-      
     }
-
   }
 
   async function getMessages(userId, id) {
@@ -51,21 +49,29 @@ export default function Chat({ id, userId }) {
     console.log(data);
     setMessages(data);
   }
-  
+
+  async function sendAutomaticReply() {
+    const { data, error } = await supabase
+      .from("messages")
+      .insert([{ receiver_id: userId, message: "Terima kasih telah menghubungi kami. Mohon tunggu sebentar, chat Anda akan segera kami balas 😇", sender_id: id }]);
+    if (error) {
+      console.error("Error sending automatic reply:", error?.message);
+    }
+  }
 
   useEffect(() => {
-    fetchUser(id)
+    fetchUser(id);
     getMessages(userId, id);
 
     const channel = supabase
-    .channel('messages')
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
-      if ((payload?.new?.sender_id === userId && payload?.new?.receiver_id === id) || 
+      .channel('messages')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
+        if ((payload?.new?.sender_id === userId && payload?.new?.receiver_id === id) ||
           (payload?.new?.sender_id === id && payload?.new?.receiver_id === userId)) {
-        setMessages((prevMessages) => [...prevMessages, payload?.new]);
-      }
-    })
-    .subscribe();
+          setMessages((prevMessages) => [...prevMessages, payload?.new]);
+        }
+      })
+      .subscribe();
 
     return () => {
       supabase.removeChannel(channel);
@@ -75,7 +81,7 @@ export default function Chat({ id, userId }) {
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    } 
+    }
   }, [messages]);
 
   const memoizedMessages = useMemo(() => messages, [messages]);
@@ -83,6 +89,9 @@ export default function Chat({ id, userId }) {
 
   const handleSendMessage = async () => {
     if (inputMessage.trim() === "") return;
+
+    const pharmacistReplied = messages.some(message => message.sender_id === id);
+
     const { data, error } = await supabase
       .from("messages")
       .insert([{ receiver_id: id, message: inputMessage, sender_id: userId }]);
@@ -90,9 +99,16 @@ export default function Chat({ id, userId }) {
       console.error("Error sending message:", error?.message);
       return;
     }
+
     setInputMessage("");
+
+    if (!pharmacistReplied) {
+      await sendAutomaticReply();
+    }
   };
-const router = useRouter()
+
+  const router = useRouter();
+
   return (
     <div className="flex flex-col" style={{ height: "calc(100vh - 65px)" }}>
       <div className="px-4 z-50 sticky top-0 py-2 bg-white flex gap-1 items-center">
@@ -111,13 +127,13 @@ const router = useRouter()
           />
         </div>
       </div>
-      
+
       <div ref={scrollRef} className="overflow-y-scroll mb-4 scroll-smooth h-screen bg-slate-100 border-l-1 flex justify-center">
         <div className="w-full flex pt-9 flex-col items-center">
           {messages.map((msg, index) => (
             <div key={index} className={`relative ${msg?.sender_id === userId ? "self-end bg-[#EE0037] text-white" : "self-start bg-white text-black"} text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${msg.sender_id === userId ? "mr-4" : "ml-4"}`}>
               <p className="text-sm pt-1">{msg?.message}</p>
-              <p className="text-[0.55rem] px-2 self-end">  {format(new Date(msg.created_at), "HH:mm", { locale: localeID }, { timeZone: "Asia/Jakarta" })}</p>
+              <p className="text-[0.55rem] px-2 self-end">{format(new Date(msg.created_at), "HH:mm", { locale: localeID })}</p>
               <div className={`absolute top-0 ${msg?.sender_id === userId ? "right-[-8px] border-l-[#EE0037]" : "left-[-8px] border-r-white"} w-0 h-0 border-t-[16px] border-t-transparent border-b-[16px] border-b-transparent`}></div>
             </div>
           ))}

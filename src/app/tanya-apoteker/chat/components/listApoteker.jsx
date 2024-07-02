@@ -53,6 +53,13 @@ export default function Listmessages({ messages, userId }) {
     }
   };
 
+  function truncateText(text, maxLength) {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "...";
+    }
+    return text;
+  }
+
   return (
     <div
       className="w-full sm:w-96 sm:flex flex-col bg-white px-6 py-4"
@@ -84,7 +91,7 @@ export default function Listmessages({ messages, userId }) {
           <User
           className={unreadCounts[message?.sender_id] > 0 ? "font-bold" : "font-normal"}
           name={(<p className="text-md font-medium"> {message?.senderProfile?.nama}</p>)}
-            description={(<p className="text-md">{message?.message}</p>)}
+            description={(<p className="text-md">{truncateText(message?.message, 20)}</p>)}
             avatarProps={{
               src:
                 message?.senderProfile?.picture ||
