@@ -48,7 +48,6 @@ export default function Chat({ id, userId }) {
       console.log(error);
       throw new Error(error?.message);
     }
-    console.log(data);
     setMessages(data);
   }
   
@@ -77,7 +76,6 @@ export default function Chat({ id, userId }) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     } 
   }, [messages]);
-  console.log(messages);
 
   const memoizedMessages = useMemo(() => messages, [messages]);
   const memoizeUser = useMemo(() => user, [user]);

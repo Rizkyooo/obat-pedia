@@ -1,7 +1,7 @@
 "use client";
 import { createClient } from "@supabase/supabase-js";
 import { useState, useEffect } from "react";
-import { Tabs, Tab, Spinner } from "@nextui-org/react";
+import { Tabs, Tab, Spinner, Image } from "@nextui-org/react";
 import { Link } from "@nextui-org/react";
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,

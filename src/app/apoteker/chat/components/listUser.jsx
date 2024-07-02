@@ -169,7 +169,7 @@ export default function ListUser() {
 
     fetchConversations();
     fetchUser();
-  }, [messages]);
+  }, []);
 
   const showNotification = (message) => {
     console.log(message); 

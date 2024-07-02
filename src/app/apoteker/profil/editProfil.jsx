@@ -53,6 +53,7 @@ export default function EditProfil({ user }) {
   };
 
   const supabase = createClient();
+  console.log(userData)
 
   const uploadImage = async (file) => {
     const fileName = `${Date.now()}_${file?.name}`;
@@ -177,21 +178,21 @@ export default function EditProfil({ user }) {
               label="Nomor STR"
               defaultValue={userData.no_str}
               variant="bordered"
-              onChange={handleChange("str")}
+              onChange={handleChange("no_str")}
             />
             <Input
               type="text"
               label="Nomor SIP"
               defaultValue={userData.no_sip}
               variant="bordered"
-              onChange={handleChange("sip")}
+              onChange={handleChange("no_sip")}
             />
             <Input
               type="text"
               label="Tempat Praktek"
               defaultValue={userData.status_keanggotaan}
               variant="bordered"
-              onChange={handleChange("tempatPraktek")}
+              onChange={handleChange("status_keanggotaan")}
             />
             <Input
               type="text"
@@ -205,7 +206,7 @@ export default function EditProfil({ user }) {
               label="Riwayat Pendidikan"
               defaultValue={userData.riwayat_pendidikan}
               variant="bordered"
-              onChange={handleChange("Pendidikan")}
+              onChange={handleChange("riwayat_pendidikan")}
             />
             <Input
               type="text"

@@ -173,7 +173,7 @@ export default function ListUser() {
 
     fetchConversations();
     fetchUser();
-  }, [messages]);
+  }, []);
 
   const showNotification = (message) => {
     if (Notification.permission === "granted") {
