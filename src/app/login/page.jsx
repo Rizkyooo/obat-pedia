@@ -56,14 +56,14 @@ export default function LoginPage() {
       setIsLoading(false);
       onOpen();
       setRedirectMessage("Tunggu Sebentar...");
-      checkRole();
+      checkRole(user.user.user_metadata?.role);
     }
   };
 
   const [redirectMessage, setRedirectMessage] = useState("");
-  const checkRole = async () => {
-    const user = await getUser();
-    const role = user?.user_metadata?.role;
+  const checkRole = async (role) => {
+    // const user = await getUser();
+    // const role = user?.user_metadata?.role;
     console.log(role);
     if (role === "pengguna") {
       router.push("/");
@@ -71,6 +71,8 @@ export default function LoginPage() {
       router.push("/apoteker/obat-a-z");
     } else if (role === "admin") {
       router.push("/admin");
+    } else{
+      router.push("/")
     }
   };
 

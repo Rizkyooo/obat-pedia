@@ -67,7 +67,7 @@ export default function Chat({ id, userId }) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [id, userId]);
+  }, [userId,id]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -101,10 +101,10 @@ export default function Chat({ id, userId }) {
             <ArrowLeft size={37} cursor={"pointer"} className="sm:hidden text-[#EE0037]" />
           </div>
           <User
-            name={(<p className="text-md">{user?.nama}</p>)}
+            name={(<p className="text-md">{memoizeUser?.nama}</p>)}
             avatarProps={{
               src:
-              user?.picture ||
+              memoizeUser?.picture ||
                 "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
               size: "md",
             }}
@@ -114,7 +114,7 @@ export default function Chat({ id, userId }) {
       
       <div ref={scrollRef} className="overflow-y-scroll mb-4 scroll-smooth h-screen bg-slate-100 border-l-1 flex justify-center">
         <div className="w-full flex pt-9 flex-col items-center">
-          {messages.map((msg, index) => (
+          {memoizedMessages.map((msg, index) => (
             <div key={index} className={`relative ${msg?.sender_id === userId ? "self-end bg-[#EE0037] text-white" : "self-start bg-white text-black"} text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${msg?.sender_id === userId ? "mr-4" : "ml-4"}`}>
               <p className="text-sm pt-1">{msg?.message}</p>
               <p className="text-[0.55rem] px-2 self-end"> {originalDate(msg?.created_at)}</p>

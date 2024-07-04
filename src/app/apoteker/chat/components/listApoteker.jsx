@@ -1,5 +1,5 @@
 "use client";
-import { Input, User } from "@nextui-org/react";
+import { Image, Input, User } from "@nextui-org/react";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { useState, useMemo } from "react";
@@ -9,7 +9,6 @@ const supabase = createClient(); // Create Supabase client
 
 export default function Listmessages({ messages, userId }) {
   const [searchQuery, setSearchQuery] = useState("");
-  console.log(messages);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -34,13 +33,14 @@ export default function Listmessages({ messages, userId }) {
   const filteredMessages = useMemo(
     () =>
       messages?.filter((message) =>
-        message?.senderProfile?.nama?.toLowerCase().includes(searchQuery.toLowerCase())
+        message?.senderProfile?.nama
+          ?.toLowerCase()
+          .includes(searchQuery.toLowerCase())
       ),
     [searchQuery, messages]
   );
 
   const handleLinkClick = async (senderId) => {
-
     // Update unread messages to read in the database
     const { error } = await supabase
       .from("messages")
@@ -66,7 +66,7 @@ export default function Listmessages({ messages, userId }) {
       style={{ height: "calc(100vh - 0px)" }}
     >
       <Input
-      size="md"
+        size="md"
         onChange={handleSearchChange}
         startContent={<Search size={20} opacity={0.5} />}
         placeholder="cari pesan"
@@ -75,39 +75,58 @@ export default function Listmessages({ messages, userId }) {
         className="mb-2"
       />
 
+      {filteredMessages.length === 0 ? (
+        <div className="min-h-screen flex flex-col justify-center items-center">
+          <Image height={200} width={200} style={{ transform: 'rotate(270deg)' }} src="/images/no-message.png"/>
+          <p className="font-semibold">Ooppsss belum ada pesan</p>
+        </div>
+      ):
       <div className="flex flex-col gap-1">
-
-      {filteredMessages.map((message, index) => (
-        <Link
-          key={index}
-          href={
-            message?.sender_id !== userId
-              ? `/apoteker/chat/${message.senderProfile?.id}`
-              : `/apoteker/chat/${message.senderProfile?.id}`
-          }
-          className={`flex hover:bg-slate-200 justify-between px-2 py-4 shadow-sm border-b-1 rounded-md border-gray-100 ${unreadCounts[message.sender_id] > 0 ? "bg-gray-100" : "bg-white"}`}
-          onClick={() => handleLinkClick(message?.sender_id)}
-        >
-          <User
-          className={unreadCounts[message.sender_id] > 0 ? "font-bold" : "font-normal"}
-          name={(<p className="text-md font-medium"> {message?.senderProfile?.nama}</p>)}
-            description={(<p className="text-md">{truncateText(message.message, 20)}</p>)}
-            avatarProps={{
-              src:
-                message?.senderProfile?.picture ||
-                "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
-              size: "lg",
-            }}
-          />
-          {unreadCounts[message?.sender_id] > 0 && (
-            <div className="flex flex-col justify-center items-center">
-              <div className="bg-red-500 animate-pulse text-white rounded-full p-1 text-xs">
+        {filteredMessages.map((message, index) => (
+          <Link
+            key={index}
+            href={
+              message?.sender_id !== userId
+                ? `/apoteker/chat/${message.senderProfile?.id}`
+                : `/apoteker/chat/${message.senderProfile?.id}`
+            }
+            className={`flex hover:bg-slate-200 justify-between px-2 py-4 shadow-sm border-b-1 rounded-md border-gray-100 ${
+              unreadCounts[message.sender_id] > 0 ? "bg-gray-100" : "bg-white"
+            }`}
+            onClick={() => handleLinkClick(message?.sender_id)}
+          >
+            <User
+              className={
+                unreadCounts[message.sender_id] > 0
+                  ? "font-bold"
+                  : "font-normal"
+              }
+              name={
+                <p className="text-md font-medium">
+                  {" "}
+                  {message?.senderProfile?.nama}
+                </p>
+              }
+              description={
+                <p className="text-md">{truncateText(message.message, 20)}</p>
+              }
+              avatarProps={{
+                src:
+                  message?.senderProfile?.picture ||
+                  "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
+                size: "lg",
+              }}
+            />
+            {unreadCounts[message?.sender_id] > 0 && (
+              <div className="flex flex-col justify-center items-center">
+                <div className="bg-red-500 animate-pulse text-white rounded-full p-1 text-xs"></div>
               </div>
-            </div>
-          )}
-        </Link>
-      ))}
+            )}
+          </Link>
+        ))}
       </div>
+      }
+
     </div>
   );
 }

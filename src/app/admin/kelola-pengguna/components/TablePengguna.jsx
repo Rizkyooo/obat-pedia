@@ -15,7 +15,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import parse from "html-react-parser";
-import { DeleteIcon, EditIcon, BookCheck, Search } from "lucide-react";
+import { DeleteIcon, EditIcon, BookCheck, Search, UserRoundPlus } from "lucide-react";
 import {
   Table,
   TableHeader,
@@ -28,6 +28,7 @@ import {
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import AddUserModal from "./addUserModal";
 
 const TablePengguna = ({role, columns, rows }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,17 +44,17 @@ const TablePengguna = ({role, columns, rows }) => {
 
   const router = useRouter();
 
-  async function deleteArtikel(id, e) {
+  async function deleteArtikel(name, e) {
     setLoading(true);
     e.preventDefault();
-    if (!judul) {
+    if (!name) {
       return;
     }
     try {
       const { data, error } = await supabase
         .from(role)
         .delete()
-        .eq("id", id);
+        .eq("nama", name);
 
       if (error) {
         toast.error("gagal hapus pengguna");
@@ -94,7 +95,7 @@ const TablePengguna = ({role, columns, rows }) => {
       case "aksi":
         return (
           <div className="relative flex items-center gap-2">
-            <Tooltip content="Edit artikel">
+            <Tooltip content={`Edit ${role}`}>
               <span
                 onClick={() => {
                   router.push(`/admin/kelola-pengguna/edit/${role}-${item?.id}`);
@@ -104,7 +105,7 @@ const TablePengguna = ({role, columns, rows }) => {
                 <EditIcon />
               </span>
             </Tooltip>
-            <Tooltip color="danger" content="Delete artikel">
+            <Tooltip color="danger" content={`Hapus ${role}`}>
               <span
                 onClick={() => {
                   onOpen();
@@ -154,18 +155,44 @@ const TablePengguna = ({role, columns, rows }) => {
           onChange={handleSearchChange}
         />
 
-        {/* <Select
-        
-          size="md"
-          variant="bordered"
-          defaultSelectedKeys={value}
-          selectedKeys={value}
-          className="max-w-[200px] bg-white rounded-full"
-          onSelectionChange={setValue}
-        >
-          <SelectItem key="pengguna">pengguna</SelectItem>
-          <SelectItem key="apoteker">apoteker</SelectItem>
-        </Select> */}
+        <AddUserModal role={role}/>
+        {/* <Button onClick={onOpen} color="danger" startContent={<UserRoundPlus size={20} />}>Tambah {role}</Button>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+              <ModalBody>
+                <p> 
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Nullam pulvinar risus non risus hendrerit venenatis.
+                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                </p>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Nullam pulvinar risus non risus hendrerit venenatis.
+                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                </p>
+                <p>
+                  Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
+                  dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis. 
+                  Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod. 
+                  Et mollit incididunt nisi consectetur esse laborum eiusmod pariatur 
+                  proident Lorem eiusmod et. Culpa deserunt nostrud ad veniam.
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="primary" onPress={onClose}>
+                  Action
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal> */}
       </div>
 
       <Table aria-label="table artikel" className=" max-w-4xl">
@@ -226,7 +253,7 @@ const TablePengguna = ({role, columns, rows }) => {
                     color="danger"
                     onClick={(e) => deleteArtikel(selectedArtikel, e)}
                   >
-                    Hapus Artikel
+                    Hapus {role}
                   </Button>
                 )}
               </ModalFooter>
