@@ -1,5 +1,5 @@
 "use client";
-import {  Input, Tab, Tabs } from "@nextui-org/react";
+import {  Input, Spinner, Tab, Tabs } from "@nextui-org/react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Button } from "@nextui-org/react";
@@ -123,6 +123,7 @@ export default function ObatAZ() {
         >
           {tabs.map((tab) => (
             <Tab key={tab.id} title={tab.label}>
+              {loading && <Spinner color="danger" size="md" className="min-h-screen flex pb-36 items-center "/>}
               <div className="flex flex-col sm:grid sm:grid-cols-2 sm:gap-3">
                 {
                   obatList.map((obat) => (

@@ -1,5 +1,5 @@
 "use client";
-import { Card, CardBody, Input, Tab, Tabs } from "@nextui-org/react";
+import { Card, CardBody, Input, Spinner, Tab, Tabs } from "@nextui-org/react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Button } from "@nextui-org/react";
@@ -123,22 +123,27 @@ export default function ObatAZ() {
         >
           {tabs.map((tab) => (
             <Tab key={tab.id} title={tab.label}>
+              {loading && (
+                <Spinner
+                  color="danger"
+                  size="md"
+                  className="min-h-screen flex pb-36 items-center "
+                />
+              )}
               <div className="flex flex-col sm:grid sm:grid-cols-2 sm:gap-3">
-                {
-                  obatList.map((obat) => (
-                    <Link
-                      key={obat.id}
-                      href={`/obat-a-z/${obat.title
-                        .toLowerCase()
-                        .replace(/\s+/g, "-")
-                        .replace(/-$/, "")}?id=${obat.id}`}
-                      prefetch={false}
-                      className="py-4 hover:bg-gray-100  text-lg font-medium shadow-sm border-1 border-gray-200 bg-white rounded-lg px-4 mb-2"
-                    >
-                      {obat.title}
-                    </Link>
-                  ))
-                      }
+                {obatList.map((obat) => (
+                  <Link
+                    key={obat.id}
+                    href={`/obat-a-z/${obat.title
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")
+                      .replace(/-$/, "")}?id=${obat.id}`}
+                    prefetch={false}
+                    className="py-4 hover:bg-gray-100  text-lg font-medium shadow-sm border-1 border-gray-200 bg-white rounded-lg px-4 mb-2"
+                  >
+                    {obat.title}
+                  </Link>
+                ))}
               </div>
             </Tab>
           ))}
