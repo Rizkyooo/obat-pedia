@@ -2,9 +2,7 @@
 import { createClient } from "@/utils/supabase/client";
 import { Button, Input, User } from "@nextui-org/react";
 import { ArrowLeft, Send } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { format } from 'date-fns';
-import { id as localeID } from "date-fns/locale";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { originalDate } from "@/utils/timeZone";
 
@@ -13,63 +11,68 @@ export default function Chat({ id, userId }) {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const scrollRef = useRef(null);
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
+  const router = useRouter();
 
-  async function fetchUser(id) {
-    try {
-      console.log(id);
-      if (!id) return;
-      const { data, error } = await supabase
-        .from("apoteker")
-        .select("*")
-        .eq("id", id)
-        .single();
-      if (error) {
-        return console.log(error);
-      }
-      if (data) {
-        console.log(data);
-        setUser(data);
-      }
-    } catch (error) {
-      console.log(error);
+  const fetchUser = useCallback(async (id) => {
+    if (!id) return null;
+    const { data, error } = await supabase
+      .from("apoteker")
+      .select("*")
+      .eq("id", id)
+      .single();
+    if (error) {
+      console.error(error);
+      return null;
     }
-  }
+    return data;
+  }, [supabase]);
 
-  async function getMessages(userId, id) {
-    if (!userId || !id) return;
+  const getMessages = useCallback(async (userId, id) => {
+    if (!userId || !id) return [];
     const { data, error } = await supabase
       .from("messages")
       .select("*")
       .or(`and(sender_id.eq.${userId},receiver_id.eq.${id}),and(sender_id.eq.${id},receiver_id.eq.${userId})`)
       .order('created_at', { ascending: true });
     if (error) {
-      console.log(error);
-      throw new Error(error?.message);
+      console.error(error);
+      throw new Error(error.message);
     }
-    console.log(data);
-    setMessages(data);
-  }
+    return data;
+  }, [supabase]);
 
-  async function sendAutomaticReply() {
-    const { data, error } = await supabase
+  const sendAutomaticReply = useCallback(async () => {
+    const { error } = await supabase
       .from("messages")
       .insert([{ receiver_id: userId, message: "Terima kasih telah menghubungi kami. Mohon tunggu sebentar, chat Anda akan segera kami balas 😇", sender_id: id }]);
     if (error) {
-      console.error("Error sending automatic reply:", error?.message);
+      console.error("Error sending automatic reply:", error.message);
     }
-  }
+  }, [supabase, id, userId]);
 
   useEffect(() => {
-    fetchUser(id);
-    getMessages(userId, id);
+    const fetchData = async () => {
+      try {
+        const [userData, messagesData] = await Promise.all([
+          fetchUser(id),
+          getMessages(userId, id)
+        ]);
+        setUser(userData);
+        setMessages(messagesData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
 
     const channel = supabase
       .channel('messages')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
-        if ((payload?.new?.sender_id === userId && payload?.new?.receiver_id === id) ||
-          (payload?.new?.sender_id === id && payload?.new?.receiver_id === userId)) {
-          setMessages((prevMessages) => [...prevMessages, payload?.new]);
+        if ((payload.new.sender_id === userId && payload.new.receiver_id === id) ||
+          (payload.new.sender_id === id && payload.new.receiver_id === userId)) {
+          setMessages((prevMessages) => [...prevMessages, payload.new]);
         }
       })
       .subscribe();
@@ -77,7 +80,7 @@ export default function Chat({ id, userId }) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [id]);
+  }, [fetchUser, getMessages, id, supabase, userId]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -85,30 +88,27 @@ export default function Chat({ id, userId }) {
     }
   }, [messages]);
 
-  const memoizedMessages = useMemo(() => messages, [messages]);
-  const memoizeUser = useMemo(() => user, [user]);
-
-  const handleSendMessage = async () => {
+  const handleSendMessage = useCallback(async () => {
     if (inputMessage.trim() === "") return;
 
     const pharmacistReplied = messages.some(message => message.sender_id === id);
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("messages")
       .insert([{ receiver_id: id, message: inputMessage, sender_id: userId }]);
     if (error) {
-      console.error("Error sending message:", error?.message);
+      console.error("Error sending message:", error.message);
       return;
     }
-
     setInputMessage("");
 
     if (!pharmacistReplied) {
       await sendAutomaticReply();
     }
-  };
+  }, [inputMessage, messages, sendAutomaticReply, supabase, id, userId]);
 
-  const router = useRouter();
+  const memoizedMessages = useMemo(() => messages, [messages]);
+  const memoizedUser = useMemo(() => user, [user]);
 
   return (
     <div className="flex flex-col" style={{ height: "calc(100vh - 65px)" }}>
@@ -118,24 +118,22 @@ export default function Chat({ id, userId }) {
             <ArrowLeft size={37} cursor={"pointer"} className="sm:hidden text-[#EE0037]" />
           </div>
           <User
-            name={(<p className="text-md">{user?.nama}</p>)}
+            name={<p className="text-md">{memoizedUser?.nama}</p>}
             avatarProps={{
-              src:
-              user?.picture ||
-                "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
+              src: memoizedUser?.picture || "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
               size: "md",
             }}
           />
         </div>
       </div>
 
-      <div ref={scrollRef} className="overflow-y-scroll mb-4 scroll-smooth h-screen bg-slate-100 border-l-1 flex justify-center">
+      <div ref={scrollRef} className="overflow-y-scroll mb-4 h-screen bg-slate-100 border-l-1 flex justify-center">
         <div className="w-full flex pt-9 flex-col items-center">
-          {messages.map((msg, index) => (
-            <div key={index} className={`relative ${msg?.sender_id === userId ? "self-end bg-[#EE0037] text-white" : "self-start bg-white text-black"} text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${msg.sender_id === userId ? "mr-4" : "ml-4"}`}>
-              <p className="text-sm pt-1">{msg?.message}</p>
-              <p className="text-[0.55rem] px-2 self-end"> {originalDate(msg?.created_at)}</p>
-              <div className={`absolute top-0 ${msg?.sender_id === userId ? "right-[-8px] border-l-[#EE0037]" : "left-[-8px] border-r-white"} w-0 h-0 border-t-[16px] border-t-transparent border-b-[16px] border-b-transparent`}></div>
+          {memoizedMessages.map((msg, index) => (
+            <div key={index} className={`relative ${msg.sender_id === userId ? "self-end bg-[#EE0037] text-white" : "self-start bg-white text-black"} text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${msg.sender_id === userId ? "mr-4" : "ml-4"}`}>
+              <p className="text-sm pt-1">{msg.message}</p>
+              <p className="text-[0.55rem] px-2 self-end">{originalDate(msg.created_at)}</p>
+              <div className={`absolute top-0 ${msg.sender_id === userId ? "right-[-8px] border-l-[#EE0037]" : "left-[-8px] border-r-white"} w-0 h-0 border-t-[16px] border-t-transparent border-b-[16px] border-b-transparent`}></div>
             </div>
           ))}
         </div>

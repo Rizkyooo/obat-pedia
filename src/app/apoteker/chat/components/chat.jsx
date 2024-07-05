@@ -2,85 +2,95 @@
 import { createClient } from "@/utils/supabase/client";
 import { Button, Input, User } from "@nextui-org/react";
 import { ArrowLeft, Send } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { originalDate } from "@/utils/timeZone";
 export default function Chat({ id, userId }) {
   const [user, setUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const scrollRef = useRef(null);
-  const supabase = createClient();
-  console.log(id, userId);
+  const supabase = useMemo(() => createClient(), []);
 
-  async function fetchUser(id) {
-    try {
-      console.log(id);
-      if (!id) return;
-      const { data, error } = await supabase
-        .from("pengguna")
-        .select("*")
-        .eq("id", id)
-        .single();
-      if (error) {
-        return console.log(error);
-      }
-      if(data){
-        console.log(data);
-        setUser(data)
-      }
-    } catch (error) {
-      console.log(error);
-      
+  const fetchUser = useCallback(async (id) => {
+    if (!id) return null;
+    const { data, error } = await supabase
+      .from("pengguna")
+      .select("*")
+      .eq("id", id)
+      .single();
+    if (error) {
+      console.error(error);
+      return null;
     }
+    return data;
+  }, [supabase]);
 
-  }
-
-  async function getMessages(userId, id) {
-    if (!userId || !id) return;
+  const getMessages = useCallback(async (userId, id) => {
+    if (!userId || !id) return [];
     const { data, error } = await supabase
       .from("messages")
       .select("*")
       .or(`and(sender_id.eq.${userId},receiver_id.eq.${id}),and(sender_id.eq.${id},receiver_id.eq.${userId})`)
       .order('created_at', { ascending: true });
     if (error) {
-      console.log(error);
-      throw new Error(error?.message);
+      console.error(error);
+      throw new Error(error.message);
     }
-    setMessages(data);
-  }
-  
+    return data;
+  }, [supabase]);
+
+  const sendAutomaticReply = useCallback(async () => {
+    const { error } = await supabase
+      .from("messages")
+      .insert([{ receiver_id: userId, message: "Terima kasih telah menghubungi kami. Mohon tunggu sebentar, chat Anda akan segera kami balas 😇", sender_id: id }]);
+    if (error) {
+      console.error("Error sending automatic reply:", error.message);
+    }
+  }, [supabase, id, userId]);
 
   useEffect(() => {
-    fetchUser(id)
-    getMessages(userId, id);
+    const fetchData = async () => {
+      try {
+        const [userData, messagesData] = await Promise.all([
+          fetchUser(id),
+          getMessages(userId, id)
+        ]);
+        setUser(userData);
+        setMessages(messagesData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
 
     const channel = supabase
-    .channel('messages')
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
-      if ((payload?.new?.sender_id === userId && payload?.new?.receiver_id === id) || 
-          (payload?.new?.sender_id === id && payload?.new?.receiver_id === userId)) {
-        setMessages((prevMessages) => [...prevMessages, payload?.new]);
-      }
-    })
-    .subscribe();
+      .channel('messages')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
+        if ((payload.new.sender_id === userId && payload.new.receiver_id === id) ||
+          (payload.new.sender_id === id && payload.new.receiver_id === userId)) {
+          setMessages((prevMessages) => [...prevMessages, payload.new]);
+        }
+      })
+      .subscribe();
 
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [userId,id]);
+  }, [fetchUser, getMessages, id, supabase, userId]);
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    } 
+    }
   }, [messages]);
 
-  const memoizedMessages = useMemo(() => messages, [messages]);
-  const memoizeUser = useMemo(() => user, [user]);
-
-  const handleSendMessage = async () => {
+  const handleSendMessage = useCallback(async () => {
     if (inputMessage.trim() === "") return;
-    const { data, error } = await supabase
+
+    // const pharmacistReplied = messages.some(message => message.sender_id === id);
+
+    const { error } = await supabase
       .from("messages")
       .insert([{ receiver_id: id, message: inputMessage, sender_id: userId }]);
     if (error) {
@@ -88,7 +98,14 @@ export default function Chat({ id, userId }) {
       return;
     }
     setInputMessage("");
-  };
+
+    // if (!pharmacistReplied) {
+    //   await sendAutomaticReply();
+    // }
+  }, [inputMessage, messages, supabase, id, userId]);
+
+  const memoizedMessages = useMemo(() => messages, [messages]);
+  const memoizedUser = useMemo(() => user, [user]);
 
   // const formattedDate = format(artikel?.created_at, 'dd MMM yyyy ', { timeZone });
   
@@ -101,10 +118,10 @@ export default function Chat({ id, userId }) {
             <ArrowLeft size={37} cursor={"pointer"} className="sm:hidden text-[#EE0037]" />
           </div>
           <User
-            name={(<p className="text-md">{memoizeUser?.nama}</p>)}
+            name={(<p className="text-md">{memoizedUser?.nama}</p>)}
             avatarProps={{
               src:
-              memoizeUser?.picture ||
+              memoizedUser?.picture ||
                 "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
               size: "md",
             }}
@@ -112,7 +129,7 @@ export default function Chat({ id, userId }) {
         </div>
       </div>
       
-      <div ref={scrollRef} className="overflow-y-scroll mb-4 scroll-smooth h-screen bg-slate-100 border-l-1 flex justify-center">
+      <div ref={scrollRef} className="overflow-y-scroll mb-4 h-screen bg-slate-100 border-l-1 flex justify-center">
         <div className="w-full flex pt-9 flex-col items-center">
           {memoizedMessages.map((msg, index) => (
             <div key={index} className={`relative ${msg?.sender_id === userId ? "self-end bg-[#EE0037] text-white" : "self-start bg-white text-black"} text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${msg?.sender_id === userId ? "mr-4" : "ml-4"}`}>

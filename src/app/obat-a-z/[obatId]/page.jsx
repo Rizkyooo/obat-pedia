@@ -1,12 +1,9 @@
 "use client";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/utils/supabase/client";
 import { useState, useEffect } from "react";
 import { Tabs, Tab, Spinner, Image } from "@nextui-org/react";
 import { Link } from "@nextui-org/react";
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+const supabase = createClient();
 export default function ObatId({ searchParams }) {
   const [obat, setObat] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -40,14 +37,6 @@ export default function ObatId({ searchParams }) {
   return (
     <main>
       <div className="detail-obat my-4 container mx-auto px-6 sm:flex min-h-screen">
-        {loading && (
-          <Spinner
-            className="flex h-[30rem] justify-center items-center min-w-full"
-            color="danger"
-            label="Loading"
-            size="lg"
-          />
-        )}
         <div className="hidden sm:flex sm:flex-col gap-2 h-fit items-start w-1/4  bg-slate-100 p-4 px-6 rounded-xl sticky top-[4.5rem]">
           {obat?.ringkasan && obat?.ringkasan !== "null" && (
             <Link

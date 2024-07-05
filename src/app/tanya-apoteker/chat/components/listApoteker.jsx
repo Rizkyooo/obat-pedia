@@ -9,7 +9,6 @@ const supabase = createClient(); // Create Supabase client
 
 export default function Listmessages({ messages, userId }) {
   const [searchQuery, setSearchQuery] = useState("");
-  console.log(messages);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);

@@ -1,5 +1,4 @@
 "use client";
-import { getUser } from "@/libs/actions";
 import {
   Accordion,
   AccordionItem,
@@ -14,10 +13,10 @@ import {
   User,
   useDisclosure,
 } from "@nextui-org/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function ApotekerItem({ apoteker }) {
+export default function ApotekerItem({ apoteker, user }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedApoteker, setSelectedApoteker] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -33,11 +32,9 @@ export default function ApotekerItem({ apoteker }) {
     setSearchQuery(event.target.value);
   };
 
-  const handleStartChat = async () => {
+  const handleStartChat =() => {
     setIsLoading(true);
-    const user = await getUser();
     if(!user){
-      
       return (router.push('/login')&&setIsLoading(false));
     } else{
       return (router.push('/tanya-apoteker/chat/' + selectedApoteker?.id)&&      setIsLoading(false)
@@ -49,7 +46,6 @@ export default function ApotekerItem({ apoteker }) {
     apotekerItem.nama.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  console.log(apoteker);
   return (
     <div className="px-6">
       <Input

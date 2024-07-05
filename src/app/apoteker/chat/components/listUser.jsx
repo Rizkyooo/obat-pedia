@@ -5,8 +5,6 @@ import ListApoteker from "./listApoteker";
 import { createClient } from "@/utils/supabase/client";
 import { getUser } from "@/libs/actions";
 
-import toast from "react-hot-toast";
-
 export default function ListUser() {
   const pathname = usePathname();
   const [isMobile, setIsMobile] = useState(false);
