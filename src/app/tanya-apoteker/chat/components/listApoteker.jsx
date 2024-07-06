@@ -1,5 +1,5 @@
 "use client";
-import { Image, Input, User } from "@nextui-org/react";
+import { Badge, Image, Input, User } from "@nextui-org/react";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { useState, useMemo } from "react";
@@ -30,14 +30,8 @@ export default function Listmessages({ messages, userId }) {
 
   const unreadCounts = calculateUnreadCount(messages);
 
-  const filteredMessages = useMemo(
-    () =>
-      messages?.filter((message) =>
-        message?.senderProfile?.nama
-          ?.toLowerCase()
-          .includes(searchQuery.toLowerCase())
-      ),
-    [searchQuery, messages]
+  const filteredMessages = messages?.filter((message) =>
+    message?.senderProfile?.nama?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleLinkClick = async (senderId) => {
@@ -100,6 +94,7 @@ export default function Listmessages({ messages, userId }) {
               }`}
               onClick={() => handleLinkClick(message?.sender_id)}
             >
+              <Badge className={`${message?.senderProfile?.is_online ? "block" : "hidden"}`} content="" color={`${message?.senderProfile?.is_online ? "success" : ""}`} shape={`${message?.senderProfile?.is_online ? "circle" : ""}`} placement={`${message?.senderProfile?.is_online? "bottom-left" : ""}`}>
               <User
                 className={
                   unreadCounts[message.sender_id] > 0
@@ -122,6 +117,7 @@ export default function Listmessages({ messages, userId }) {
                   size: "lg",
                 }}
               />
+              </Badge>
               {unreadCounts[message?.sender_id] > 0 && (
                 <div className="flex flex-col justify-center items-center">
                   <div className="bg-red-500 animate-pulse text-white rounded-full p-1 text-xs"></div>

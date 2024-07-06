@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Button } from "@nextui-org/react";
 import { createClient } from "@/utils/supabase/client";
+import SetOnline from "../components/SetOnline";
+import { getUser } from "@/libs/actions";
 
 let tabs = [
   {
@@ -64,6 +66,7 @@ export default function ObatAZ() {
   const [obatList, setObatList] = useState([]);
   const [activeTab, setActiveTab] = useState(tabs[0].id);
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   const fetchObatData = async (limit, query = "", category = "") => {
     setLoading(true);
@@ -90,8 +93,14 @@ export default function ObatAZ() {
     }
   };
 
+  async function getId(){
+    const user = await getUser();
+    setUserId(user?.id);
+  }
+
   useEffect(() => {
     fetchObatData(loadmore, searchQuery, activeTab);
+    getId();
   }, [loadmore, searchQuery, activeTab]);
 
   const handleMore = () => {

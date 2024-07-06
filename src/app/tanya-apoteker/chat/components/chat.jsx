@@ -1,6 +1,6 @@
 'use client';
 import { createClient } from "@/utils/supabase/client";
-import { Button, Input, User } from "@nextui-org/react";
+import { Badge, Button, Input, User } from "@nextui-org/react";
 import { ArrowLeft, Send } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -117,6 +117,7 @@ export default function Chat({ id, userId }) {
           <div onClick={() => router.push("/tanya-apoteker/chat")}>
             <ArrowLeft size={37} cursor={"pointer"} className="sm:hidden text-[#EE0037]" />
           </div>
+          <Badge className={`${memoizedUser?.is_online ? "block" : "hidden"}`} content="" color={`${memoizedUser?.is_online ? "success" : ""}`} shape={`${memoizedUser?.is_online ? "circle" : ""}`} placement={`${memoizedUser?.is_online ? "bottom-left" : ""}`}>
           <User
             name={<p className="text-md">{memoizedUser?.nama}</p>}
             avatarProps={{
@@ -124,6 +125,7 @@ export default function Chat({ id, userId }) {
               size: "md",
             }}
           />
+          </Badge>
         </div>
       </div>
 

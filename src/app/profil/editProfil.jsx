@@ -77,10 +77,7 @@ const supabase = createClient();
   async function updateUser(id, nama, email, jenis_kelamin, image) {
     setIsLoading(true);
     try {
-      if(!image){
-        return
-      }
-      const picture = await uploadImage(image)
+      const picture = image ? await uploadImage(image) : user?.picture;
       const supabase = createClient();
       const { error } = await supabase
         .from("pengguna")

@@ -1,6 +1,6 @@
 'use client';
 import { createClient } from "@/utils/supabase/client";
-import { Button, Input, User } from "@nextui-org/react";
+import { Badge, Button, Input, User } from "@nextui-org/react";
 import { ArrowLeft, Send } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { originalDate } from "@/utils/timeZone";
@@ -117,15 +117,15 @@ export default function Chat({ id, userId }) {
           <div onClick={() => window.history.back()}>
             <ArrowLeft size={37} cursor={"pointer"} className="sm:hidden text-[#EE0037]" />
           </div>
+          <Badge className={`${memoizedUser?.is_online ? "block" : "hidden"}`} content="" color={`${memoizedUser?.is_online ? "success" : ""}`} shape={`${memoizedUser?.is_online ? "circle" : ""}`} placement={`${memoizedUser?.is_online ? "bottom-left" : ""}`}>
           <User
-            name={(<p className="text-md">{memoizedUser?.nama}</p>)}
+            name={<p className="text-md">{memoizedUser?.nama}</p>}
             avatarProps={{
-              src:
-              memoizedUser?.picture ||
-                "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
+              src: memoizedUser?.picture || "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
               size: "md",
             }}
           />
+          </Badge>
         </div>
       </div>
       
