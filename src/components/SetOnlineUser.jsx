@@ -38,8 +38,9 @@ export default function SetOnlineUser({userId, role}) {
 
 
 const updateOnlineStatus = async (isOnline, id) => {
+  const roles = role? role : 'pengguna'
       const { data, error } = await supabase
-        .from(role)
+        .from(roles)
         .update({ is_online: isOnline })
         .eq('id', id); // Ganti dengan kriteria yang sesuai dengan pengguna yang sedang online
 
