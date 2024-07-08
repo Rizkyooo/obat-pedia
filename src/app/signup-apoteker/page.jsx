@@ -175,7 +175,7 @@ export default function SignupPage() {
   };
 
   return (
-    <section className="flex container mx-auto p-16 ">
+    <section className="flex container mx-auto p-6 ">
       <div className="w-1/2 bg-[#EE0037] justify-center items-center rounded-tl-2xl hidden sm:flex">
         <Image width={300} alt="logins" src="./images/logins.png" />
       </div>
