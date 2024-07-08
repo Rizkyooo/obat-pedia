@@ -225,7 +225,7 @@ export default function AddUserModal({ role }) {
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button color="default" variant="light" onPress={onClose}>
+                <Button  color="default" variant="light" onPress={onClose}>
                   Batal
                 </Button>
                 <Button color="danger" onPress={() => { role==='apoteker'? addApoteker(): addPengguna()}} isLoading={isLoading} disabled={isLoading}>
