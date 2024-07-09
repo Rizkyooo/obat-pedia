@@ -34,7 +34,7 @@ export default async function Profil() {
 
 
   return (
-    <main className="sm:pb-16 bg-gray-100">
+    <main className="sm:pb-16 pb-16 bg-gray-100">
       <EditProfil user={users}></EditProfil>
     </main>
   );
