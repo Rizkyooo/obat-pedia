@@ -53,7 +53,7 @@ export default async function DetailArtikel({ artikel }) {
               <User
                 name={
                   <p className="text-md font-medium flex justify-center items-center gap-1">
-                    Apt. {artikel?.id_apoteker?.nama} <BadgeCheck color="#0766AD" size={15}/>
+                    {artikel?.id_apoteker?.nama} <BadgeCheck color="#0766AD" size={15}/>
                   </p>
                 }
                 description={<p className="text-md">{formattedDate}</p>}

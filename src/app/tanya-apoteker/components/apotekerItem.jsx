@@ -75,9 +75,9 @@ export default function ApotekerItem({ apoteker, user }) {
                       "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
                     size: "lg",
                   }}
-                  name={apotekerItem?.nama}
+                  name={<p className="text-xs">{apotekerItem?.nama}</p>}
                   description={<div className="flex flex-col gap-1"> 
-                    <p className="text-xs text-gray-500">{apotekerItem?.status_keanggotaan}</p>
+                    <p className="text-[0.7rem] text-gray-400">{apotekerItem?.status_keanggotaan}</p>
                     <div className="flex gap-1 items-center">
                     <p className={`text-xs`}>{apotekerItem?.is_online ? "online" : "offline "}</p>
                     <div className={`flex justify-center items-center  ${apotekerItem?.is_online ? "bg-green-500 animate-pulse" : "bg-white"} rounded-full h-2 w-2 `}></div>
@@ -115,7 +115,7 @@ export default function ApotekerItem({ apoteker, user }) {
               {(onClose) => (
                 <>
                   <ModalHeader className="flex flex-col gap-1">
-                    {`Apt. ${selectedApoteker.nama}`}
+                    {`${selectedApoteker.nama}`}
                   </ModalHeader>
                   <ModalBody>
                     <div className="flex flex-col gap-4">
@@ -152,12 +152,12 @@ export default function ApotekerItem({ apoteker, user }) {
                           </div>
                         </div>
 
-                        <div className="text-sm flex flex-col gap-1">
+                        {/* <div className="text-sm flex flex-col gap-1">
                           <div className="shadow-sm min-w-full p-2 rounded-md bg-white flex flex-col justify-start items-start">
                             <p className="font-semibold"></p>
                             <p>{selectedApoteker?.no_str}</p>
                           </div>
-                        </div>
+                        </div> */}
 
                         <Accordion className=" shadow-sm px-2 bg-white rounded-md">
                           <AccordionItem

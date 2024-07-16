@@ -103,8 +103,7 @@ export default function Listmessages({ messages, userId }) {
                 }
                 name={
                   <p className="text-md font-medium">
-                    {" "}
-                    {message?.senderProfile?.nama}
+                    {truncateText(message?.senderProfile?.nama || "user", 25)}
                   </p>
                 }
                 description={
