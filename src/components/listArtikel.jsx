@@ -30,7 +30,7 @@ export default async function ListArtikel() {
         <h3 className="text-lg font-semibold mb-4 sm:text-3xl">
           Artikel Kesehatan
         </h3>
-        <Link className="text-red-600 font-semibold sm:hidden pr-4" href={"/artikel"}>Lihat Semua</Link>
+        <Link className="text-blue-500 font-semibold sm:hidden pr-4" href={"/artikel"}>Lihat Semua</Link>
       </div>{" "}
       {artikels.map((artikel) => (
         <Artikel artikel={artikel}></Artikel>

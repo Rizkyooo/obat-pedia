@@ -5,7 +5,6 @@ import { createClient } from "@/utils/supabase/client";
 export default async function page() {
   const user = await getUser();
   const role = user?.user_metadata?.role;
-  console.log(role);
   if (role !== "admin") {
     redirect("/");
   }
@@ -48,6 +47,10 @@ export default async function page() {
   }
 
   const [apoteker, pengguna, artikel] = await Promise.all([getApoteker(), getPengguna(), getArtikel()]);
+
+  // const apoteker = await getApoteker();
+  // const pengguna = await getPengguna();
+  // const artikel = await getArtikel();
 
   return (
     <>

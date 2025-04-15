@@ -130,13 +130,14 @@ export default function Header(props) {
               ) : (
                 <Button
                   size="sm"
-                  className="bg-[#EE0037] text-white"
+                  className="bg-blue-500 text-white"
                   as={Link}
                   color=""
                   href="/login"
                   variant="flat"
+                  radius="full"
                 >
-                  Login
+                   Masuk 
                 </Button>
               )}
             </NavbarItem>
