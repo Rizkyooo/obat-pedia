@@ -200,7 +200,7 @@ export default function TulisArtikel() {
             </div>
           </div>
         </div>
-          <Button isDisabled={!content||!title||!previewUrl} isLoading={loading} type="submit" color="danger" className="mt-4">Submit Artikel</Button>
+          <Button isDisabled={!content||!title||!previewUrl} isLoading={loading} type="submit"                       color="primary" className="mt-4">Submit Artikel</Button>
       </form>
     </div>
   );

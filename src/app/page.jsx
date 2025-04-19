@@ -17,16 +17,16 @@ if (role === 'admin') {
 }
   return (
     <>
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-[#f6f8fd]">
       <section className="relative sm:block">
         <Jumbotron />
-        <div className=" absolute -bottom-20 rounded-t-3xl bg-white w-full sm:hidden">
+        <div className=" absolute -bottom-44 rounded-t-3xl bg-[#f6f8fd] w-full sm:hidden">
           <div className="flex justify-center items-center">
             <NavHero />
           </div>
         </div>
       </section>
-      <div className=" mt-28 sm:mt-0 sm:p-9 container mx-auto px-6 mb-20">
+      <div className="mt-60 sm:mt-0 sm:py-9 container px-6 mb-20">
       <ListArtikel></ListArtikel>
       </div>
     </main>

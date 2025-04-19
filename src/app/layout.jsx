@@ -20,7 +20,7 @@ export default async function RootLayout({ children }) {
   console.log(user);
   return (
     <html lang="en">
-      <body className={`${inter.className} min-h-screen`}>
+      <body className={`${inter.className} min-h-screen bg-[#f6f8fd]`}>
         <Providers>
           <SetOnlineUser userId={user?.id} role={user?.role}/>
             <Header

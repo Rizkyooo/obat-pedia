@@ -227,7 +227,7 @@ export default function EditProfil({ user }) {
               className="mt-4"
               type="submit"
               variant="ghost"
-              color="danger"
+                                    color="primary"
             >
               Update Profile
             </Button>
@@ -253,7 +253,7 @@ export default function EditProfil({ user }) {
                     </Button>
                     <Button
                       isLoading={isLoading}
-                      color="danger"
+                      color="primary"
                       onClick={() => {
                         updateUser();
                         onClose();

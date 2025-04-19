@@ -182,7 +182,7 @@ export default function DetailArtikel({ artikel }) {
               </div>
             </article>
           </div>
-          <Button onClick={onOpen} className="mt-4" color="danger">
+          <Button onClick={onOpen} className="mt-4"                       color="primary">
             Simpan
           </Button>
           <Modal
@@ -206,7 +206,7 @@ export default function DetailArtikel({ artikel }) {
                     </Button>
                     <Button
                       isLoading={loading}
-                      color="danger"
+                      color="primary"
                       onClick={(e) => handleUpdate(e)}
                     >
                       Simpan

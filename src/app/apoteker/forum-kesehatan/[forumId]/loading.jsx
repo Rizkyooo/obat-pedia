@@ -8,7 +8,7 @@ export default function Loading() {
         <div className="sm:w-4/5 flex justify-center items-center">
         <Spinner
           label="Loading"
-          color="danger"
+                                color="primary"
           size="md"
         />
         </div>

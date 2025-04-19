@@ -94,7 +94,7 @@ export  default function ForumItem({
             onPress={handleMore}
             size="sm"
             className="mt-4"
-            color="danger"
+                                  color="primary"
             variant="ghost"
           >
             Load More

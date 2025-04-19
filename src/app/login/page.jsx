@@ -78,7 +78,7 @@ export default function LoginPage() {
 
   return (
     <section className="flex container mx-auto p-16 ">
-      <div className="w-1/2 bg-[#EE0037] justify-center items-center rounded-tl-2xl hidden sm:flex">
+      <div className="w-1/2 bg-blue-500 justify-center items-center rounded-tl-2xl hidden sm:flex">
         <Image width={300} alt="logins" src="./images/logins.png" />
       </div>
       <div className=" w-full sm:w-1/2 bg-slate-100 px-4 sm:px-16 py-14 rounded-xl">
@@ -141,7 +141,7 @@ export default function LoginPage() {
             isDisabled={!email || !password}
             // formAction={() => handleSubmit(email, password)}
             className="flex justify-center mb-4"
-            color="danger"
+                                  color="primary"
             variant="ghost"
             type="submit"
             onClick={(e) => handleSubmit(email, password, e)}

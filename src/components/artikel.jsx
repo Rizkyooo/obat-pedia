@@ -13,7 +13,7 @@ export default function Artikel({ artikel }) {
   return (
     <Link
       href={`/artikel/${artikel?.slug}`}
-      className="flex items-center gap-4 text-black shadow-gray-200 shadow-sm py-3 rounded-lg mb-4 sm:w-3/4"
+      className="flex items-center gap-4 text-black bg-white py-3 rounded-2xl mb-2 "
     >
       <div className="w-1/3 h-20 sm:h-full sm:w-[25rem] ">
         <Image
@@ -25,7 +25,7 @@ export default function Artikel({ artikel }) {
           className=" h-20 sm:h-44  sm:w-full "
         />
       </div>
-      <div className="flex justify-center flex-col gap-1 w-2/3 sm:w-full">
+      <div className="flex justify-center flex-col gap-1 w-2/3 sm:w-full px-4">
         <Chip className=" bg-sky-200 sm:mb-2" size="sm">
           {artikel?.id_kategori?.nama}
         </Chip>
@@ -35,7 +35,7 @@ export default function Artikel({ artikel }) {
         <div className=" text-justify overflow-y-hidden hidden sm:flex sm:h-18">
           {parse(truncateText(artikel?.konten, 130))}
         </div>
-        <div className="hidden sm:block text-red-600 font-semibold">
+        <div className="hidden sm:block text-blue-500 font-semibold">
           Baca Selengkapnya
         </div>
       </div>

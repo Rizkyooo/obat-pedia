@@ -132,7 +132,7 @@ export default function ObatAZ() {
         >
           {tabs.map((tab) => (
             <Tab key={tab.id} title={tab.label}>
-              {loading && <Spinner color="danger" size="md" className="min-h-screen flex pb-36 items-center "/>}
+              {loading && <Spinner                       color="primary" size="md" className="min-h-screen flex pb-36 items-center "/>}
               <div className="flex flex-col sm:grid sm:grid-cols-2 sm:gap-3">
                 {
                   obatList.map((obat) => (
@@ -155,7 +155,7 @@ export default function ObatAZ() {
         </Tabs>
         <div className="flex justify-center mt-4">
           {obatList.length > 0 && (
-            <Button onClick={handleMore} color="danger" variant="ghost">
+            <Button onClick={handleMore}                       color="primary" variant="ghost">
               Load More
             </Button>
           )}

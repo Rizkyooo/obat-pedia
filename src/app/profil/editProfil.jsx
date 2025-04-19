@@ -165,7 +165,7 @@ const supabase = createClient();
               className="mt-4"
               type="submit"
               variant="ghost"
-              color="danger"
+                                    color="primary"
             >
               Update Profile
             </Button>
@@ -191,7 +191,7 @@ const supabase = createClient();
                     </Button>
                     <Button
                       isLoading={isLoading}
-                      color="danger"
+                      color="primary"
                       onClick={handleSubmit}
                     >
                       Simpan

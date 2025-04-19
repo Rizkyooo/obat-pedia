@@ -105,7 +105,7 @@ const TablePengguna = ({role, columns, rows }) => {
                 <EditIcon />
               </span>
             </Tooltip>
-            <Tooltip color="danger" content={`Hapus ${role}`}>
+            <Tooltip                       color="primary" content={`Hapus ${role}`}>
               <span
                 onClick={() => {
                   onOpen();
@@ -156,7 +156,7 @@ const TablePengguna = ({role, columns, rows }) => {
         />
 
         <AddUserModal role={role}/>
-        {/* <Button onClick={onOpen} color="danger" startContent={<UserRoundPlus size={20} />}>Tambah {role}</Button>
+        {/* <Button onClick={onOpen}                       color="primary" startContent={<UserRoundPlus size={20} />}>Tambah {role}</Button>
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
@@ -182,7 +182,7 @@ const TablePengguna = ({role, columns, rows }) => {
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button                       color="primary" variant="light" onPress={onClose}>
                   Close
                 </Button>
                 <Button color="primary" onPress={onClose}>
@@ -240,7 +240,7 @@ const TablePengguna = ({role, columns, rows }) => {
                 {openModal === "verifikasi" ? (
                   <Button
                     isLoading={loading}
-                    color="danger"
+                                          color="primary"
                     onClick={(e) => verifyArtikel(selectedArtikel, e)}
                   >
                     {status === "published"
@@ -250,7 +250,7 @@ const TablePengguna = ({role, columns, rows }) => {
                 ) : (
                   <Button
                     isLoading={loading}
-                    color="danger"
+                                          color="primary"
                     onClick={(e) => deleteArtikel(selectedArtikel, e)}
                   >
                     Hapus {role}

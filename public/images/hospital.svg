@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="hospital">
+  <path fill="#f2f2f2" d="M384.5 147.5h90a30 30 0 0 1 30 30v297a30 30 0 0 1-30 30h-90v-357Z"></path>
+  <path fill="#dedede" d="M384.5 147.5h10v357h-10z"></path>
+  <path fill="#f2f2f2" d="M157.5 102.5h197a30 30 0 0 1 30 30v372h-257v-372a30 30 0 0 1 30-30Z"></path>
+  <path fill="#bebebe" d="M343.71 102.5H168.29c7.08 42.51 43.713 75 87.71 75s80.63-32.49 87.71-75Z"></path>
+  <path fill="#f2f2f2" d="M127.5 504.5h-90a30 30 0 0 1-30-30v-297a30 30 0 0 1 30-30h90v357Z"></path>
+  <ellipse cx="256" cy="87.5" fill="#f2f2f2" rx="78.952" ry="80"></ellipse>
+  <path fill="#f66" d="M294 72.5h-23v-23a10 10 0 0 0-10-10h-10a10 10 0 0 0-10 10v23h-23a10 10 0 0 0-10 10v10a10 10 0 0 0 10 10h23v23a10 10 0 0 0 10 10h10a10 10 0 0 0 10-10v-23h23a10 10 0 0 0 10-10v-10a10 10 0 0 0-10-10Z"></path>
+  <path fill="#676e87" d="M229.5 396.5h53a15 15 0 0 1 15 15v93h-83v-93a15 15 0 0 1 15-15Z"></path>
+  <path fill="#595f74" d="M282.5 396.5h-20a15 15 0 0 1 15 15v93h20v-93a15 15 0 0 0-15-15Z"></path>
+  <rect width="68.5" height="42" x="271" y="222.5" fill="#b3e0ff" rx="6"></rect>
+  <path fill="#8cd0ff" d="M333.5 222.5h-20a6 6 0 0 1 6 6v30a6 6 0 0 1-6 6h20a6 6 0 0 0 6-6v-30a6 6 0 0 0-6-6Z"></path>
+  <path fill="#b3e0ff" d="M384.5 222.5h69a6 6 0 0 1 6 6v30a6 6 0 0 1-6 6h-69Z"></path>
+  <path fill="#8cd0ff" d="M453.5 222.5h-20a6 6 0 0 1 6 6v30a6 6 0 0 1-6 6h20a6 6 0 0 0 6-6v-30a6 6 0 0 0-6-6ZM384.5 222.5h10v42h-10z"></path>
+  <path fill="#b3e0ff" d="M384.5 309.5h69a6 6 0 0 1 6 6v30a6 6 0 0 1-6 6h-69Z"></path>
+  <path fill="#8cd0ff" d="M453.5 309.5h-20a6 6 0 0 1 6 6v30a6 6 0 0 1-6 6h20a6 6 0 0 0 6-6v-30a6 6 0 0 0-6-6ZM384.5 309.5h10v42h-10z"></path>
+  <path fill="#b3e0ff" d="M58.5 222.5h69v42h-69a6 6 0 0 1-6-6v-30a6 6 0 0 1 6-6zm0 87h69v42h-69a6 6 0 0 1-6-6v-30a6 6 0 0 1 6-6z"></path>
+  <rect width="68.5" height="42" x="172.5" y="222.5" fill="#b3e0ff" rx="6"></rect>
+  <path fill="#8cd0ff" d="M235 222.5h-20a6 6 0 0 1 6 6v30a6 6 0 0 1-6 6h20a6 6 0 0 0 6-6v-30a6 6 0 0 0-6-6Z"></path>
+  <rect width="68.5" height="42" x="271" y="309.5" fill="#b3e0ff" rx="6"></rect>
+  <rect width="68.5" height="42" x="172.5" y="309.5" fill="#b3e0ff" rx="6"></rect>
+  <path fill="#8cd0ff" d="M235 309.5h-20a6 6 0 0 1 6 6v30a6 6 0 0 1-6 6h20a6 6 0 0 0 6-6v-30a6 6 0 0 0-6-6Z"></path>
+  <path fill="#dedede" d="M117.5 147.5h10v357h-10z"></path>
+  <path fill="#8cd0ff" d="M117.5 222.5h10v42h-10zM117.5 309.5h10v42h-10zM333.5 309.5h-20a6 6 0 0 1 6 6v30a6 6 0 0 1-6 6h20a6 6 0 0 0 6-6v-30a6 6 0 0 0-6-6Z"></path>
+</svg>

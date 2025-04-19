@@ -16,6 +16,7 @@ import {
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { Heart } from "lucide-react";
 
 export default function ApotekerItem({ apoteker, user }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -52,7 +53,7 @@ export default function ApotekerItem({ apoteker, user }) {
   return (
     <div className="px-6">
       <Input
-        variant="bordered"
+        color="primary"
         className="bg-white rounded-full"
         placeholder="cari apoteker"
         type="search"
@@ -60,38 +61,34 @@ export default function ApotekerItem({ apoteker, user }) {
         onChange={handleSearchChange}
         fullWidth={false}
       />
-      <div className="bg-gray-100 min-h-screen">
-        <div className="bg-gray-100 mt-2 rounded-md p-2 grid sm:grid-cols-2 gap-2">
+      <div className="bg-[#f6f8fd]">
+        <div className="mt-2 rounded-md p-2 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredApoteker?.map((apotekerItem) => (
             <div
               key={apotekerItem.id}
-              className="bg-white shadow-sm rounded-md p-4 flex justify-between"
+              className="bg-white rounded-2xl p-4 flex flex-col min-h-[320px]"
             >
-              <div>
-                <User
-                  avatarProps={{
-                    src:
-                      apotekerItem?.picture ||
-                      "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
-                    size: "lg",
-                  }}
-                  name={<p className="text-xs">{apotekerItem?.nama}</p>}
-                  description={<div className="flex flex-col gap-1"> 
-                    <p className="text-[0.7rem] text-gray-400">{apotekerItem?.status_keanggotaan}</p>
-                    <div className="flex gap-1 items-center">
-                    <p className={`text-xs`}>{apotekerItem?.is_online ? "online" : "offline "}</p>
-                    <div className={`flex justify-center items-center  ${apotekerItem?.is_online ? "bg-green-500 animate-pulse" : "bg-white"} rounded-full h-2 w-2 `}></div>
-                    </div>
-                  </div>}
-                />
+              <div className="flex flex-col items-center flex-1 md:mb-4">
+                <div className="mb-3 w-28 h-28 rounded-full overflow-hidden border-4 border-purple-300">
+                  <img
+                    src={apotekerItem?.picture || "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="}
+                    alt={apotekerItem?.nama}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                
+                <h3 className="font-semibold text-gray-800 text-center text-xs md:text-medium">{apotekerItem?.nama}</h3>
+                <p className="text-blue-500 text-center my-2 text-xs md:text-sm">{apotekerItem?.keahlian}</p>
+                <p className="text-gray-500 text-center text-xs md:text-md">{apotekerItem?.status_keanggotaan}</p>
               </div>
+                
               <Button
                 onPress={() => handleOpenModal(apotekerItem)}
-                color="danger"
-                className="my-auto bg-[#EE0037]"
+                color="primary"
+                className="mt-auto bg-blue-500 w-full rounded-full"
                 size="sm"
               >
-                Chat
+                Chat sekarang
               </Button>
             </div>
           ))}
@@ -152,13 +149,6 @@ export default function ApotekerItem({ apoteker, user }) {
                           </div>
                         </div>
 
-                        {/* <div className="text-sm flex flex-col gap-1">
-                          <div className="shadow-sm min-w-full p-2 rounded-md bg-white flex flex-col justify-start items-start">
-                            <p className="font-semibold"></p>
-                            <p>{selectedApoteker?.no_str}</p>
-                          </div>
-                        </div> */}
-
                         <Accordion className=" shadow-sm px-2 bg-white rounded-md">
                           <AccordionItem
                             classNames={{
@@ -211,7 +201,7 @@ export default function ApotekerItem({ apoteker, user }) {
                       isLoading={isLoading}
                       onPress={handleStartChat}
                       size={"sm"}
-                      color="danger"
+                      color="primary"
                     >
                       Mulai Konsultasi
                     </Button>

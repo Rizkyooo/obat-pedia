@@ -12,10 +12,10 @@ export default function Footer() {
     return (
         <>
         {!showHeader &&
-        <footer className="w-full bottom-0 px-4 py-6 sm:mb-0 bg-[#EE0037] mt-16">
+        <footer className="w-full bottom-0 px-4 py-6 sm:mb-0 bg-blue-500 mt-16">
             <div className="gap-4 sm:flex sm:gap-8 sm:px-20 sm:py-10 sm:justify-between">
                 <div className="mb-6">
-                    <h2 className="font-bold text-2xl text-white">ObatPedia</h2>
+                    <h2 className="font-bold text-2xl text-white">Medisigna</h2>
                     <div className="flex gap-2 mt-4">
                         <Image isZoomed className="w-8" height={100} src="./images/facebook-icon.png"/>
                         <Image isZoomed className="w-8" height={100} src="./images/ig-icon.png"/>
@@ -38,7 +38,7 @@ export default function Footer() {
                     <div className="flex flex-col gap-2">
                         <div className="flex ">
                         <EnvelopeIcon className="w-4 mr-2" color="white"/>
-                        <p className="text-white">obatpedia@gmail.com</p>
+                        <p className="text-white">Medisigna@gmail.com</p>
                         </div>
                         <div className="flex ">
                         <PhoneIcon className="w-4 mr-2" color="white"/>
@@ -53,7 +53,7 @@ export default function Footer() {
             </div>
             <div className="mt-6 mb-12 sm:mb-0 justify-center items-center">
                 <hr />
-                <p className="text-center text-white mt-4 text-xs sm:text-md">Copyright © 2024 ObatPedia. All rights reserved.</p>
+                <p className="text-center text-white mt-4 text-xs sm:text-md">Copyright © 2024 Medisigna. All rights reserved.</p>
             </div>
 
         </footer>
