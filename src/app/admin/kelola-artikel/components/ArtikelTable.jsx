@@ -176,7 +176,7 @@ const ArtikelTable = ({ columns, rows }) => {
                 <EditIcon />
               </span>
             </Tooltip>
-            <Tooltip color="danger" content="Delete artikel">
+            <Tooltip                       color="primary" content="Delete artikel">
               <span onClick={() => {
                   onOpen();
                   setOpenModal("delete")
@@ -246,7 +246,7 @@ const ArtikelTable = ({ columns, rows }) => {
 
                 <Button
                   isLoading={loading}
-                  color="danger"
+                                        color="primary"
                   onClick={(e) => verifyArtikel(selectedArtikel, e)}
                 >
                   {status === "published"
@@ -256,7 +256,7 @@ const ArtikelTable = ({ columns, rows }) => {
                 ): (
                     <Button
                   isLoading={loading}
-                  color="danger"
+                                        color="primary"
                   onClick={(e) => deleteArtikel(selectedArtikel, e)}
                 >
                   Hapus Artikel

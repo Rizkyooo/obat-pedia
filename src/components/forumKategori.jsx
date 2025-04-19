@@ -199,7 +199,7 @@ export default function ForumKategori({checkUser}) {
           startContent={<Pencil />}
           onPress={() => { checkUser ? onOpen() : router.push('/login') }}
           size="sm"
-          className="shadow-sm bg-[#EE0037] text-white"
+          className="shadow-sm bg-blue-500 text-white"
         >
           Buat
         </Button>
@@ -218,7 +218,7 @@ export default function ForumKategori({checkUser}) {
               variant="bordered"
               fullWidth={true}
             />
-            <Button startContent={<Pencil />} size="sm" onPress={() => { checkUser ? onOpen() : router.push('/login') }} color="danger">
+            <Button startContent={<Pencil />} size="sm" onPress={() => { checkUser ? onOpen() : router.push('/login') }}                       color="primary">
               Buat
             </Button>
           </div>
@@ -285,7 +285,7 @@ export default function ForumKategori({checkUser}) {
                 <Button variant="flat" onPress={onClose}>
                   Batal
                 </Button>
-                <Button isLoading={isLoading} color="danger" onPress={addNewForum}>
+                <Button isLoading={isLoading}                       color="primary" onPress={addNewForum}>
                   Submit
                 </Button>
               </ModalFooter>

@@ -60,7 +60,7 @@ export default function SignupPage() {
 
   return (
     <section className="flex container mx-auto p-16 ">
-      <div className="w-1/2 bg-[#EE0037] justify-center items-center rounded-tl-2xl hidden sm:flex">
+      <div className="w-1/2 bg-blue-500 justify-center items-center rounded-tl-2xl hidden sm:flex">
         <Image width={300} alt="logins" src="./images/logins.png" />
       </div>
       <div className=" w-full sm:w-1/2 bg-slate-100 px-4 sm:px-16 py-14 rounded-xl">
@@ -129,7 +129,7 @@ export default function SignupPage() {
           formAction=""
           type="submit"
             className="flex justify-center"
-            color="danger"
+                                  color="primary"
             variant="ghost"
             onClick={(e) => handleSubmit(name, email, password, e)}
           >Daftar
@@ -154,7 +154,7 @@ export default function SignupPage() {
                   <div className="flex flex-col justify-center items-center gap-2">
                   <Image width={100} src="./images/happy-face.png" alt="error" />
                   <p>Selamat Akun Anda Telah Terdaftar</p>
-                  <Button size="xs" color="danger" className="mt-4" onClick={() => router.push("/login")}>Login</Button>
+                  <Button size="xs"                       color="primary" className="mt-4" onClick={() => router.push("/login")}>Login</Button>
                 </div>
                 )}
               </ModalBody>

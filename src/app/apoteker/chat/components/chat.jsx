@@ -132,7 +132,7 @@ export default function Chat({ id, userId }) {
       <div ref={scrollRef} className="overflow-y-scroll mb-4 h-screen bg-slate-100 border-l-1 flex justify-center">
         <div className="w-full flex pt-9 flex-col items-center">
           {memoizedMessages.map((msg, index) => (
-            <div key={index} className={`relative ${msg?.sender_id === userId ? "self-end bg-[#EE0037] text-white" : "self-start bg-white text-black"} text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${msg?.sender_id === userId ? "mr-4" : "ml-4"}`}>
+            <div key={index} className={`relative ${msg?.sender_id === userId ? "self-end bg-blue-500 text-white" : "self-start bg-white text-black"} text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${msg?.sender_id === userId ? "mr-4" : "ml-4"}`}>
               <p className="text-sm pt-1">{msg?.message}</p>
               <p className="text-[0.55rem] px-2 self-end"> {originalDate(msg?.created_at)}</p>
               <div className={`absolute top-0 ${msg?.sender_id === userId ? "right-[-8px] border-l-[#EE0037]" : "left-[-8px] border-r-white"} w-0 h-0 border-t-[16px] border-t-transparent border-b-[16px] border-b-transparent`}></div>
@@ -153,7 +153,7 @@ export default function Chat({ id, userId }) {
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
         />
-        <Button color="danger" startContent={<Send size={20} />} size="md" onClick={handleSendMessage}></Button>
+        <Button                       color="primary" startContent={<Send size={20} />} size="md" onClick={handleSendMessage}></Button>
       </div>
     </div>
   );

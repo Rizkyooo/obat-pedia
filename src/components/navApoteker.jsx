@@ -24,7 +24,7 @@ export default function NavApoteker({user}) {
   return (
     <Navbar isBlurred={false} maxWidth="xl" isBordered>
           <NavbarBrand>
-            <p className="text-[#EE0037] font-bold text-inherit">ObatPedia</p>
+            <p className="text-[#EE0037] font-bold text-inherit">Medisigna</p>
           </NavbarBrand>            
           <NavbarContent justify="end">
             <NavbarItem>
@@ -37,7 +37,7 @@ export default function NavApoteker({user}) {
                         as="button"
                         size="sm"
                         isBordered
-                        color="danger"
+                        color="primary"
                         icon={<UserIcon />}
                         src={""}
                       />
@@ -55,7 +55,7 @@ export default function NavApoteker({user}) {
                       <Button
                         onClick={handleLogout}
                         size="sm"
-                        className="bg-[#EE0037] text-white"
+                        className="bg-blue-500 text-white"
                         variant="flat"
                       >
                         Logout
@@ -66,7 +66,7 @@ export default function NavApoteker({user}) {
               ) : (
                 <Button
                   size="sm"
-                  className="bg-[#EE0037] text-white"
+                  className="bg-blue-500 text-white"
                   as={Link}
                   color=""
                   href="/login"

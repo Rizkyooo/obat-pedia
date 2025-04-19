@@ -7,7 +7,7 @@ export default function NavHero(){
             <Link href={"/obat-a-z"} className="flex flex-col items-center min-w-24  ">
               <div className=" p-2 h-14 w-14 sm:h-16 sm:w-16 bg-white rounded-2xl flex justify-center items-center">
                 <Image
-                src="./images/obat-icon.svg"
+                src="./images/obataz.png"
                 isZoomed
                 className=" max-h-[85px] rounded-full"
                 height={100}
@@ -22,9 +22,9 @@ export default function NavHero(){
             <Link href={"/tanya-apoteker"} className="flex flex-col justify-center items-center min-w-24">
               <div className=" p-2 h-14 w-14 sm:h-16 sm:w-16 bg-white rounded-2xl flex justify-center items-center">
               <Image
-                src="./images/forum-icon.svg"
+                src="./images/chats.png"
                 isZoomed
-                className=" max-h-[85px] rounded-full"
+                className=" max-h-[75px] rounded-full"
                 height={100}
                 width={100}
                 />
@@ -37,7 +37,7 @@ export default function NavHero(){
             <Link href={"/forum-kesehatan"} className="flex flex-col justify-center items-center min-w-24">
               <div className=" p-2 h-14 w-14 sm:h-16 sm:w-16 bg-white rounded-2xl flex justify-center items-center">
               <Image
-                src="./images/ask-apoteker-icon.svg"
+                src="./images/forumd.png"
                 isZoomed
                 className=" max-h-[85px] rounded-full"
                 height={100}
@@ -48,10 +48,10 @@ export default function NavHero(){
                 Forum Kesehatan
               </p>
             </Link>
-            <Link href={"/obat-a-z"} className="flex flex-col items-center min-w-24  ">
+            <Link href={"/home-care"} className="flex flex-col items-center min-w-24  ">
               <div className=" p-2 h-14 w-14 sm:h-16 sm:w-16 bg-white rounded-2xl flex justify-center items-center">
                 <Image
-                src="./images/obat-icon.svg"
+                src="./images/homec.png"
                 isZoomed
                 className=" max-h-[85px] rounded-full"
                 height={100}
@@ -63,10 +63,10 @@ export default function NavHero(){
               </p>
             </Link>
 
-            <Link href={"/tanya-apoteker"} className="flex flex-col justify-center items-center min-w-24">
+            <Link href={"/cari-apotek"} className="flex flex-col justify-center items-center min-w-24">
               <div className=" p-2 h-14 w-14 sm:h-16 sm:w-16 bg-white rounded-2xl flex justify-center items-center">
               <Image
-                src="./images/forum-icon.svg"
+                src="./images/apotek.png"
                 isZoomed
                 className=" max-h-[85px] rounded-full"
                 height={100}
@@ -78,10 +78,10 @@ export default function NavHero(){
               </p>
             </Link>
 
-            <Link href={"/forum-kesehatan"} className="flex flex-col justify-center items-center min-w-24">
+            <Link href={"/swamedikasi"} className="flex flex-col justify-center items-center min-w-24">
               <div className=" p-2 h-14 w-14 sm:h-16 sm:w-16 bg-white rounded-2xl flex justify-center items-center">
               <Image
-                src="./images/ask-apoteker-icon.svg"
+                src="./images/swam.png"
                 isZoomed
                 className=" max-h-[85px] rounded-full"
                 height={100}

@@ -6,7 +6,7 @@ export default function Loading() {
       <main className="h-screen w-full flex justify-center items-center">
         <Spinner
           label="Loading"
-          color="danger"
+                                color="primary"
           size="xl"
         />
       </main>

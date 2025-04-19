@@ -17,7 +17,7 @@ if (role === 'admin') {
 }
   return (
     <>
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-[#f6f8fd]">
       <section className="relative sm:block">
         <Jumbotron />
         <div className=" absolute -bottom-44 rounded-t-3xl bg-[#f6f8fd] w-full sm:hidden">

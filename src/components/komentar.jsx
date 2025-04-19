@@ -109,7 +109,7 @@ export default function Komentar({ parent_id, onSubmit, id_diskusi }) {
           onPress={handleSubmit}
           isLoading={isLoading}
           isDisabled={!komentar}
-          className="bg-[#EE0037] text-white"
+          className="bg-blue-500 text-white"
           size="sm"
         >
           Submit

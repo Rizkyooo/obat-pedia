@@ -49,7 +49,7 @@ export default function SideBarApoteker({ children }) {
             }`}
             alt=""
           >
-            ObatPedia
+            Medisigna
           </h3>
           <button
             onClick={() => setExpanded((curr) => !curr)}
@@ -92,7 +92,7 @@ export default function SideBarApoteker({ children }) {
                   startContent={<LogOutIcon />}
                   key="logout"
                   className="text-danger"
-                  color="danger"
+                                        color="primary"
                 >
                   Logout
                 </DropdownItem>
@@ -114,7 +114,7 @@ export function SidebarItem({ icon, text, href, alert, link }) {
     <Link
       href={link}
       className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group mb-4 ${
-        isActive ? "bg-[#EE0037] text-white" : "hover:bg-red text-gray-600"
+        isActive ? "bg-blue-500 text-white" : "hover:bg-red text-gray-600"
       }`}
     >
       {icon}
@@ -127,14 +127,14 @@ export function SidebarItem({ icon, text, href, alert, link }) {
       </span>
       {alert && (
         <div
-          className={`absolute right-2 w-2 h-2 rounded bg-[#EE0037] ${
+          className={`absolute right-2 w-2 h-2 rounded bg-blue-500 ${
             expanded ? "" : "top-2"
           }`}
         />
       )}
       {!expanded && (
         <div
-          className={`absolute left-full rounded-md px-2 py-1 ml-6 z-50 bg-[#EE0037] text-white text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
+          className={`absolute left-full rounded-md px-2 py-1 ml-6 z-50 bg-blue-500 text-white text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
         >
           {text}
         </div>

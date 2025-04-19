@@ -103,6 +103,7 @@ export default function ObatAZ() {
       <div className="container mx-auto p-4 sm:px-24">
         <h2 className="text-xl font-bold mb-4">Temukan Obat</h2>
         <Input
+        color="primary"
           value={searchQuery}
           onChange={(e) => {
             e.preventDefault();
@@ -111,10 +112,11 @@ export default function ObatAZ() {
           size="lg"
           placeholder="Cari Obat"
           type="search"
-          variant="bordered"
+          // variant="bordered"
         />
 
-        <Tabs
+        {/* <Tabs
+          color="primary"
           className="overflow-auto max-w-full my-4"
           size="lg"
           aria-label="Dynamic tabs"
@@ -125,12 +127,16 @@ export default function ObatAZ() {
             <Tab key={tab.id} title={tab.label}>
               {loading && (
                 <Spinner
-                  color="danger"
+                   color="primary"
                   size="md"
                   className="min-h-screen flex pb-36 items-center "
                 />
               )}
-              <div className="flex flex-col sm:grid sm:grid-cols-2 sm:gap-3">
+              
+            </Tab>
+          ))}
+        </Tabs> */}
+        <div className="flex flex-col sm:grid sm:grid-cols-2 sm:gap-3 mt-6">
                 {obatList.map((obat) => (
                   <Link
                     key={obat.id}
@@ -139,18 +145,15 @@ export default function ObatAZ() {
                       .replace(/\s+/g, "-")
                       .replace(/-$/, "")}?id=${obat.id}`}
                     prefetch={false}
-                    className="py-4 hover:bg-gray-100  text-lg font-medium shadow-sm border-1 border-gray-200 bg-white rounded-lg px-4 mb-2"
+                    className="py-4 hover:bg-gray-100  text-lg font-medium bg-white rounded-2xl px-4 mb-2"
                   >
                     {obat.title}
                   </Link>
                 ))}
               </div>
-            </Tab>
-          ))}
-        </Tabs>
         <div className="flex justify-center mt-4">
           {obatList.length > 0 && (
-            <Button onClick={handleMore} color="danger" variant="ghost">
+            <Button onClick={handleMore}                       color="primary" variant="ghost">
               Load More
             </Button>
           )}

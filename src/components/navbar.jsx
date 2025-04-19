@@ -28,15 +28,15 @@ export default function Header(props) {
     <>
       {!showHeader && (
         <Navbar isBlurred={false} maxWidth="xl" isBordered>
-          <NavbarBrand>
-            <p className="text-[#EE0037] font-bold text-inherit">ObatPedia</p>
-          </NavbarBrand>
+          <Link href="/" className=" h-14 flex items-center justify-center cursor-pointer" >
+            <img className="hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform" src="/images/medisigna.png" alt="logo" width={180} height={180} />
+          </Link>
           <NavbarContent className="hidden sm:flex gap-4" justify="center">
             <NavbarItem isActive={pathName === "/"}>
               <Link
                 className={`${
-                  pathName === "/" ? "text-[#EE0037]" : " "
-                } hover:scale-[1.13] hover:text-[#EE0037] hover:duration-100 hover:transition-transform transition-transform`}
+                  pathName === "/" ? "text-blue-500" : " "
+                } hover:scale-[1.13] hover:text hover:duration-100 hover:transition-transform transition-transform`}
                 color="foreground"
                 href="/"
               >
@@ -46,8 +46,8 @@ export default function Header(props) {
             <NavbarItem isActive={pathName.includes("/obat-a-z")}>
               <Link
                 className={`${
-                  pathName.includes("/obat-a-z") ? "text-[#EE0037]" : " "
-                } hover:text-[#EE0037] hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
+                  pathName.includes("/obat-a-z") ? "text-blue-500" : " "
+                } hover:text hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
                 color="foreground"
                 href="/obat-a-z"
               >
@@ -57,8 +57,8 @@ export default function Header(props) {
             <NavbarItem isActive={pathName.includes("/tanya-apoteker")}>
               <Link
                 className={`${
-                  pathName.includes("/tanya-apoteker") ? "text-[#EE0037]" : " "
-                } hover:text-[#EE0037] hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
+                  pathName.includes("/tanya-apoteker") ? "text" : " "
+                } hover:text hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
                 color="foreground"
                 href="/tanya-apoteker"
               >
@@ -68,8 +68,8 @@ export default function Header(props) {
             <NavbarItem isActive={pathName.includes("/forum-kesehatan")}>
               <Link
                 className={`${
-                  pathName.includes("/forum-kesehatan") ? "text-[#EE0037]" : " "
-                } hover:text-[#EE0037] hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
+                  pathName.includes("/forum-kesehatan") ? "text-blue-500" : " "
+                } hover:text hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
                 color="foreground"
                 href="/forum-kesehatan"
               >
@@ -79,8 +79,8 @@ export default function Header(props) {
             <NavbarItem isActive={pathName === "/artikel"}>
               <Link
                 className={`${
-                  pathName === "/artikel" ? "text-[#EE0037]" : " "
-                } hover:text-[#EE0037] hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
+                  pathName === "/artikel" ? "text-blue-500" : " "
+                } hover:text hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
                 color="foreground"
                 href="/artikel"
               >
@@ -99,7 +99,7 @@ export default function Header(props) {
                         as="button"
                         size="sm"
                         isBordered
-                        color="danger"
+                        color="primary"
                         icon={<UserIcon />}
                         src={
                           avatar_url
@@ -119,7 +119,7 @@ export default function Header(props) {
                       <Button
                         onClick={handleLogout}
                         size="sm"
-                        className="bg-[#EE0037] text-white"
+                        className="bg-blue-500 text-white"
                         variant="flat"
                       >
                         Logout

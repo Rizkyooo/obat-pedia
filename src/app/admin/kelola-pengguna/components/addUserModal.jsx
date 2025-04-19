@@ -189,7 +189,7 @@ export default function AddUserModal({ role }) {
 
   return (
     <div>
-      <Button onClick={onOpen} color="danger" startContent={<UserRoundPlus size={20} />}>
+      <Button onClick={onOpen}                       color="primary" startContent={<UserRoundPlus size={20} />}>
         Tambah {role}
       </Button>
       <Modal
@@ -228,7 +228,7 @@ export default function AddUserModal({ role }) {
                 <Button  color="default" variant="light" onPress={onClose}>
                   Batal
                 </Button>
-                <Button color="danger" onPress={() => { role==='apoteker'? addApoteker(): addPengguna()}} isLoading={isLoading} disabled={isLoading}>
+                <Button                       color="primary" onPress={() => { role==='apoteker'? addApoteker(): addPengguna()}} isLoading={isLoading} disabled={isLoading}>
                   {isLoading ? "Menambah..." : `Tambah ${role}`}
                 </Button>
               </ModalFooter>

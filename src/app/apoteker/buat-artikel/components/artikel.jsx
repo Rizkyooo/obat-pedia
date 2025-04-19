@@ -80,7 +80,7 @@ export default function Artikel({ artikels }) {
           onValueChange={setSearchQuery}
         />
         <Link href="/apoteker/buat-artikel/create">
-          <Button color="danger" startContent={<PencilIcon size={13} />}>
+          <Button                       color="primary" startContent={<PencilIcon size={13} />}>
             Tulis Artikel
           </Button>
         </Link>
@@ -127,7 +127,7 @@ export default function Artikel({ artikels }) {
                         Edit
                       </Button>
                       <Button
-                        color="danger"
+                        color="primary"
                         size="sm"
                         startContent={<Trash2 size={13} />}
                         onClick={() => pickedDeleteArtikel(artikel?.judul)}
@@ -159,7 +159,7 @@ export default function Artikel({ artikels }) {
                                 </Button>
                                 <Button
                                   isLoading={loading}
-                                  color="danger"
+                                  color="primary"
                                   onClick={() => handleDelete(selectedArtikel)}
                                 >
                                   Hapus Artikel
