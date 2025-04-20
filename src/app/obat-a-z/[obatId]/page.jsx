@@ -165,6 +165,7 @@ export default function ObatId({ searchParams }) {
         </div>
         <div className="flex flex-col sm:w-3/4 sm:px-14">
           <h1 className="text-2xl font-bold mb-2">{obat?.title}</h1>
+
           {obat?.picture && (
             <div className="self-center bg-gray-200 my-2 rounded-2xl w-fit">
               <Image

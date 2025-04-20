@@ -47,7 +47,8 @@ export default function ApotekerItem({ apoteker, user }) {
   };
 
   const filteredApoteker = apoteker.filter((apotekerItem) =>
-    apotekerItem.nama.toLowerCase().includes(searchQuery.toLowerCase())
+    apotekerItem.nama.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    apotekerItem.is_online === true
   );
 
   return (
