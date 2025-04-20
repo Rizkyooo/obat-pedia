@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { createClient } from "@/utils/supabase/client";
 import { Badge, Button, Input, User } from "@nextui-org/react";
 import { ArrowLeft, Send } from "lucide-react";
@@ -14,38 +14,51 @@ export default function Chat({ id, userId }) {
   const supabase = useMemo(() => createClient(), []);
   const router = useRouter();
 
-  const fetchUser = useCallback(async (id) => {
-    if (!id) return null;
-    const { data, error } = await supabase
-      .from("apoteker")
-      .select("*")
-      .eq("id", id)
-      .single();
-    if (error) {
-      console.error(error);
-      return null;
-    }
-    return data;
-  }, [supabase]);
+  const fetchUser = useCallback(
+    async (id) => {
+      if (!id) return null;
+      const { data, error } = await supabase
+        .from("apoteker")
+        .select("*")
+        .eq("id", id)
+        .single();
+      if (error) {
+        console.error(error);
+        return null;
+      }
+      return data;
+    },
+    [supabase]
+  );
 
-  const getMessages = useCallback(async (userId, id) => {
-    if (!userId || !id) return [];
-    const { data, error } = await supabase
-      .from("messages")
-      .select("*")
-      .or(`and(sender_id.eq.${userId},receiver_id.eq.${id}),and(sender_id.eq.${id},receiver_id.eq.${userId})`)
-      .order('created_at', { ascending: true });
-    if (error) {
-      console.error(error);
-      throw new Error(error.message);
-    }
-    return data;
-  }, [supabase]);
+  const getMessages = useCallback(
+    async (userId, id) => {
+      if (!userId || !id) return [];
+      const { data, error } = await supabase
+        .from("messages")
+        .select("*")
+        .or(
+          `and(sender_id.eq.${userId},receiver_id.eq.${id}),and(sender_id.eq.${id},receiver_id.eq.${userId})`
+        )
+        .order("created_at", { ascending: true });
+      if (error) {
+        console.error(error);
+        throw new Error(error.message);
+      }
+      return data;
+    },
+    [supabase]
+  );
 
   const sendAutomaticReply = useCallback(async () => {
-    const { error } = await supabase
-      .from("messages")
-      .insert([{ receiver_id: userId, message: "Terima kasih telah menghubungi kami. Mohon tunggu sebentar, chat Anda akan segera kami balas 😇", sender_id: id }]);
+    const { error } = await supabase.from("messages").insert([
+      {
+        receiver_id: userId,
+        message:
+          "Terima kasih telah menghubungi kami. Mohon tunggu sebentar, chat Anda akan segera kami balas 😇",
+        sender_id: id,
+      },
+    ]);
     if (error) {
       console.error("Error sending automatic reply:", error.message);
     }
@@ -56,7 +69,7 @@ export default function Chat({ id, userId }) {
       try {
         const [userData, messagesData] = await Promise.all([
           fetchUser(id),
-          getMessages(userId, id)
+          getMessages(userId, id),
         ]);
         setUser(userData);
         setMessages(messagesData);
@@ -68,13 +81,20 @@ export default function Chat({ id, userId }) {
     fetchData();
 
     const channel = supabase
-      .channel('messages')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
-        if ((payload.new.sender_id === userId && payload.new.receiver_id === id) ||
-          (payload.new.sender_id === id && payload.new.receiver_id === userId)) {
-          setMessages((prevMessages) => [...prevMessages, payload.new]);
+      .channel("messages")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "messages" },
+        (payload) => {
+          if (
+            (payload.new.sender_id === userId &&
+              payload.new.receiver_id === id) ||
+            (payload.new.sender_id === id && payload.new.receiver_id === userId)
+          ) {
+            setMessages((prevMessages) => [...prevMessages, payload.new]);
+          }
         }
-      })
+      )
       .subscribe();
 
     return () => {
@@ -91,7 +111,9 @@ export default function Chat({ id, userId }) {
   const handleSendMessage = useCallback(async () => {
     if (inputMessage.trim() === "") return;
 
-    const pharmacistReplied = messages.some(message => message.sender_id === id);
+    const pharmacistReplied = messages.some(
+      (message) => message.sender_id === id
+    );
 
     const { error } = await supabase
       .from("messages")
@@ -112,30 +134,61 @@ export default function Chat({ id, userId }) {
 
   return (
     <div className="flex flex-col" style={{ height: "calc(100vh - 65px)" }}>
-      <div className="px-4 z-50 sticky top-0 py-2 bg-white flex gap-1 items-center">
+      <div className="px-4 z-50 sticky top-0 py-2  flex gap-1 items-center">
         <div className="flex gap-1 items-center py-2">
           <div onClick={() => router.push("/tanya-apoteker/chat")}>
-            <ArrowLeft size={37} cursor={"pointer"} className="sm:hidden text-[#EE0037]" />
+            <ArrowLeft
+              size={37}
+              cursor={"pointer"}
+              className="sm:hidden text-[#EE0037]"
+            />
           </div>
-          <Badge className={`${memoizedUser?.is_online ? "block" : "hidden"}`} content="" color={`${memoizedUser?.is_online ? "success" : ""}`} shape={`${memoizedUser?.is_online ? "circle" : ""}`} placement={`${memoizedUser?.is_online ? "bottom-left" : ""}`}>
+          <Badge
+            className={`${memoizedUser?.is_online ? "block" : "hidden"}`}
+            content=""
+            color={`${memoizedUser?.is_online ? "success" : ""}`}
+            shape={`${memoizedUser?.is_online ? "circle" : ""}`}
+            placement={`${memoizedUser?.is_online ? "bottom-left" : ""}`}
+          />
           <User
-            name={<p className="text-md">{memoizedUser?.nama}</p>}
+            name={<p className="text-md line-clamp-1">{memoizedUser?.nama}</p>}
             avatarProps={{
-              src: memoizedUser?.picture || "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
+              src:
+                memoizedUser?.picture ||
+                "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
               size: "md",
+              style: {
+                minWidth: "40px",
+              },
             }}
           />
-          </Badge>
         </div>
       </div>
 
-      <div ref={scrollRef} className="overflow-y-scroll mb-4 h-screen bg-slate-100 border-l-1 flex justify-center">
+      <div
+        ref={scrollRef}
+        className="overflow-y-scroll mb-4 h-screen bg-slate-100 border-l-1 flex justify-center">
         <div className="w-full flex pt-9 flex-col items-center">
           {memoizedMessages.map((msg, index) => (
-            <div key={index} className={`relative ${msg.sender_id === userId ? "self-end bg-blue-500 text-white" : "self-start bg-white text-black"} text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${msg.sender_id === userId ? "mr-4" : "ml-4"}`}>
+            <div
+              key={index}
+              className={`relative ${
+                msg.sender_id === userId
+                  ? "self-end bg-blue-500 text-white"
+                  : "self-start bg-white text-black"
+              } text-sm max-w-[50%] px-2 py-1 rounded-lg shadow-md mb-4 ${
+                msg.sender_id === userId ? "mr-4" : "ml-4"
+              }`}>
               <p className="text-sm pt-1">{msg.message}</p>
-              <p className="text-[0.55rem] px-2 self-end">{originalDate(msg.created_at)}</p>
-              <div className={`absolute top-0 ${msg.sender_id === userId ? "right-[-8px] border-l-[#EE0037]" : "left-[-8px] border-r-white"} w-0 h-0 border-t-[16px] border-t-transparent border-b-[16px] border-b-transparent`}></div>
+              <p className="text-[0.55rem] px-2 self-end">
+                {originalDate(msg.created_at)}
+              </p>
+              <div
+                className={`absolute top-0 ${
+                  msg.sender_id === userId
+                    ? "right-[-8px] border-l-[#EE0037]"
+                    : "left-[-8px] border-r-white"
+                } w-0 h-0 border-t-[16px] border-t-transparent border-b-[16px] border-b-transparent`}></div>
             </div>
           ))}
         </div>
@@ -153,7 +206,11 @@ export default function Chat({ id, userId }) {
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
         />
-        <Button                       color="primary" startContent={<Send size={20} />} size="md" onClick={handleSendMessage}></Button>
+        <Button
+          color="primary"
+          startContent={<Send size={20} />}
+          size="md"
+          onClick={handleSendMessage}></Button>
       </div>
     </div>
   );

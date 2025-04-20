@@ -40,7 +40,7 @@ export default function ObatId({ searchParams }) {
         {loading && (
           <Spinner
             className="flex h-[30rem] justify-center items-center min-w-full"
-                                  color="primary"
+            color="primary"
             label="Loading"
             size="lg"
           />
@@ -54,8 +54,7 @@ export default function ObatId({ searchParams }) {
                   ? "bg-blue-500 text-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
                   : "text-black bg-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
               }`}
-              href="#ringkasan"
-            >
+              href="#ringkasan">
               Deskripsi
             </Link>
           )}
@@ -68,13 +67,12 @@ export default function ObatId({ searchParams }) {
                   ? "bg-blue-500 text-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
                   : "text-black bg-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
               } `}
-              href="#merek"
-            >
+              href="#merek">
               Merek Dagang
             </Link>
           )}
 
-{obat?.tentang && obat?.tentang !== "null" && (
+          {obat?.tentang && obat?.tentang !== "null" && (
             <Link
               onClick={() => handleClick("#tentang")}
               className={`${
@@ -82,13 +80,12 @@ export default function ObatId({ searchParams }) {
                   ? "bg-blue-500 text-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
                   : "text-black bg-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
               } `}
-              href="#tentang"
-            >
+              href="#tentang">
               Tentang
             </Link>
           )}
 
-{obat?.peringatan && obat?.peringatan !== "null" && (
+          {obat?.peringatan && obat?.peringatan !== "null" && (
             <Link
               onClick={() => handleClick("#peringatan")}
               className={`${
@@ -96,13 +93,12 @@ export default function ObatId({ searchParams }) {
                   ? "bg-blue-500 text-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
                   : "text-black bg-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
               } `}
-              href="#peringatan"
-            >
+              href="#peringatan">
               Peringatan
             </Link>
-          )}    
+          )}
 
-{obat?.dosis && obat?.dosis !== "null" && (
+          {obat?.dosis && obat?.dosis !== "null" && (
             <Link
               onClick={() => handleClick("#dosis")}
               className={`${
@@ -110,13 +106,12 @@ export default function ObatId({ searchParams }) {
                   ? "bg-blue-500 text-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
                   : "text-black bg-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
               } `}
-              href="#dosis"
-            >
+              href="#dosis">
               Dosis
             </Link>
           )}
 
-{obat?.gunakan_benar && obat?.gunakan_benar !== "null" && (
+          {obat?.gunakan_benar && obat?.gunakan_benar !== "null" && (
             <Link
               onClick={() => handleClick("#gunakan")}
               className={`${
@@ -124,13 +119,12 @@ export default function ObatId({ searchParams }) {
                   ? "bg-blue-500 text-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
                   : "text-black bg-white font-medium px-9 py-2 w-full flex justify-center items-center rounded-2xl"
               } `}
-              href="#gunakan"
-            >
+              href="#gunakan">
               Cara Penggunaan
             </Link>
           )}
 
-{obat?.interaksi && obat?.interaksi !== "null" && (
+          {obat?.interaksi && obat?.interaksi !== "null" && (
             <Link
               onClick={() => handleClick("#interaksi")}
               className={`${
@@ -138,13 +132,12 @@ export default function ObatId({ searchParams }) {
                   ? "bg-blue-500 text-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
                   : "text-black bg-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
               } `}
-              href="#interaksi"
-            >
+              href="#interaksi">
               Interaksi
             </Link>
           )}
 
-{obat?.efek_samping && obat?.efek_samping !== "null" && (
+          {obat?.efek_samping && obat?.efek_samping !== "null" && (
             <Link
               onClick={() => handleClick("#efek")}
               className={`${
@@ -152,13 +145,12 @@ export default function ObatId({ searchParams }) {
                   ? "bg-blue-500 text-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
                   : "text-black bg-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
               } `}
-              href="#efek"
-            >
+              href="#efek">
               Efek Samping
             </Link>
           )}
 
-{obat?.referensi && obat?.referensi !== "null" && (
+          {obat?.referensi && obat?.referensi !== "null" && (
             <Link
               onClick={() => handleClick("#referensi")}
               className={`${
@@ -166,20 +158,28 @@ export default function ObatId({ searchParams }) {
                   ? "bg-blue-500 text-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
                   : "text-black bg-white font-medium px-4 py-2 w-full flex justify-center items-center rounded-2xl"
               } `}
-              href="#referensi"
-            >
+              href="#referensi">
               Referensi
             </Link>
           )}
         </div>
-        <div className="sm:w-3/4 sm:px-14">
+        <div className="flex flex-col sm:w-3/4 sm:px-14">
           <h1 className="text-2xl font-bold mb-2">{obat?.title}</h1>
-          {obat?.picture && 
-          <div className="bg-gray-200 my-2 rounded-2xl w-fit flex items-center justify-center">
-          <Image className="h-72" radius="none" isZoomed src={obat?.picture}/>
-          </div>
-          }
-          <Tabs radius="lg" color="primary" className="overflow-auto max-w-full sm:hidden mb-4">
+
+          {obat?.picture && (
+            <div className="self-center bg-gray-200 my-2 rounded-2xl w-fit">
+              <Image
+                className="h-72"
+                radius="none"
+                isZoomed
+                src={obat?.picture}
+              />
+            </div>
+          )}
+          <Tabs
+            radius="lg"
+            color="primary"
+            className="overflow-auto max-w-full sm:hidden mb-4">
             {obat?.ringkasan && obat?.ringkasan !== "null" && (
               <Tab title="Deskripsi">
                 <div className="mb-6 sm:hidden">
@@ -188,8 +188,7 @@ export default function ObatId({ searchParams }) {
                   </h4>
                   <div
                     className="text-justify"
-                    dangerouslySetInnerHTML={{ __html: obat?.ringkasan }}
-                  ></div>
+                    dangerouslySetInnerHTML={{ __html: obat?.ringkasan }}></div>
                 </div>
               </Tab>
             )}
@@ -202,8 +201,9 @@ export default function ObatId({ searchParams }) {
                   </h4>
                   <div
                     className="text-justify"
-                    dangerouslySetInnerHTML={{ __html: obat?.merek_dagang }}
-                  ></div>
+                    dangerouslySetInnerHTML={{
+                      __html: obat?.merek_dagang,
+                    }}></div>
                 </div>
               </Tab>
             )}
@@ -217,8 +217,7 @@ export default function ObatId({ searchParams }) {
                   <div
                     className="table-container"
                     style={{}}
-                    dangerouslySetInnerHTML={{ __html: obat?.tentang }}
-                  ></div>
+                    dangerouslySetInnerHTML={{ __html: obat?.tentang }}></div>
                 </div>
               </Tab>
             )}
@@ -231,8 +230,9 @@ export default function ObatId({ searchParams }) {
                   </h4>
                   <div
                     className="text-justify list-container"
-                    dangerouslySetInnerHTML={{ __html: obat?.peringatan }}
-                  ></div>
+                    dangerouslySetInnerHTML={{
+                      __html: obat?.peringatan,
+                    }}></div>
                 </div>
               </Tab>
             )}
@@ -246,8 +246,7 @@ export default function ObatId({ searchParams }) {
                   <div
                     className="table-container text-justify"
                     style={{}}
-                    dangerouslySetInnerHTML={{ __html: obat?.dosis }}
-                  ></div>
+                    dangerouslySetInnerHTML={{ __html: obat?.dosis }}></div>
                 </div>
               </Tab>
             )}
@@ -260,8 +259,9 @@ export default function ObatId({ searchParams }) {
                   </h4>
                   <div
                     className="text-justify"
-                    dangerouslySetInnerHTML={{ __html: obat?.gunakan_benar }}
-                  ></div>
+                    dangerouslySetInnerHTML={{
+                      __html: obat?.gunakan_benar,
+                    }}></div>
                 </div>
               </Tab>
             )}
@@ -274,8 +274,7 @@ export default function ObatId({ searchParams }) {
                   </h4>
                   <div
                     className="text-justify list-container"
-                    dangerouslySetInnerHTML={{ __html: obat?.interaksi }}
-                  ></div>
+                    dangerouslySetInnerHTML={{ __html: obat?.interaksi }}></div>
                 </div>
               </Tab>
             )}
@@ -287,8 +286,9 @@ export default function ObatId({ searchParams }) {
                   </h4>
                   <div
                     className="text-justify list-container"
-                    dangerouslySetInnerHTML={{ __html: obat?.efek_samping }}
-                  ></div>
+                    dangerouslySetInnerHTML={{
+                      __html: obat?.efek_samping,
+                    }}></div>
                 </div>
               </Tab>
             )}
@@ -300,8 +300,7 @@ export default function ObatId({ searchParams }) {
                   </h4>
                   <div
                     className=" list-container"
-                    dangerouslySetInnerHTML={{ __html: obat?.referensi }}
-                  ></div>
+                    dangerouslySetInnerHTML={{ __html: obat?.referensi }}></div>
                 </div>
               </Tab>
             )}
@@ -315,8 +314,7 @@ export default function ObatId({ searchParams }) {
                 </h4>
                 <div
                   className="text-justify"
-                  dangerouslySetInnerHTML={{ __html: obat?.ringkasan }}
-                ></div>
+                  dangerouslySetInnerHTML={{ __html: obat?.ringkasan }}></div>
               </div>
             )}
             {obat?.merek_dagang && (
@@ -326,8 +324,9 @@ export default function ObatId({ searchParams }) {
                 </h4>
                 <div
                   className="text-justify"
-                  dangerouslySetInnerHTML={{ __html: obat?.merek_dagang }}
-                ></div>
+                  dangerouslySetInnerHTML={{
+                    __html: obat?.merek_dagang,
+                  }}></div>
               </div>
             )}
             {obat?.tentang && (
@@ -338,8 +337,7 @@ export default function ObatId({ searchParams }) {
                 <div
                   className="table-container"
                   style={{}}
-                  dangerouslySetInnerHTML={{ __html: obat?.tentang }}
-                ></div>
+                  dangerouslySetInnerHTML={{ __html: obat?.tentang }}></div>
               </div>
             )}
             {obat?.peringatan && (
@@ -349,8 +347,7 @@ export default function ObatId({ searchParams }) {
                 </h4>
                 <div
                   className="text-justify list-container"
-                  dangerouslySetInnerHTML={{ __html: obat?.peringatan }}
-                ></div>
+                  dangerouslySetInnerHTML={{ __html: obat?.peringatan }}></div>
               </div>
             )}
             {obat?.dosis && (
@@ -361,8 +358,7 @@ export default function ObatId({ searchParams }) {
                 <div
                   className="table-container text-justify"
                   style={{}}
-                  dangerouslySetInnerHTML={{ __html: obat?.dosis }}
-                ></div>
+                  dangerouslySetInnerHTML={{ __html: obat?.dosis }}></div>
               </div>
             )}
             {obat?.gunakan_benar && (
@@ -372,8 +368,9 @@ export default function ObatId({ searchParams }) {
                 </h4>
                 <div
                   className="text-justify"
-                  dangerouslySetInnerHTML={{ __html: obat?.gunakan_benar }}
-                ></div>
+                  dangerouslySetInnerHTML={{
+                    __html: obat?.gunakan_benar,
+                  }}></div>
               </div>
             )}
             {obat?.interaksi && (
@@ -383,8 +380,7 @@ export default function ObatId({ searchParams }) {
                 </h4>
                 <div
                   className="text-justify list-container"
-                  dangerouslySetInnerHTML={{ __html: obat?.interaksi }}
-                ></div>
+                  dangerouslySetInnerHTML={{ __html: obat?.interaksi }}></div>
               </div>
             )}
             {obat?.efek_samping && (
@@ -394,8 +390,9 @@ export default function ObatId({ searchParams }) {
                 </h4>
                 <div
                   className="text-justify list-container"
-                  dangerouslySetInnerHTML={{ __html: obat?.efek_samping }}
-                ></div>
+                  dangerouslySetInnerHTML={{
+                    __html: obat?.efek_samping,
+                  }}></div>
               </div>
             )}
             {obat?.referensi && (
@@ -405,8 +402,7 @@ export default function ObatId({ searchParams }) {
                 </h4>
                 <div
                   className=" list-container"
-                  dangerouslySetInnerHTML={{ __html: obat?.referensi }}
-                ></div>
+                  dangerouslySetInnerHTML={{ __html: obat?.referensi }}></div>
               </div>
             )}
           </div>
