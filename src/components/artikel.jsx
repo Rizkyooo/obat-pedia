@@ -13,8 +13,7 @@ export default function Artikel({ artikel }) {
   return (
     <Link
       href={`/artikel/${artikel?.slug}`}
-      className="flex items-center gap-4 text-black bg-white py-3 rounded-2xl mb-2 "
-    >
+      className="flex items-center gap-4 text-black bg-white p-3 rounded-2xl mb-2 ">
       <div className="w-1/3 h-20 sm:h-full sm:w-[25rem] ">
         <Image
           isZoomed={true}
@@ -29,14 +28,8 @@ export default function Artikel({ artikel }) {
         <Chip className=" bg-sky-200 sm:mb-2" size="sm">
           {artikel?.id_kategori?.nama}
         </Chip>
-        <div className="text-xs font-semibold sm:text-xl overflow-hidden h-10 sm:h-14">
-          {truncateText(artikel?.judul, 60)}
-        </div>
-        <div className=" text-justify overflow-y-hidden hidden sm:flex sm:h-18">
-          {parse(truncateText(artikel?.konten, 130))}
-        </div>
-        <div className="hidden sm:block text-blue-500 font-semibold">
-          Baca Selengkapnya
+        <div className="text-xs line-clamp-3 font-semibold sm:text-xl overflow-hidden sm:h-14">
+          {artikel?.judul}
         </div>
       </div>
     </Link>
