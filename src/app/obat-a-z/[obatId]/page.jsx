@@ -175,7 +175,7 @@ export default function ObatId({ searchParams }) {
         <div className="sm:w-3/4 sm:px-14">
           <h1 className="text-2xl font-bold mb-2">{obat?.title}</h1>
           {obat?.picture && 
-          <div className="bg-gray-200 my-2 rounded-2xl w-fit">
+          <div className="bg-gray-200 my-2 rounded-2xl w-fit flex items-center justify-center">
           <Image className="h-72" radius="none" isZoomed src={obat?.picture}/>
           </div>
           }

@@ -27,7 +27,7 @@ export default function Header(props) {
   return (
     <>
       {!showHeader && (
-        <Navbar isBlurred={false} maxWidth="xl" isBordered>
+        <Navbar className="bg-[#92C0FF]" isBlurred={false} maxWidth="xl" >
           <Link href="/" className=" h-14 flex items-center justify-center cursor-pointer" >
             <img className="hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform" src="/images/medisigna.png" alt="logo" width={180} height={180} />
           </Link>
@@ -35,7 +35,7 @@ export default function Header(props) {
             <NavbarItem isActive={pathName === "/"}>
               <Link
                 className={`${
-                  pathName === "/" ? "text-blue-500" : " "
+                  pathName === "/" ? "text-blue-900" : "text-blue-800 "
                 } hover:scale-[1.13] hover:text hover:duration-100 hover:transition-transform transition-transform`}
                 color="foreground"
                 href="/"
@@ -43,50 +43,46 @@ export default function Header(props) {
                 Home
               </Link>
             </NavbarItem>
+            <NavbarItem>
+              <Dropdown>
+              <DropdownTrigger>
+        <p className="capitalize cursor-pointer text-blue-800" >
+          Layanan kami
+        </p>
+      </DropdownTrigger>
+            <DropdownMenu aria-label="Dropdown Variants" color="primary" variant="light">
+        <DropdownItem href="/obat-a-z" key="new">Obat A-Z</DropdownItem>
+        <DropdownItem href="/tanya-apoteker" key="copy">Tanya Apoteker</DropdownItem>
+        <DropdownItem href="/forum-kesehatan" key="edit">Forum Kesehatan</DropdownItem>
+        <DropdownItem href="/home-care" key="delete" >
+          Home Care
+        </DropdownItem>
+        </DropdownMenu>
+              </Dropdown>
+            </NavbarItem>
             <NavbarItem isActive={pathName.includes("/obat-a-z")}>
               <Link
                 className={`${
-                  pathName.includes("/obat-a-z") ? "text-blue-500" : " "
+                  pathName.includes("/obat-a-z") ? "text-blue-900" : "text-blue-800"
                 } hover:text hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
                 color="foreground"
                 href="/obat-a-z"
               >
-                Obat A-Z
+                Tentang Kami
               </Link>
             </NavbarItem>
             <NavbarItem isActive={pathName.includes("/tanya-apoteker")}>
               <Link
                 className={`${
-                  pathName.includes("/tanya-apoteker") ? "text" : " "
+                  pathName.includes("/tanya-apoteker") ? "text-blue-900" : "text-blue-800 "
                 } hover:text hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
                 color="foreground"
                 href="/tanya-apoteker"
               >
-                Tanya Apoteker
+                Kontak Kami
               </Link>
             </NavbarItem>
-            <NavbarItem isActive={pathName.includes("/forum-kesehatan")}>
-              <Link
-                className={`${
-                  pathName.includes("/forum-kesehatan") ? "text-blue-500" : " "
-                } hover:text hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
-                color="foreground"
-                href="/forum-kesehatan"
-              >
-                Forum Kesehatan
-              </Link>
-            </NavbarItem>
-            <NavbarItem isActive={pathName === "/artikel"}>
-              <Link
-                className={`${
-                  pathName === "/artikel" ? "text-blue-500" : " "
-                } hover:text hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
-                color="foreground"
-                href="/artikel"
-              >
-                Artikel
-              </Link>
-            </NavbarItem>
+            
           </NavbarContent>
           <NavbarContent justify="end">
             <NavbarItem>
