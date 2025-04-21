@@ -1,7 +1,10 @@
 "use client";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function MediScope() {
+  const [loadedVideos, setLoadedVideos] = useState([]);
+  
   // Sample YouTube video data
   const videos = [
     {
@@ -42,6 +45,33 @@ export default function MediScope() {
     },
   ];
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const videoId = entry.target.dataset.videoid;
+            if (videoId && !loadedVideos.includes(videoId)) {
+              setLoadedVideos(prev => [...prev, videoId]);
+            }
+          }
+        });
+      },
+      { rootMargin: "100px" }
+    );
+
+    const placeholders = document.querySelectorAll(".video-placeholder");
+    placeholders.forEach(placeholder => {
+      observer.observe(placeholder);
+    });
+
+    return () => {
+      placeholders.forEach(placeholder => {
+        observer.unobserve(placeholder);
+      });
+    };
+  }, [loadedVideos]);
+
   return (
     <div className="container mx-auto sm:px-14">
       <div className="flex justify-between">
@@ -54,17 +84,30 @@ export default function MediScope() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {videos.map((video) => (
-          <div key={video.id} className="bg-white p-4 rounded-xl ">
-            <div className="aspect-video mb-3">
-              <iframe 
-                className="w-full h-full rounded-lg"
-                src={`https://www.youtube.com/embed/${video.videoId}`}
-                title={video.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
+          <div key={video.id} className="bg-white p-4 rounded-xl shadow-sm">
+            <div 
+              className="aspect-video mb-3 video-placeholder bg-gray-100 flex items-center justify-center relative rounded-lg overflow-hidden" 
+              data-videoid={video.videoId}
+            >
+              {loadedVideos.includes(video.videoId) ? (
+                <iframe 
+                  className="w-full h-full absolute top-0 left-0"
+                  src={`https://www.youtube.com/embed/${video.videoId}`}
+                  title={video.title}
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              ) : (
+                <>
+                  <div className="absolute inset-0 bg-gray-800 opacity-50"></div>
+                  <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center relative z-10">
+                    <div className="w-0 h-0 border-y-8 border-y-transparent border-l-12 border-l-white ml-1"></div>
+                  </div>
+                </>
+              )}
             </div>
-            <h4 className="font-semibold text-sm sm:text-base">{video.title}</h4>
+            <h4 className="font-semibold text-sm sm:text-base line-clamp-2">{video.title}</h4>
             <p className="text-xs text-gray-500">{video.channel}</p>
           </div>
         ))}
