@@ -20,7 +20,7 @@ export default function Header(props) {
   const handleLogout = () => {
     logOut();
   };
-  const header = ["/apoteker", "/admin", "/login", "/signup"];
+  const header = ["/apoteker", "/admin"];
 
   const pathName = usePathname();
   const showHeader = header.some((path) => pathName.includes(path));

@@ -66,13 +66,13 @@ export default function LoginPage() {
     // const role = user?.user_metadata?.role;
     console.log(role);
     if (role === "pengguna") {
-      router.push("/");
+      window.location.href = "/";
     } else if (role === "apoteker") {
-      router.push("/apoteker/obat-a-z");
+      window.location.href = "/apoteker/obat-a-z";
     } else if (role === "admin") {
-      router.push("/admin");
+      window.location.href = "/admin";
     } else{
-      router.push("/")
+      window.location.href = "/"; 
     }
   };
 

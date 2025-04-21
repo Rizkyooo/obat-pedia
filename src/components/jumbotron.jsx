@@ -19,13 +19,13 @@ export default function Jumbotron() {
           </div>
           <div className="w-2/5">
             <img
-              className="h-[,9rem] sm:h-[25rem]"
+              className="h-[9rem] sm:h-[25rem]"
               src="./images/jumbot.png"
               alt="handole"
             />
           </div>
         </div>
-        <div className="hidden sm:block absolute  bottom-10 sm:text-white sm:mt-9">
+        <div className="hidden sm:block absolute  bottom-6 sm:text-white sm:mt-9">
           <NavHero />
         </div>
       </div>
