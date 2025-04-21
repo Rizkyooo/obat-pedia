@@ -48,8 +48,11 @@ export default function NavHero(){
                 Forum Kesehatan
               </p>
             </Link>
-            <Link href={"/home-care"} className="flex flex-col items-center min-w-24  ">
-              <div className=" p-2 h-14 w-14 sm:h-16 sm:w-16 bg-white rounded-2xl flex justify-center items-center">
+            <Link href={"#"} className="flex flex-col items-center min-w-24  ">
+              <div className=" p-2 h-14 w-14 sm:h-16 sm:w-16 bg-white rounded-2xl flex justify-center items-center relative">
+                <div className="absolute z-20 -top-2 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white text-[8px] font-medium py-0.5 px-1.5 rounded-full">
+                  Coming Soon
+                </div>
                 <Image
                 src="./images/homec.png"
                 isZoomed
@@ -63,8 +66,11 @@ export default function NavHero(){
               </p>
             </Link>
 
-            <Link href={"/cari-apotek"} className="flex flex-col justify-center items-center min-w-24">
-              <div className=" p-2 h-14 w-14 sm:h-16 sm:w-16 bg-white rounded-2xl flex justify-center items-center">
+            <Link href={"#"} className="flex flex-col justify-center items-center min-w-24">
+              <div className=" p-2 h-14 w-14 sm:h-16 sm:w-16 bg-white rounded-2xl flex justify-center items-center relative">
+              <div className="absolute z-20 -top-2 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white text-[8px] font-medium py-0.5 px-1.5 rounded-full">
+                Coming Soon
+              </div>
               <Image
                 src="./images/apotek.png"
                 isZoomed
@@ -78,8 +84,11 @@ export default function NavHero(){
               </p>
             </Link>
 
-            <Link href={"/swamedikasi"} className="flex flex-col justify-center items-center min-w-24">
-              <div className=" p-2 h-14 w-14 sm:h-16 sm:w-16 bg-white rounded-2xl flex justify-center items-center">
+            <Link href={"#"} className="flex flex-col justify-center items-center min-w-24">
+              <div className=" p-2 h-14 w-14 sm:h-16 sm:w-16 bg-white rounded-2xl flex justify-center items-center relative">
+              <div className="absolute z-20 -top-2 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white text-[8px] font-medium py-0.5 px-1.5 rounded-full">
+                Coming Soon
+              </div>
               <Image
                 src="./images/swam.png"
                 isZoomed

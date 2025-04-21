@@ -14,7 +14,7 @@ export default function Artikel({ artikel }) {
     <Link
       href={`/artikel/${artikel?.slug}`}
       className="flex items-center gap-4 text-black bg-white p-3 rounded-2xl mb-2 ">
-      <div className="w-1/3 h-20 sm:h-full sm:w-[25rem] ">
+      <div className="w-20 h-20 sm:h-full sm:w-[19rem] ">
         <Image
           isZoomed={true}
           width={800}

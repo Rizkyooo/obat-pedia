@@ -17,7 +17,6 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const role = await getUser();  const user = await getUserFromDatabase(role?.user_metadata?.role || 'pengguna');
-  console.log(user);
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen bg-[#f6f8fd]`}>

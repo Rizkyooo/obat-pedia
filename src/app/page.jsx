@@ -1,6 +1,7 @@
 import Jumbotron from "@/components/jumbotron";
 import NavHero from "@/components/nav-hero";
 import ListArtikel from "@/components/listArtikel";
+import MediScope from "@/components/mediScope";
 import { getUser } from "@/libs/actions";
 import { redirect } from "next/navigation";
 export default async function  Home() {
@@ -27,7 +28,10 @@ if (role === 'admin') {
         </div>
       </section>
       <div className="mt-60 sm:mt-0 sm:py-9 container px-6 mb-20">
-      <ListArtikel></ListArtikel>
+        <div className="mt-10 mb-10">
+          <MediScope/>
+        </div>
+        <ListArtikel></ListArtikel>
       </div>
     </main>
     </>
