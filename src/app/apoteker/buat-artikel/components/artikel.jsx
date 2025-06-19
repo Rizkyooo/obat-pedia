@@ -13,7 +13,7 @@ import {
   ModalFooter,
   useDisclosure,
   ModalBody,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import Link from "next/link";
 import parse from "html-react-parser";
 import { HeartIcon, PauseCircleIcon, PencilIcon, Trash2 } from "lucide-react";

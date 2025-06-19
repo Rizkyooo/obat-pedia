@@ -1,8 +1,8 @@
 "use client";
-import { Card, CardBody, Input, Spinner, Tab, Tabs } from "@nextui-org/react";
+import { Card, CardBody, Input, Spinner, Tab, Tabs } from "@heroui/react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { createClient } from "@/utils/supabase/client";
 
 let tabs = [

@@ -1,7 +1,7 @@
 "use client";
 import { EyeOff, Eye } from "lucide-react";
 import Link from "next/link";
-import { Image, Input, Button } from "@nextui-org/react";
+import { Image, Input, Button } from "@heroui/react";
 import GoogleIcon from "@/components/googleIcon";
 import { loginWithGoogle } from "@/libs/actions";
 import { useState } from "react";
@@ -14,7 +14,7 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { getUser } from "@/libs/actions";
 // import { checkRole } from "@/services/checkRole";
 export default function LoginPage() {

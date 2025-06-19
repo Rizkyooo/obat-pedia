@@ -1,8 +1,8 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
 import { useState, useEffect } from "react";
-import { Tabs, Tab, Spinner, Image } from "@nextui-org/react";
-import { Link } from "@nextui-org/react";
+import { Tabs, Tab, Spinner, Image } from "@heroui/react";
+import { Link } from "@heroui/react";
 const supabase = createClient();
 export default function ObatId({ searchParams }) {
   const [obat, setObat] = useState([]);
@@ -27,7 +27,7 @@ export default function ObatId({ searchParams }) {
 
   useEffect(() => {
     setLoading(true);
-    fetchObatData(searchParams.id);
+    fetchObatData(searchParams.get("id"));
   }, []);
 
   const handleClick = (link) => {

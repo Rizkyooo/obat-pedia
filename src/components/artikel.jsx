@@ -1,4 +1,4 @@
-import { Image, Chip } from "@nextui-org/react";
+import { Image, Chip } from "@heroui/react";
 import Link from "next/link";
 import parse from "html-react-parser";
 

@@ -1,5 +1,5 @@
 "use client";
-import { Button, Image, Input, Select, SelectItem } from "@nextui-org/react";
+import { Button, Image, Input, Select, SelectItem } from "@heroui/react";
 import { useEffect, useState } from "react";
 import Tiptap from "./Tiptap";
 import { createClient } from "@/utils/supabase/client";

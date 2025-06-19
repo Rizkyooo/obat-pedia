@@ -1,7 +1,7 @@
 'use client';
 import { getUser } from "@/libs/actions";
 import { createClient } from "@/utils/supabase/client";
-import { Textarea, Button } from "@nextui-org/react";
+import { Textarea, Button } from "@heroui/react";
 import { revalidatePath } from "next/cache";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";

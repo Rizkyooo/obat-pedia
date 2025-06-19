@@ -1,5 +1,5 @@
 'use client'
-import { Image } from "@nextui-org/react"
+import { Image } from "@heroui/react"
 import Link from "next/link"
 import { EnvelopeIcon, PhoneIcon, MapPinIcon } from '@heroicons/react/24/solid'
 import { usePathname } from "next/navigation";

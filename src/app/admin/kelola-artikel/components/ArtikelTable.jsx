@@ -11,7 +11,7 @@ import {
   ModalHeader,
   User,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import parse from "html-react-parser";
 import { DeleteIcon, EditIcon, BookCheck, Search } from "lucide-react";
 import {
@@ -22,7 +22,7 @@ import {
   TableRow,
   TableCell,
   Tooltip,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { format } from "date-fns-tz";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";

@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, Chip, Image, User } from "@nextui-org/react";
+import { Button, Card, CardBody, Chip, Image, User } from "@heroui/react";
 import parse from "html-react-parser";
 import ShareComponent from "./share";
 import { BadgeCheck } from "lucide-react";

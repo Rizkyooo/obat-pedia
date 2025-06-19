@@ -19,7 +19,7 @@ import {
   DropdownMenu,
   Dropdown,
   DropdownTrigger,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { ListFilter, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";

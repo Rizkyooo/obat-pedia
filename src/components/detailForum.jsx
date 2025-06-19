@@ -1,5 +1,5 @@
 'use client';
-import { User, Button } from "@nextui-org/react";
+import { User, Button } from "@heroui/react";
 import Komentar from "./komentar";
 import KomentarItem from "./komentarItem";
 import { useState, useEffect } from "react";

@@ -13,7 +13,7 @@ import {
   ModalHeader,
   User,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Heart } from "lucide-react";

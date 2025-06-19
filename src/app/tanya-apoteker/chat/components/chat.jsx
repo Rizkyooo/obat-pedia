@@ -1,6 +1,6 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
-import { Badge, Button, Input, User } from "@nextui-org/react";
+import { Badge, Button, Input, User } from "@heroui/react";
 import { ArrowLeft, Send } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";

@@ -1,5 +1,5 @@
 "use client";
-import { Input, RadioGroup, Radio, Button, Avatar, ModalFooter, ModalHeader } from "@nextui-org/react";
+import { Input, RadioGroup, Radio, Button, Avatar, ModalFooter, ModalHeader } from "@heroui/react";
 import { getUserFromDatabase } from "@/services/getUserFromDatabase";
 import { useEffect, useState } from "react";
 import {
@@ -8,7 +8,7 @@ import {
   ModalBody,
   useDisclosure,
   Image,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { createClient } from "@/utils/supabase/client";
 import toast from "react-hot-toast";
 export default function EditProfil({user}) {

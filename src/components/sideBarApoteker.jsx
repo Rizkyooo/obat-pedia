@@ -18,7 +18,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { logOut } from "@/libs/actions";
 
 export default function SideBarApoteker({ children }) {

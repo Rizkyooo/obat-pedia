@@ -1,5 +1,5 @@
 'use client'
-import { Button, User } from "@nextui-org/react";
+import { Button, User } from "@heroui/react";
 import Link from "next/link";
 import { BadgeCheck, MessageCircleMore } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";

@@ -1,5 +1,5 @@
 "use client";
-import { Badge, Image, Input, User } from "@nextui-org/react";
+import { Badge, Image, Input, User } from "@heroui/react";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { useState, useMemo } from "react";

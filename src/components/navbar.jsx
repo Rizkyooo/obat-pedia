@@ -10,7 +10,7 @@ import {
   DropdownItem,
   DropdownTrigger,
   DropdownMenu,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { logOut } from "@/libs/actions";
@@ -41,6 +41,7 @@ export default function Header(props) {
                 href="/"
               >
                 Home
+                
               </Link>
             </NavbarItem>
             <NavbarItem>
@@ -111,15 +112,12 @@ export default function Header(props) {
                     <DropdownItem className=" pl-3" key="profil">
                       <Link href="/profil"> Profile</Link>
                     </DropdownItem>
-                    <DropdownItem href="/login" key="logout">
-                      <Button
-                        onClick={handleLogout}
-                        size="sm"
-                        className="bg-blue-500 text-white"
-                        variant="flat"
-                      >
-                        Logout
-                      </Button>
+                    <DropdownItem
+                      key="logout"
+                      onClick={handleLogout}
+                      className="pl-3 text-red-500"
+                    >
+                      Logout
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
