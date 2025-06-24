@@ -20,7 +20,7 @@ export default function Jumbotron() {
           <div className="w-2/5">
             <img
               className="h-[9rem] sm:h-[25rem]"
-              src="./images/jumbot.png"
+              src="./images/hero.svg"
               alt="handole"
             />
           </div>

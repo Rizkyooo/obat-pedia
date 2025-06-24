@@ -21,8 +21,8 @@ export default function ListArtikel({ artikels }) {
       </h3>
       <Input
         onChange={handleSearchChange}
+        color="primary"
         value={searchQuery}
-        variant="bordered"
         className="mb-4"
         size="md"
         type="search"

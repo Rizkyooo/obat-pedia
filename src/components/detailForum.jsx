@@ -4,9 +4,9 @@ import Komentar from "./komentar";
 import KomentarItem from "./komentarItem";
 import { useState, useEffect } from "react";
 import { createClient } from "../utils/supabase/client";
-import { getUser } from "@/libs/actions";
 import { usePathname } from "next/navigation";
 import { BadgeCheck, MessageCircleMore } from "lucide-react";
+import { Spinner } from "@heroui/react";
 
 export default function DetailForum({
   image,
@@ -20,12 +20,11 @@ export default function DetailForum({
 }) {
   const [comments, setComments] = useState([]);
   const [commentCount, setCommentCount] = useState(jml_komentar);
+  const [loading, setLoading] = useState(true);
   const pathName = usePathname();
 
   const fetchComments = async () => {
-    const user = await getUser();
-    const role = user?.user_metadata?.role || "pengguna";
-    const userIdField = role === "apoteker" ? "id_apoteker" : "id_pengguna";
+    setLoading(true);
     const supabase = createClient();
     const { data, error } = await supabase
       .from("komentar_diskusi")
@@ -33,17 +32,13 @@ export default function DetailForum({
       .eq("id_diskusi", id_diskusi)
       .is("parent_id", null)
       .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error(error);
-    } else {
-      setComments(data);
-      console.log(data);
-    }
+    if (!error && data) setComments(data);
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchComments();
+    // eslint-disable-next-line
   }, []);
 
   const handleCommentSubmit = () => {
@@ -88,9 +83,15 @@ export default function DetailForum({
       </div>
       <Komentar checkUser={false} route={pathName} id_diskusi={id_diskusi} onSubmit={handleCommentSubmit} />
       <h3 className="text-md sm:text-lg font-semibold">Komentar</h3>
-      {comments.map((comment) => (
-        <KomentarItem route={pathName} key={comment.id} penulis={comment.id_pengguna?.nama || comment.id_apoteker?.nama} picture={comment.id_pengguna?.picture || comment.id_apoteker?.picture} role={comment.id_pengguna?.role || comment.id_apoteker?.role} comment={comment} id_diskusi={id_diskusi} />
-      ))}
+      {loading ? (
+        <div className="flex justify-center items-center py-8"><Spinner label="Memuat komentar..." color="primary" size="md" /></div>
+      ) : comments.length === 0 ? (
+        <div className="text-gray-500 py-8 text-center">Belum ada komentar.</div>
+      ) : (
+        comments.map((comment) => (
+          <KomentarItem route={pathName} key={comment.id} penulis={comment.id_pengguna?.nama || comment.id_apoteker?.nama} picture={comment.id_pengguna?.picture || comment.id_apoteker?.picture} role={comment.id_pengguna?.role || comment.id_apoteker?.role} comment={comment} id_diskusi={id_diskusi} />
+        ))
+      )}
     </>
   );
 }

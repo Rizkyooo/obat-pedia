@@ -44,7 +44,7 @@ export default function LoginPage() {
     const { error, data: user } = await supabase.auth.signInWithPassword(data);
 
     if (error) {
-      console.log(error);
+      console.log("LOGIN ERROR",error);
       setIsError(true);
       setMessage(error.message);
       onOpen();
@@ -52,7 +52,7 @@ export default function LoginPage() {
 
     if (user) {
       setUser(user);
-      console.log(user);
+      console.log("SUCCESS", user);
       setIsLoading(false);
       onOpen();
       setRedirectMessage("Tunggu Sebentar...");
@@ -78,11 +78,11 @@ export default function LoginPage() {
 
   return (
     <section className="flex container mx-auto p-16 ">
-      <div className="w-1/2 bg-blue-500 justify-center items-center rounded-tl-2xl hidden sm:flex">
-        <Image width={300} alt="logins" src="./images/logins.png" />
+      <div className="w-1/2 bg-blue-300 justify-center items-center rounded-tl-2xl hidden sm:flex">
+        <Image width={350} alt="logins" src="./images/login.svg" />
       </div>
       <div className=" w-full sm:w-1/2 bg-slate-100 px-4 sm:px-16 py-14 rounded-xl">
-        <h3 className="font-bold text-3xl text-[#EE0037] flex justify-center">
+        <h3 className="font-bold text-3xl text-blue-600 flex justify-center">
           Login
         </h3>
         <form action="" className="flex flex-col mt-6">

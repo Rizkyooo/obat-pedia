@@ -3,8 +3,11 @@ import { createClient } from "@/utils/supabase/client";
 import { useState, useEffect } from "react";
 import { Tabs, Tab, Spinner, Image } from "@heroui/react";
 import { Link } from "@heroui/react";
+import { useSearchParams } from "next/navigation";
 const supabase = createClient();
-export default function ObatId({ searchParams }) {
+export default function ObatId() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
   const [obat, setObat] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeLink, setActiveLink] = useState("");
@@ -27,8 +30,8 @@ export default function ObatId({ searchParams }) {
 
   useEffect(() => {
     setLoading(true);
-    fetchObatData(searchParams.get("id"));
-  }, []);
+    fetchObatData(id);
+  }, [id]);
 
   const handleClick = (link) => {
     setActiveLink(link);

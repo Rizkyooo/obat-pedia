@@ -33,10 +33,10 @@ export default async function Home() {
   }
   
   return (
-    <main className="min-h-screen bg-[#f6f8fd]">
+    <main className="min-h-screen bg-[#f3f4f6]">
       <section className="relative sm:block">
         <Jumbotron />
-        <div className="absolute -bottom-44 rounded-t-3xl bg-[#f6f8fd] w-full sm:hidden">
+        <div className="absolute -bottom-44 rounded-t-3xl bg-[#f3f4f6] w-full sm:hidden">
           <div className="flex justify-center items-center">
             <NavHero />
           </div>
