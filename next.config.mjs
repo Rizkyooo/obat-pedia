@@ -1,4 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-export default nextConfig;
+const nextConfig = {
+    experimental: {
+      outputFileTracingIncludes: {
+        '/api/**/*': ['./node_modules/**/*.wasm', './node_modules/**/*.node'],
+      },
+    },
+    // Atau gunakan ini untuk versi Next.js yang lebih lama
+    outputFileTracing: true,
+  }
+  
+  module.exports = nextConfig
