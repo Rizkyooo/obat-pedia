@@ -3,7 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 
 export async function getApoteker() {
-  const supabase = createClient();
+  const supabase = await createClient();
   let { data: apoteker, error } = await supabase.from("apoteker").select("*");
 
   if (error) {

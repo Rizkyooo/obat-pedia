@@ -13,7 +13,7 @@ import {
   SelectItem,
   User,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import parse from "html-react-parser";
 import { DeleteIcon, EditIcon, BookCheck, Search, UserRoundPlus } from "lucide-react";
 import {
@@ -24,7 +24,7 @@ import {
   TableRow,
   TableCell,
   Tooltip,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";

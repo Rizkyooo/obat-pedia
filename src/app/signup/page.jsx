@@ -1,12 +1,12 @@
 
 'use client'
 import Link from "next/link";
-import { Image, Input, Button } from "@nextui-org/react";
+import { Image, Input, Button } from "@heroui/react";
 import { getUser, handleOauth } from "@/libs/actions";
 import { signup } from "@/libs/actions";
 import GoogleIcon from "@/components/googleIcon";
 import {useSearchParams } from "next/navigation";
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure} from "@nextui-org/react";
+import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure} from "@heroui/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { EyeOff, Eye } from "lucide-react";

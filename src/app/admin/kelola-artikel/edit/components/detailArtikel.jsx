@@ -10,7 +10,7 @@ import {
   ModalHeader,
   User,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import Tiptap from "@/app/apoteker/buat-artikel/create/components/Tiptap";
 import { useState } from "react";
 import toast from "react-hot-toast";

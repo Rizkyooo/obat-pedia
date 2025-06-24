@@ -1,6 +1,6 @@
 'use client';
 import { createClient } from "@/utils/supabase/client";
-import { Badge, Button, Input, User } from "@nextui-org/react";
+import { Badge, Button, Input, User } from "@heroui/react";
 import { ArrowLeft, Send } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { originalDate } from "@/utils/timeZone";

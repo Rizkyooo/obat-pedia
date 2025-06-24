@@ -10,7 +10,7 @@ import {
   DropdownItem,
   DropdownTrigger,
   DropdownMenu,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { logOut } from "@/libs/actions";
@@ -41,6 +41,7 @@ export default function Header(props) {
                 href="/"
               >
                 Home
+                
               </Link>
             </NavbarItem>
             <NavbarItem>
@@ -60,13 +61,24 @@ export default function Header(props) {
         </DropdownMenu>
               </Dropdown>
             </NavbarItem>
-            <NavbarItem isActive={pathName.includes("/obat-a-z")}>
+            <NavbarItem isActive={pathName.includes("/artikel")}>
               <Link
                 className={`${
-                  pathName.includes("/obat-a-z") ? "text-blue-900" : "text-blue-800"
+                  pathName.includes("/artikel") ? "text-blue-900" : "text-blue-800"
                 } hover:text hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
                 color="foreground"
-                href="/obat-a-z"
+                href="/artikel"
+              >
+                Artikel
+              </Link>
+            </NavbarItem>
+            <NavbarItem isActive={pathName.includes("/tentang-kami")}>
+              <Link
+                className={`${
+                  pathName.includes("/tentang-kami") ? "text-blue-900" : "text-blue-800"
+                } hover:text hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
+                color="foreground"
+                href="/tentang-kami"
               >
                 Tentang Kami
               </Link>
@@ -74,10 +86,10 @@ export default function Header(props) {
             <NavbarItem isActive={pathName.includes("/tanya-apoteker")}>
               <Link
                 className={`${
-                  pathName.includes("/tanya-apoteker") ? "text-blue-900" : "text-blue-800 "
+                  pathName.includes("#") ? "text-blue-900" : "text-blue-800 "
                 } hover:text hover:scale-[1.13] hover:duration-100 hover:transition-transform transition-transform`}
                 color="foreground"
-                href="/tanya-apoteker"
+                href="#"
               >
                 Kontak Kami
               </Link>
@@ -111,29 +123,26 @@ export default function Header(props) {
                     <DropdownItem className=" pl-3" key="profil">
                       <Link href="/profil"> Profile</Link>
                     </DropdownItem>
-                    <DropdownItem href="/login" key="logout">
-                      <Button
-                        onClick={handleLogout}
-                        size="sm"
-                        className="bg-blue-500 text-white"
-                        variant="flat"
-                      >
-                        Logout
-                      </Button>
+                    <DropdownItem
+                      key="logout"
+                      onClick={handleLogout}
+                      className="pl-3 text-red-500"
+                    >
+                      Logout
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               ) : (
                 <Button
                   size="sm"
-                  className="bg-blue-500 text-white"
+                  className="bg-blue-600 text-white"
                   as={Link}
                   color=""
                   href="/login"
                   variant="flat"
                   radius="full"
                 >
-                   Masuk 
+                   Masuk/Daftar
                 </Button>
               )}
             </NavbarItem>

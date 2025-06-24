@@ -9,7 +9,7 @@ export default function SetOnlineUser({userId, role}) {
     const roomOne = supabase.channel('apoteker');
 
     roomOne.subscribe(async (status) => {
-      console.log(userId)
+      console.log('UserId for subscribe:', userId)
       if (status !== 'SUBSCRIBED') return;
         await roomOne.track({
           user: userId,
@@ -24,37 +24,37 @@ export default function SetOnlineUser({userId, role}) {
       // Loop through presence state keys
       const newOnlineStatus = [];
 
-  // Loop through presence state keys
-  for (const key in newState) {
-    // Get the user ID for each presence state key
-    const userId = newState[key][0].user; // Assuming newState[key][0].user contains the user ID
-    newOnlineStatus.push(userId); // Push the user ID to newOnlineStatus array
-  }
-  updateOnlineStatus(true, newOnlineStatus[0]);
+      for (const key in newState) {
+        const userId = newState[key][0].user;
+        newOnlineStatus.push(userId);
+      }
+      updateOnlineStatus(true, newOnlineStatus[0]);
 
-  console.log('newOnlineStatus', newOnlineStatus[0]);
-  setOnlineStatus(newOnlineStatus[0]); 
+      console.log('newOnlineStatus', newOnlineStatus[0]);
+      setOnlineStatus(newOnlineStatus[0]); 
     });
 
-
-const updateOnlineStatus = async (isOnline, id) => {
-  const roles = role? role : 'pengguna'
-      const { data, error } = await supabase
+    const updateOnlineStatus = async (isOnline, id) => {
+      const roles = role ? role : 'pengguna';
+      console.log('Updating online status for:', { roles, id, isOnline });
+      const { data, error, status, statusText } = await supabase
         .from(roles)
         .update({ is_online: isOnline })
-        .eq('id', id); // Ganti dengan kriteria yang sesuai dengan pengguna yang sedang online
+        .eq('id', id);
 
-      if (error) console.error('Error updating online status:', error);
+      if (error || !data) {
+        console.error('Error updating online status:', { error, data, status, statusText });
+      } else {
+        console.log('Online status updated:', data);
+      }
     };
 
     return () => {
       roomOne.untrack();
       updateOnlineStatus(false, userId);
     };
-  }, [userId]);
+  }, [userId, role]);
 
-
-  
   return (
     <div></div>
   );

@@ -1,6 +1,6 @@
 'use client'
 import { createClient } from "@/utils/supabase/client";
-import { Accordion, AccordionItem, Image } from "@nextui-org/react";
+import { Accordion, AccordionItem, Image } from "@heroui/react";
 import { useEffect, useState } from "react";
 
 export default function ProfilapotekerId({apotekerId}) {

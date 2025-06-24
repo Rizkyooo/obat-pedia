@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 
 export async function login(formData) {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const data = {
     email: formData.get('email'),
@@ -24,7 +24,7 @@ export async function login(formData) {
 }
 
 export async function signup(formData) {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const data = {
     email: formData.get('email'),
@@ -51,7 +51,7 @@ export async function signup(formData) {
 }
 
 export const loginWithGoogle = async () => {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { error, data } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
@@ -67,7 +67,7 @@ export const loginWithGoogle = async () => {
 }
 
 export const logOut = async () => {
-  const supabase = createClient()
+  const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -80,20 +80,23 @@ export const logOut = async () => {
   redirect('/login')
 }
 
-export const getUser = async()=>{
-  const supabase = createClient()
+export const getUser = async () => {
+  const supabase = await createClient();
   try {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    return user
-  } catch {
-    console.log('error')
+    const { data, error } = await supabase.auth.getUser();
+    if (error) {
+      console.log(error);
+      return null;
+    }
+    return data?.user;
+  } catch (error) {
+    console.log(error);
+    return null;
   }
 }
 
 export const handleOauth = async () => {
-   const supabase = createClient();
+   const supabase = await createClient();
    const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {

@@ -1,5 +1,5 @@
 "use client";
-import { Input } from "@nextui-org/react";
+import { Input } from "@heroui/react";
 import { useState } from "react";
 import Artikel from "@/components/artikel";
 
@@ -21,8 +21,8 @@ export default function ListArtikel({ artikels }) {
       </h3>
       <Input
         onChange={handleSearchChange}
+        color="primary"
         value={searchQuery}
-        variant="bordered"
         className="mb-4"
         size="md"
         type="search"

@@ -13,7 +13,7 @@ import {
   ModalHeader,
   User,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Heart } from "lucide-react";
@@ -47,8 +47,8 @@ export default function ApotekerItem({ apoteker, user }) {
   };
 
   const filteredApoteker = apoteker.filter((apotekerItem) =>
-    apotekerItem.nama.toLowerCase().includes(searchQuery.toLowerCase()) &&
-    apotekerItem.is_online === true
+    apotekerItem.nama.toLowerCase().includes(searchQuery.toLowerCase()) 
+    // apotekerItem.is_online === true
   );
 
   return (
@@ -70,7 +70,7 @@ export default function ApotekerItem({ apoteker, user }) {
               className="bg-white rounded-2xl p-4 flex flex-col min-h-[320px]"
             >
               <div className="flex flex-col items-center flex-1 md:mb-4">
-                <div className="mb-3 w-28 h-28 rounded-full overflow-hidden border-4 border-purple-300">
+                <div className="mb-3 w-28 h-28 rounded-full overflow-hidden border-4 border-blue-300">
                   <img
                     src={apotekerItem?.picture || "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="}
                     alt={apotekerItem?.nama}
@@ -78,7 +78,9 @@ export default function ApotekerItem({ apoteker, user }) {
                   />
                 </div>
                 
-                <h3 className="font-semibold text-gray-800 text-center text-xs md:text-medium">{apotekerItem?.nama}</h3>
+                <h3 className="font-semibold text-gray-800 text-center text-xs md:text-medium truncate overflow-hidden whitespace-nowrap max-w-[120px]">
+                  {apotekerItem?.nama}
+                </h3>
                 <p className="text-blue-500 text-center my-2 text-xs md:text-sm">{apotekerItem?.keahlian}</p>
                 <p className="text-gray-500 text-center text-xs md:text-md">{apotekerItem?.status_keanggotaan}</p>
               </div>

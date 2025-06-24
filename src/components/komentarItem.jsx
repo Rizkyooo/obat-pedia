@@ -1,5 +1,5 @@
 "use client";
-import { User } from "@nextui-org/react";
+import { User } from "@heroui/react";
 import { useState, useEffect } from "react";
 import Komentar from "./komentar";
 import { createClient } from "@/utils/supabase/client";

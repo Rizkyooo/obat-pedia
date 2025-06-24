@@ -1,8 +1,8 @@
 "use client";
-import {  Input, Spinner, Tab, Tabs } from "@nextui-org/react";
+import {  Input, Spinner, Tab, Tabs } from "@heroui/react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { createClient } from "@/utils/supabase/client";
 import SetOnline from "../components/SetOnline";
 import { getUser } from "@/libs/actions";

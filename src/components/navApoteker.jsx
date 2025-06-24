@@ -12,7 +12,7 @@ import {
   NavbarContent,
   NavbarItem,
   User,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { UserIcon } from "lucide-react";
 import Link from "next/link";
 export default function NavApoteker({user}) {

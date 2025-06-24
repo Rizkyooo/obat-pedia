@@ -5,29 +5,31 @@ import { id as localeID } from "date-fns/locale";
 
 export default async function Page({ searchParams }) {
   const forumId = searchParams.id;
-  console.log(forumId);
-
-  async function fetchForum() {
+  let forum = null;
+  let error = null;
+  try {
     const supabase = createClient();
-    try {
-      const { data, error } = await supabase
-        .from("diskusi")
-        .select("id, created_at, judul, deskripsi, penulis, kategori, jml_komentar, id_pengguna(picture, nama, role), id_apoteker(picture, nama, role)")
-        .eq("id", forumId)
-        .single();
-      if (error) {
-        console.log(error);
-      }
-      if (data) {
-        return data;
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    const { data, error: fetchError } = await supabase
+      .from("diskusi")
+      .select("id, created_at, judul, deskripsi, penulis, kategori, jml_komentar, id_pengguna(picture, nama, role), id_apoteker(picture, nama, role)")
+      .eq("id", forumId)
+      .single();
+    if (fetchError) error = fetchError;
+    forum = data;
+  } catch (e) {
+    error = e;
   }
 
-  const forum = await fetchForum();
-  console.log(forum);
+  if (error || !forum) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <div className="bg-white p-8 rounded shadow text-center">
+          <h2 className="text-lg font-bold mb-2">Forum tidak ditemukan</h2>
+          <p className="text-gray-500">Forum yang Anda cari tidak tersedia atau telah dihapus.</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen sm:px-16">

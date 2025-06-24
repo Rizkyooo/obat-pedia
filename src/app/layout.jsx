@@ -16,12 +16,16 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const role = await getUser();  const user = await getUserFromDatabase(role?.user_metadata?.role || 'pengguna');
+  const role = await getUser();  
+  const user = await getUserFromDatabase(role?.user_metadata?.role || 'pengguna');
+  console.log("ROLE", role)
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen bg-[#f6f8fd]`}>
         <Providers>
-          <SetOnlineUser userId={user?.id} role={user?.role}/>
+          {user?.id && (
+            <SetOnlineUser userId={user.id} role={user.role}/>
+          )}
             <Header
               user={user}
               name={user?.nama}
