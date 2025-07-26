@@ -153,7 +153,7 @@ export default function LoginPage() {
             isLoading={isLoadingGoogle}
             onClick={() => {
               setIsLoadingGoogle(true);
-              loginWithGoogle();
+              loginWithGoogle('/');
             }}
             startContent={isLoadingGoogle ? "" : <GoogleIcon />}
           >

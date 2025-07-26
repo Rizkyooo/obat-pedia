@@ -50,12 +50,13 @@ export async function signup(formData) {
   redirect('/signup?message=success')
 }
 
-export const loginWithGoogle = async () => {
+export const loginWithGoogle = async (redirectTo) => {
   const supabase = await createClient()
+  const redirectUrl = `http://localhost:3000/auth/callback?next=${redirectTo}`
   const { error, data } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo:'https://obat-pedia.vercel.app/auth/callback',
+      redirectTo: redirectTo,
     },
   })
   if (error) {
@@ -100,7 +101,7 @@ export const handleOauth = async () => {
    const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'https://obat-pedia.vercel.app/auth/callback',
+      redirectTo: '/',
     },
   })
   

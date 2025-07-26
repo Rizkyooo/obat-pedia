@@ -4,6 +4,9 @@ import { getUser } from "./libs/actions";
 import { getUserWithRole } from "./services/getUserWithRole";
 
 export async function middleware(request) {
+  if (!request.url) {
+    return NextResponse.redirect("/login");
+  }
   const user = await getUser();
   const role = user?.user_metadata?.role;
 
@@ -26,8 +29,9 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
+     * - login (login page)
      * Feel free to modify this pattern to include more paths.
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|login|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
