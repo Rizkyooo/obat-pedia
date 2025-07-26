@@ -1,6 +1,8 @@
+import ApotekerItem from "./components/apotekerItem";
+
 export default async function TanyaApoteker(){
     try {
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.medisigna.id';
         const [apotekerRes, user] = await Promise.all([
             fetch(`${baseUrl}/api/getApotekers`, { cache: 'no-store' }),
             getUser()

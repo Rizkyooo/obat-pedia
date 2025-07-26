@@ -1,7 +1,7 @@
 import ListArtikel from "./components/listArtikel";
 
 async function fetchArtikel() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/getArticles`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.medisigna.id'}/api/getArticles`, {
     // next: { revalidate: 60 }, // Uncomment if you want ISR
     cache: 'no-store', // SSR, always fresh
   });
